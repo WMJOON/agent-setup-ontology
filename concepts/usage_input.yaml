@@ -1,0 +1,132 @@
+# agent-setup-ontology — Usage Input Concept Definitions
+# Semantic definitions for user-provided usage data used in transition recommendations.
+version: "0.1.0"
+
+usage_input:
+
+  what: >
+    The usage information a user provides about their current LLM workflow.
+    Used by the copilot to calculate actual monthly cost, compare against
+    local hardware options, and recommend a transition timeline.
+    Users can provide this in any natural form — the copilot extracts
+    the structured fields from free-form text.
+
+  fields:
+
+    api_service_id:
+      type: string
+      required: false
+      description: >
+        Which cloud API the user is currently using.
+        References api_services[*].id.
+        If not provided, the copilot infers from context
+        (e.g. "I use Claude" → claude-haiku-4-5 or claude-sonnet-4-6).
+      examples:
+        - "I use Claude Haiku"         → claude-haiku-4-5
+        - "GPT-4o mini"                → gpt-4o-mini
+        - "Gemini Flash"               → gemini-2-flash
+
+    tokens_per_day:
+      type: integer
+      unit: tokens
+      required: false
+      description: >
+        Average daily token consumption (input + output combined).
+        If the user doesn't know their token count, the copilot
+        estimates from use_cases and usage_intensity.
+      examples:
+        - "I send about 50 messages a day" → estimate ~50K tokens
+        - "I run a coding agent for 2 hours" → estimate ~150K tokens
+
+    monthly_cost_usd:
+      type: number
+      unit: USD
+      required: false
+      description: >
+        The user's actual monthly API bill.
+        The most direct input — skip token estimation if provided.
+        Either monthly_cost_usd OR tokens_per_day is sufficient.
+      examples:
+        - "My bill was $23 last month" → 23.0
+        - "I spend about $10-15 a month" → midpoint 12.5
+
+    use_cases:
+      type: string[]
+      required: false
+      description: >
+        What the user does with the LLM.
+        References use_cases[*].id.
+        Used to estimate token usage when not provided directly,
+        and to match against local models and devices.
+      examples:
+        - "I mainly write code"         → [code_generation]
+        - "Research and summarizing"    → [web_research, document_rag]
+        - "Browser automation bot"      → [web_automation]
+
+    usage_intensity:
+      type: enum
+      values: [light, moderate, heavy]
+      required: false
+      description: >
+        Self-reported usage level when token counts are unavailable.
+        Mapped to token range multipliers from concepts.yaml token_usage_profiles.
+        light    = typical_k range
+        moderate = midpoint between typical_k and heavy_k
+        heavy    = heavy_k range
+
+    privacy_sensitive:
+      type: boolean
+      required: false
+      description: >
+        Whether the user's data is confidential or sensitive.
+        When true, the copilot recommends local setup even if
+        the financial break-even hasn't been reached yet.
+      examples:
+        - "I process customer data"    → true
+        - "Just personal hobby use"    → false
+
+    current_device:
+      type: string
+      required: false
+      description: >
+        The user's current machine.
+        References devices[*].id or described in natural language.
+        Used to suggest the most appropriate upgrade path
+        (same form_factor preferred) and to check if the local
+        model could already run on existing hardware.
+      examples:
+        - "MacBook Air M2 16GB"  → macbook_16gb
+        - "I have a PC with RTX 4060" → pc_rtx4060
+
+    usage_growth_rate:
+      type: number
+      unit: "percent per month"
+      required: false
+      description: >
+        How fast the user's LLM usage is growing month-over-month.
+        Used by transition.py to project future API costs and find
+        the optimal switch month before the bill gets too large.
+        Even a small growth rate dramatically changes the break-even calculation.
+      examples:
+        - "My usage has doubled in 3 months"  → ~26%/month
+        - "I've started using it for work too" → estimate 15-20%/month
+        - "Pretty stable, same tasks"          → 0-5%/month
+
+  inference_rules:
+    what: >
+      How the copilot fills in missing usage_input fields
+      when the user provides partial information.
+    rules:
+      - >
+        If monthly_cost_usd is given: use directly.
+      - >
+        If tokens_per_day is given: apply monthly_cost_formula from cost_estimation.
+      - >
+        If only use_cases + usage_intensity are given:
+        look up token_usage_profiles[use_case][intensity_k]
+        and sum across all use_cases.
+      - >
+        If nothing is given: ask clarifying questions in priority order:
+        1. "Which API are you using?"
+        2. "What's your monthly bill, roughly?"
+        3. "What do you use it for?"

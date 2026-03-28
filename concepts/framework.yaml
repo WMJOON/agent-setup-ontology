@@ -1,0 +1,76 @@
+# agent-setup-ontology — Framework Concept Definitions
+# Semantic definitions for framework fields, kinds, and compatibility attributes.
+version: "0.1.0"
+
+framework:
+
+  what: >
+    A software tool used to build, run, or interact with a local AI agent.
+    Frameworks vary widely in kind — from agent orchestrators to browser
+    automation wrappers to plain chat UIs. Understanding kind is critical
+    for correct recommendations.
+
+  fields:
+
+    kind:
+      what: >
+        The primary role the framework plays in an agent stack.
+        A single user workflow may require multiple kinds
+        (e.g. openclaw for automation + open-webui for chat).
+      values:
+        agent: >
+          Defines and orchestrates AI agents: tools, memory, reasoning loop,
+          multi-agent collaboration. The core building block for custom agents.
+          Examples: smolagents, qwen-agent, crewai, langgraph.
+        automation: >
+          Wraps a local LLM to autonomously execute tasks on the desktop,
+          browser, or filesystem. Closer to an RPA tool than a framework.
+          The LLM is the brain; the framework is the hands.
+          Examples: openclaw.
+        ui: >
+          A ready-to-use chat interface for Ollama models.
+          No programming required. Not for building custom agents.
+          Examples: open-webui, anythingllm.
+        ide: >
+          Editor plugin for inline code completions and chat.
+          Drop-in replacement for GitHub Copilot using local models.
+          Examples: continue.
+        rag: >
+          Retrieval-Augmented Generation framework. Manages document ingestion,
+          chunking, embedding, and retrieval. Best for large document collections.
+          Examples: llamaindex.
+
+    local_capable: >
+      True if the framework can run entirely without a cloud API key,
+      using a local Ollama model. The single most important field for
+      personal/private use cases. If false, the framework requires a
+      paid API key even when the underlying model is local.
+
+    runtime_support:
+      what: >
+        The LLM backends this framework can connect to.
+        The copilot uses this to determine compatibility with the user's setup.
+      values:
+        ollama: Local inference via Ollama. Free, private, no API key.
+        openai: OpenAI API (GPT-4o, etc.). Requires OPENAI_API_KEY.
+        anthropic: Anthropic API (Claude). Requires ANTHROPIC_API_KEY.
+        huggingface: HuggingFace Inference API or local Transformers library.
+        litellm: Universal LLM proxy. Supports 100+ providers via one interface.
+        any: >
+          Model-agnostic. Accepts any OpenAI-compatible endpoint.
+          Includes Ollama's OpenAI-compat API (localhost:11434/v1).
+
+    complexity:
+      what: >
+        Setup and usage difficulty for a developer unfamiliar with the framework.
+        Based on lines-of-code to first working agent and documentation quality.
+      values:
+        low: >
+          Working agent in <10 lines of code. Minimal config.
+          Examples: smolagents, open-webui (zero code), continue (extension install).
+        medium: >
+          Requires understanding roles/tasks/config. ~30-50 lines to start.
+          Examples: crewai, openclaw.
+        high: >
+          Requires understanding graph theory or complex state machines.
+          Examples: langgraph.

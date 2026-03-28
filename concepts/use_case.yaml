@@ -1,0 +1,32 @@
+# agent-setup-ontology — Use Case Concept Definitions
+# Semantic definitions for use case fields and intent classification.
+version: "0.1.0"
+
+use_case:
+
+  what: >
+    A specific goal a user wants to accomplish with a local AI agent.
+    Use cases are the entry point for recommendations: the copilot maps
+    user intent to use_case ids, then filters devices/models/frameworks.
+
+  fields:
+
+    min_memory_gb: >
+      Minimum RAM for the recommended model+framework combo to run
+      at practical speeds for this use case.
+      Not the absolute minimum to run at all — the minimum to be useful.
+
+    needs_always_on: >
+      True if the use case requires the device to be running continuously
+      (e.g. scheduled tasks, always-available chat server).
+      When true, Mac Mini or PC is preferred over laptop.
+
+    requires_gpu: >
+      True if a discrete GPU is effectively required for this use case
+      (e.g. fine-tuning). Apple Silicon Unified Memory devices are still
+      viable even when requires_gpu=true, as long as memory is sufficient.
+
+    keywords: >
+      Words and phrases in the user's message that signal this use case.
+      Used for intent matching. Should include common synonyms and
+      product names (e.g. "OpenClaw" maps to web_automation).

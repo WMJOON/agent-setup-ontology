@@ -1,0 +1,168 @@
+# agent-setup-ontology — Component Instances
+# All component entries extracted from ontology.yaml.
+version: "0.1.0"
+
+components:
+
+  # ── NVIDIA GPUs (Ada Lovelace — RTX 40 series) ─────────
+
+  - id: rtx-4060
+    label: "NVIDIA GeForce RTX 4060"
+    component_type: gpu
+    vram_gb: 8
+    memory_bandwidth_gbs: 272
+    tdp_w: 115
+    architecture: ada-lovelace
+    inference_tier: standard
+    llm_perf_note: "~25-35 t/s for 9B Q4. Best value 8GB GPU. Low power."
+    price_search_query: "NVIDIA RTX 4060 8GB GPU price"
+
+  - id: rtx-4060-ti-16gb
+    label: "NVIDIA GeForce RTX 4060 Ti 16GB"
+    component_type: gpu
+    vram_gb: 16
+    memory_bandwidth_gbs: 288
+    tdp_w: 165
+    architecture: ada-lovelace
+    inference_tier: standard-plus
+    llm_perf_note: "~22-30 t/s for 14B Q4. 16GB VRAM fits 14B comfortably."
+    price_search_query: "NVIDIA RTX 4060 Ti 16GB price"
+    note: "Preferred over RTX 4060 if 14B+ models are needed."
+
+  - id: rtx-4070-super
+    label: "NVIDIA GeForce RTX 4070 Super"
+    component_type: gpu
+    vram_gb: 12
+    memory_bandwidth_gbs: 504
+    tdp_w: 220
+    architecture: ada-lovelace
+    inference_tier: standard
+    llm_perf_note: "~40-50 t/s for 9B Q4. Fast but only 12GB VRAM."
+    price_search_query: "NVIDIA RTX 4070 Super 12GB price"
+
+  - id: rtx-4070-ti-super
+    label: "NVIDIA GeForce RTX 4070 Ti Super"
+    component_type: gpu
+    vram_gb: 16
+    memory_bandwidth_gbs: 672
+    tdp_w: 285
+    architecture: ada-lovelace
+    inference_tier: standard-plus
+    llm_perf_note: "~35-45 t/s for 14B Q4. Good bandwidth-to-VRAM ratio."
+    price_search_query: "NVIDIA RTX 4070 Ti Super 16GB price"
+
+  - id: rtx-4080-super
+    label: "NVIDIA GeForce RTX 4080 Super"
+    component_type: gpu
+    vram_gb: 16
+    memory_bandwidth_gbs: 736
+    tdp_w: 320
+    architecture: ada-lovelace
+    inference_tier: standard-plus
+    llm_perf_note: "~40-50 t/s for 14B Q4. Fast 16GB option."
+    price_search_query: "NVIDIA RTX 4080 Super 16GB price"
+
+  - id: rtx-4090
+    label: "NVIDIA GeForce RTX 4090"
+    component_type: gpu
+    vram_gb: 24
+    memory_bandwidth_gbs: 1008
+    tdp_w: 450
+    architecture: ada-lovelace
+    inference_tier: pro
+    llm_perf_note: "~40-50 t/s for 27B Q4. Runs 32B dense in VRAM."
+    price_search_query: "NVIDIA RTX 4090 24GB GPU price"
+
+  # ── NVIDIA GPUs (Blackwell — RTX 50 series) ────────────
+
+  - id: rtx-5080
+    label: "NVIDIA GeForce RTX 5080"
+    component_type: gpu
+    vram_gb: 16
+    memory_bandwidth_gbs: 960
+    tdp_w: 360
+    architecture: blackwell
+    inference_tier: standard-plus
+    llm_perf_note: "~50-60 t/s for 14B Q4. High bandwidth 16GB."
+    price_search_query: "NVIDIA RTX 5080 16GB price"
+
+  - id: rtx-5090
+    label: "NVIDIA GeForce RTX 5090"
+    component_type: gpu
+    vram_gb: 32
+    memory_bandwidth_gbs: 1792
+    tdp_w: 575
+    architecture: blackwell
+    inference_tier: pro
+    llm_perf_note: "~70-85 t/s for 27B Q4. 32GB VRAM fits 32B dense."
+    price_search_query: "NVIDIA RTX 5090 32GB GPU price"
+    note: "Fastest consumer GPU for LLM inference as of 2025."
+
+  # ── AMD GPUs ────────────────────────────────────────────
+
+  - id: amd-rx-7800-xt
+    label: "AMD Radeon RX 7800 XT"
+    component_type: gpu
+    vram_gb: 16
+    memory_bandwidth_gbs: 624
+    tdp_w: 263
+    architecture: rdna3
+    inference_tier: standard-plus
+    llm_perf_note: "~25-35 t/s for 14B Q4. Good value 16GB AMD option."
+    price_search_query: "AMD Radeon RX 7800 XT 16GB price"
+
+  - id: amd-rx-7900-xtx
+    label: "AMD Radeon RX 7900 XTX"
+    component_type: gpu
+    vram_gb: 24
+    memory_bandwidth_gbs: 960
+    tdp_w: 355
+    architecture: rdna3
+    inference_tier: pro
+    llm_perf_note: "~35-45 t/s for 27B Q4. ROCm support in Ollama."
+    price_search_query: "AMD Radeon RX 7900 XTX 24GB price"
+
+  - id: amd-rx-9070-xt
+    label: "AMD Radeon RX 9070 XT"
+    component_type: gpu
+    vram_gb: 16
+    memory_bandwidth_gbs: 717
+    tdp_w: 250
+    architecture: rdna4
+    inference_tier: standard-plus
+    llm_perf_note: "~40-50 t/s for 14B Q4. RDNA 4 efficiency gains."
+    price_search_query: "AMD Radeon RX 9070 XT price"
+
+  # ── RAM (System Memory) ─────────────────────────────────
+
+  - id: ram-16gb-ddr5
+    label: "16GB DDR5 Kit (2×8GB)"
+    component_type: memory
+    capacity_gb: 16
+    generation: DDR5
+    llm_use: "Minimum for 9B GPU inference + OS overhead."
+    price_search_query: "16GB DDR5 RAM kit 2x8GB price"
+
+  - id: ram-32gb-ddr5
+    label: "32GB DDR5 Kit (2×16GB)"
+    component_type: memory
+    capacity_gb: 32
+    generation: DDR5
+    llm_use: "Recommended alongside any GPU. Allows CPU fallback for layers."
+    price_search_query: "32GB DDR5 RAM kit 2x16GB price"
+
+  - id: ram-64gb-ddr5
+    label: "64GB DDR5 Kit (2×32GB)"
+    component_type: memory
+    capacity_gb: 64
+    generation: DDR5
+    llm_use: "For CPU inference of large models or GPU with heavy CPU offload."
+    price_search_query: "64GB DDR5 RAM kit 2x32GB price"
+
+  - id: ram-128gb-ddr5
+    label: "128GB DDR5 Kit (4×32GB)"
+    component_type: memory
+    capacity_gb: 128
+    generation: DDR5
+    llm_use: "CPU-only inference of 70B+ models. Extreme build only."
+    price_search_query: "128GB DDR5 RAM kit 4x32GB price"

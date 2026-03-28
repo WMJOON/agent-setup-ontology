@@ -1,0 +1,192 @@
+# agent-setup-ontology — Model Instances
+# All model entries extracted from ontology.yaml.
+version: "0.1.0"
+
+models:
+
+  - id: qwen3.5:4b
+    label: "qwen3.5:4b"
+    params_b: 4
+    type: dense
+    min_memory_gb: 8
+    quality: light
+    tool_calling: true
+    speed_note: "CPU에서도 동작. ~15-25 t/s (M-series)"
+
+  - id: qwen3.5:9b
+    label: "qwen3.5:9b"
+    params_b: 9
+    type: dense
+    min_memory_gb: 16
+    quality: standard
+    tool_calling: true
+    speed_note: "~20-35 t/s (M-series 16GB)"
+    sweet_spot: true
+    note: "개인 사용 가성비 최강. 16GB 기기의 기본 선택"
+
+  - id: qwen3.5:14b
+    label: "qwen3.5:14b"
+    params_b: 14
+    type: dense
+    min_memory_gb: 16
+    quality: standard-plus
+    tool_calling: true
+    speed_note: "~14-20 t/s (M-series 16GB)"
+
+  - id: qwen3.5:35b-a3b
+    label: "qwen3.5:35b-a3b"
+    params_b: 35
+    active_params_b: 3
+    type: MoE
+    min_memory_gb: 32
+    quality: pro
+    tool_calling: true
+    speed_note: "~18-25 t/s (M4 base 32GB)"
+    sweet_spot: true
+    note: "MoE — 35B 품질, 실제 3B 활성화. 32GB 기기 베스트픽"
+
+  - id: qwen3.5:27b
+    label: "qwen3.5:27b"
+    params_b: 27
+    type: dense
+    min_memory_gb: 32
+    quality: pro
+    tool_calling: true
+    speed_note: "~10-15 t/s (M4 base 32GB)"
+    note: "dense 최고 단일 모델. 대역폭 의존도 높음"
+
+  - id: qwen3.5:32b
+    label: "qwen3.5:32b"
+    params_b: 32
+    type: dense
+    min_memory_gb: 32
+    quality: pro
+    tool_calling: true
+    speed_note: "~7-10 t/s (M4 base 32GB)"
+
+  - id: qwen3.5:72b
+    label: "qwen3.5:72b"
+    params_b: 72
+    type: dense
+    min_memory_gb: 64
+    quality: pro
+    tool_calling: true
+    speed_note: "~12-15 t/s (Mac Studio M4 Max 128GB / DGX Spark)"
+    note: "Highest quality open-weight model. Requires 64GB+ unified memory or 48GB VRAM."
+
+  # ── Meta Llama ─────────────────────────────────────────
+
+  - id: llama3.2:3b
+    label: "llama3.2:3b"
+    params_b: 3
+    type: dense
+    min_memory_gb: 4
+    quality: light
+    tool_calling: true
+    speed_note: "~30-50 t/s (M-series 8GB). Runs on any device."
+    note: "Meta's compact model. Good tool calling for its size. Best light-tier alternative to qwen3.5:4b."
+
+  - id: llama3.1:8b
+    label: "llama3.1:8b"
+    params_b: 8
+    type: dense
+    min_memory_gb: 8
+    quality: standard
+    tool_calling: true
+    speed_note: "~25-40 t/s (M-series 16GB)"
+    note: "Strong general-purpose 8B. Broad ecosystem support (LangChain, LlamaIndex, smolagents)."
+
+  - id: llama3.3:70b
+    label: "llama3.3:70b"
+    params_b: 70
+    type: dense
+    min_memory_gb: 64
+    quality: pro
+    tool_calling: true
+    speed_note: "~10-14 t/s (Mac Studio M4 Max 128GB / DGX Spark)"
+    note: "Meta's frontier open-weight model. Strong reasoning and instruction following."
+
+  # ── Google Gemma ────────────────────────────────────────
+
+  - id: gemma3:4b
+    label: "gemma3:4b"
+    params_b: 4
+    type: dense
+    min_memory_gb: 4
+    quality: light
+    tool_calling: false
+    speed_note: "~30-45 t/s (M-series 8GB)"
+    note: "Google's compact model. Strong for its size but no reliable tool calling — avoid for agent frameworks."
+
+  - id: gemma3:12b
+    label: "gemma3:12b"
+    params_b: 12
+    type: dense
+    min_memory_gb: 16
+    quality: standard-plus
+    tool_calling: false
+    speed_note: "~18-28 t/s (M-series 16GB)"
+    note: "Excellent quality for 12B. Best for chat/RAG/writing tasks. Not suitable for tool-calling agents."
+
+  - id: gemma3:27b
+    label: "gemma3:27b"
+    params_b: 27
+    type: dense
+    min_memory_gb: 32
+    quality: pro
+    tool_calling: false
+    speed_note: "~10-14 t/s (M4 base 32GB)"
+    note: "High-quality instruction following. No tool calling — use for RAG, writing, evaluation where function calls are not needed."
+
+  # ── Microsoft Phi ───────────────────────────────────────
+
+  - id: phi4:14b
+    label: "phi4:14b"
+    params_b: 14
+    type: dense
+    min_memory_gb: 16
+    quality: standard-plus
+    tool_calling: true
+    speed_note: "~15-22 t/s (M-series 16GB)"
+    sweet_spot: false
+    note: "Microsoft's Phi-4. Punches above its weight in reasoning and math. Good standard-plus option when Qwen is unavailable."
+
+  # ── Mistral AI ──────────────────────────────────────────
+
+  - id: mistral:7b
+    label: "mistral:7b"
+    params_b: 7
+    type: dense
+    min_memory_gb: 8
+    quality: standard
+    tool_calling: true
+    speed_note: "~25-38 t/s (M-series 16GB)"
+    note: "Mistral's flagship 7B. Reliable function calling. Popular with LangChain/LangGraph ecosystems."
+
+  # ── DeepSeek (Reasoning) ────────────────────────────────
+
+  - id: deepseek-r1:8b
+    label: "deepseek-r1:8b"
+    params_b: 8
+    type: reasoning
+    min_memory_gb: 8
+    quality: standard
+    tool_calling: false
+    speed_note: "~15-25 t/s (M-series 16GB). Reasoning tokens add latency."
+    note: >
+      Distilled reasoning model (8B). Uses chain-of-thought before answering.
+      Significantly better at multi-step math, logic, and code analysis vs dense 8B.
+      Not suitable for tool-calling frameworks — use for batch reasoning tasks.
+
+  - id: deepseek-r1:32b
+    label: "deepseek-r1:32b"
+    params_b: 32
+    type: reasoning
+    min_memory_gb: 32
+    quality: pro
+    tool_calling: false
+    speed_note: "~8-12 t/s (M4 base 32GB)"
+    note: >
+      Distilled 32B reasoning model. Strong code review, complex problem solving.
+      No tool calling — best for offline batch evaluation and LLM-as-Judge tasks
+      where structured output is not required.
