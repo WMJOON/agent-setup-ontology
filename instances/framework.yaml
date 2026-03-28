@@ -1,0 +1,288 @@
+# agent-setup-ontology — Framework instances
+# Concept definitions → concepts/framework.yaml
+version: "0.1.0"
+
+frameworks:
+- id: smolagents
+  label: smolagents (HuggingFace)
+  kind: agent
+  complexity: low
+  local_capable: true
+  runtime_support:
+  - ollama
+  - huggingface
+  - litellm
+  - openai
+  - anthropic
+  multiagent: true
+  mcp_support: false
+  install: pip install smolagents[ollama]
+  best_for:
+  - web_automation
+  - file_automation
+  - web_research
+  - schedule_task
+  note: Lowest barrier to entry. Agent running in 5 lines. Code-execution approach.
+- id: qwen-agent
+  label: Qwen-Agent
+  kind: agent
+  complexity: low
+  local_capable: true
+  runtime_support:
+  - ollama
+  - openai
+  - any
+  multiagent: true
+  mcp_support: true
+  install: pip install qwen-agent
+  best_for:
+  - web_automation
+  - code_generation
+  - document_rag
+  - agent_monitoring
+  note: Optimized for Qwen models. Native MCP protocol support.
+- id: crewai
+  label: CrewAI
+  kind: agent
+  complexity: medium
+  local_capable: true
+  runtime_support:
+  - ollama
+  - openai
+  - anthropic
+  - any
+  multiagent: true
+  mcp_support: false
+  install: pip install crewai
+  best_for:
+  - multi_agent
+  - deep_research
+  - code_review
+  note: Role-based multi-agent orchestration. Best for collaborative pipelines.
+- id: langgraph
+  label: LangGraph
+  kind: agent
+  complexity: high
+  local_capable: true
+  runtime_support:
+  - ollama
+  - openai
+  - anthropic
+  - huggingface
+  - any
+  multiagent: true
+  mcp_support: false
+  install: pip install langgraph langchain-community
+  best_for:
+  - multi_agent
+  - agent_monitoring
+  note: Graph-based stateful workflows. Most flexible, steepest learning curve.
+- id: openclaw
+  label: OpenClaw
+  kind: automation
+  complexity: medium
+  local_capable: true
+  runtime_support:
+  - ollama
+  - openai
+  - anthropic
+  multiagent: false
+  mcp_support: false
+  install: https://github.com/openclaw/openclaw
+  best_for:
+  - web_automation
+  note: Autonomous browser, file, and code execution. LLM wrapper for desktop automation.
+- id: open-webui
+  label: Open WebUI
+  kind: ui
+  complexity: low
+  local_capable: true
+  runtime_support:
+  - ollama
+  - openai
+  multiagent: false
+  mcp_support: false
+  install: docker run -d -p 3000:8080 ghcr.io/open-webui/open-webui
+  best_for:
+  - general_qa
+  - writing_assistant
+  note: ChatGPT-like web UI for Ollama. No coding required.
+- id: anythingllm
+  label: AnythingLLM
+  kind: ui
+  complexity: low
+  local_capable: true
+  runtime_support:
+  - ollama
+  - openai
+  - anthropic
+  - any
+  multiagent: false
+  mcp_support: false
+  install: https://anythingllm.com/download
+  best_for:
+  - general_qa
+  - document_rag
+  note: Desktop app with built-in RAG. Good for non-technical users.
+- id: continue
+  label: Continue (VSCode / JetBrains)
+  kind: ide
+  complexity: low
+  local_capable: true
+  runtime_support:
+  - ollama
+  - openai
+  - anthropic
+  - any
+  multiagent: false
+  mcp_support: false
+  install: 'VSCode Marketplace: Continue'
+  best_for:
+  - local_copilot
+  - code_generation
+  note: Inline code copilot. Drop-in replacement for GitHub Copilot.
+- id: llamaindex
+  label: LlamaIndex
+  kind: rag
+  complexity: medium
+  local_capable: true
+  runtime_support:
+  - ollama
+  - openai
+  - anthropic
+  - huggingface
+  - any
+  multiagent: false
+  mcp_support: false
+  install: pip install llama-index llama-index-llms-ollama
+  best_for:
+  - document_rag
+  - deep_research
+  note: Production-grade RAG. Best for large document collections.
+- id: autogen
+  label: AutoGen (Microsoft)
+  kind: agent
+  complexity: medium
+  local_capable: true
+  runtime_support:
+  - ollama
+  - openai
+  - anthropic
+  - litellm
+  - any
+  multiagent: true
+  mcp_support: false
+  install: pip install pyautogen
+  best_for:
+  - multi_agent
+  - code_generation
+  - code_review
+  - agent_monitoring
+  note: 'Microsoft''s flagship multi-agent framework. AssistantAgent + UserProxyAgent
+    conversation pattern. Supports Ollama via LiteLLM proxy (set api_base to localhost:11434/v1).
+    Best for: agent evaluation loops, code generation with human-in-the-loop.
+
+    '
+- id: agno
+  label: Agno (formerly Phidata)
+  kind: agent
+  complexity: low
+  local_capable: true
+  runtime_support:
+  - ollama
+  - openai
+  - anthropic
+  - any
+  multiagent: true
+  mcp_support: false
+  install: pip install agno
+  best_for:
+  - web_research
+  - web_automation
+  - multi_agent
+  - document_rag
+  - deep_research
+  note: 'Lightweight multi-modal agent framework with built-in tools (DuckDuckGo,
+    YFinance, newspaper, etc.). Agent in <10 lines with tool use. Low barrier to entry,
+    similar to smolagents.
+
+    '
+- id: openhands
+  label: OpenHands (OpenDevin)
+  kind: automation
+  complexity: medium
+  local_capable: true
+  runtime_support:
+  - ollama
+  - openai
+  - anthropic
+  - any
+  multiagent: false
+  mcp_support: false
+  install: "docker run -it --pull=always \\\n  -e SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.38-nikolaik\
+    \ \\\n  -e LOG_ALL_EVENTS=true \\\n  -v /var/run/docker.sock:/var/run/docker.sock\
+    \ \\\n  -v ~/.openhands-state:/.openhands-state \\\n  -p 3000:3000 \\\n  docker.all-hands.dev/all-hands-ai/openhands:0.38\n"
+  best_for:
+  - code_generation
+  - code_review
+  - file_automation
+  - web_automation
+  note: 'Autonomous software development agent. Runs code, browses the web, and edits
+    files in a sandboxed Docker environment. Requires pro-tier model (32B+) for reliable
+    multi-step code execution. Local use: point to Ollama via OLLAMA_BASE_URL in Docker
+    env.
+
+    '
+- id: haystack
+  label: Haystack (deepset)
+  kind: rag
+  complexity: medium
+  local_capable: true
+  runtime_support:
+  - ollama
+  - openai
+  - anthropic
+  - huggingface
+  - any
+  multiagent: false
+  mcp_support: false
+  install: pip install haystack-ai ollama-haystack
+  best_for:
+  - document_rag
+  - web_research
+  - deep_research
+  note: 'Production-grade pipeline framework for RAG and NLP workloads. Component-based
+    (Retriever, Reader, Ranker) makes complex pipelines composable. Alternative to
+    LlamaIndex when pipeline configurability is important.
+
+    '
+- id: dify
+  label: Dify
+  kind: ui
+  complexity: low
+  local_capable: true
+  runtime_support:
+  - ollama
+  - openai
+  - anthropic
+  - any
+  multiagent: false
+  mcp_support: false
+  install: 'git clone https://github.com/langgenius/dify
+
+    cd dify/docker && cp .env.example .env
+
+    docker compose up -d
+
+    '
+  best_for:
+  - general_qa
+  - document_rag
+  - writing_assistant
+  - web_research
+  note: 'Visual LLM app builder (90K+ GitHub stars, most starred LLM platform). Self-hosted
+    via Docker. No-code chatbot, agent, and RAG workflow creation. Connect to Ollama
+    by setting provider to "Ollama" in model settings. Best for non-technical users
+    who want Dify''s UI over raw API.
+
+    '

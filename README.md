@@ -14,21 +14,42 @@ as structured YAML — the Source of Truth for local AI agent recommendations.
 ## Files
 
 ```
-ontology.yaml       ← Instance data (devices, models, frameworks, API services, ...)
-concepts.yaml       ← Semantic definitions (what field values mean)
-relations.yaml      ← Relation types and curated transition/upgrade paths
+concepts/               ← Semantic definitions (what field values mean)
+  use_case.yaml
+  device.yaml
+  model.yaml
+  framework.yaml
+  api_service.yaml
+  component.yaml
+  repo.yaml
+  setup_profile.yaml
+  cost_estimation.yaml
+  usage_input.yaml
+  relation.yaml         ← relation categories + type definitions
+
+instances/              ← Instance data (actual devices, models, frameworks, ...)
+  use_case.yaml
+  device.yaml
+  model.yaml
+  framework.yaml
+  api_service.yaml
+  component.yaml
+  repo.yaml
+  setup_profile.yaml
+  relation.yaml         ← upgrade_paths, api_to_local_paths, framework_use_cases, ...
+
 docs/
-  schema.md         ← Full field reference with examples
-  concepts.md       ← Human-readable concept guide
-  cost-guide.md     ← API vs local cost analysis and break-even calculator
-  relations.md      ← Relation taxonomy and path diagrams
+  schema.md             ← Full field reference with examples
+  concepts.md           ← Human-readable concept guide
+  cost-guide.md         ← API vs local cost analysis and break-even calculator
+  relations.md          ← Relation taxonomy and path diagrams
 ```
 
 ---
 
 ## Contributing
 
-Add a device, model, or framework by editing `ontology.yaml` — no code knowledge needed.
+Add a device, model, or framework by editing the relevant file in `instances/` — no code knowledge needed.
 
 → [CONTRIBUTING.md](CONTRIBUTING.md)
 

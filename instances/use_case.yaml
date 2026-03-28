@@ -1,0 +1,387 @@
+# agent-setup-ontology — Use Case instances
+# Concept definitions → concepts/use_case.yaml
+version: "0.1.0"
+
+use_cases:
+- id: web_automation
+  label: 웹 자동화
+  description: 브라우저 조작, 스크래핑, 폼 자동화
+  keywords:
+  - OpenClaw
+  - 브라우저
+  - 크롤링
+  - 자동화
+  - 웹
+  - 스크래핑
+  - browser
+  - crawling
+  - scraping
+  - automation
+  - web
+  - form
+  min_memory_gb: 16
+  needs_always_on: false
+  recommended_models:
+  - qwen3.5:9b
+  - qwen3.5:35b-a3b
+  - llama3.1:8b
+  - mistral:7b
+  recommended_frameworks:
+  - openclaw
+  - smolagents
+- id: file_automation
+  label: 파일·시스템 자동화
+  description: 파일 정리, 변환, 백업 스크립트
+  keywords:
+  - 파일
+  - 정리
+  - 변환
+  - 백업
+  - 스크립트
+  - 자동화
+  - file
+  - organize
+  - convert
+  - backup
+  - script
+  - automation
+  min_memory_gb: 8
+  needs_always_on: false
+  recommended_models:
+  - qwen3.5:4b
+  - qwen3.5:9b
+  - llama3.2:3b
+  - llama3.1:8b
+  recommended_frameworks:
+  - smolagents
+  - qwen-agent
+- id: code_generation
+  label: 코드 생성·보조
+  description: 함수·클래스 작성, 보일러플레이트, 테스트 코드
+  keywords:
+  - 코드
+  - 개발
+  - 프로그래밍
+  - 함수
+  - 클래스
+  - 코딩
+  - code
+  - development
+  - programming
+  - function
+  - class
+  - coding
+  - boilerplate
+  - test
+  min_memory_gb: 16
+  needs_always_on: false
+  recommended_models:
+  - qwen3.5:14b
+  - qwen3.5:35b-a3b
+  - phi4:14b
+  - llama3.1:8b
+  recommended_frameworks:
+  - smolagents
+  - qwen-agent
+  - continue
+- id: code_review
+  label: 코드 리뷰·리팩토링
+  description: PR 리뷰, 버그 탐지, 개선 제안
+  keywords:
+  - 리뷰
+  - 리팩토링
+  - 버그
+  - 개선
+  - PR
+  - review
+  - refactoring
+  - bug
+  - improvement
+  - pull request
+  - diff
+  min_memory_gb: 32
+  needs_always_on: false
+  recommended_models:
+  - qwen3.5:27b
+  - qwen3.5:35b-a3b
+  - deepseek-r1:32b
+  recommended_frameworks:
+  - smolagents
+  - qwen-agent
+- id: local_copilot
+  label: 로컬 코파일럿 (IDE)
+  description: IDE 인라인 자동완성 및 제안
+  keywords:
+  - 코파일럿
+  - 자동완성
+  - Continue
+  - IDE
+  - VSCode
+  - copilot
+  - autocomplete
+  - inline
+  - suggestion
+  - editor
+  - jetbrains
+  min_memory_gb: 8
+  needs_always_on: true
+  recommended_models:
+  - qwen3.5:4b
+  - qwen3.5:9b
+  - llama3.2:3b
+  - phi4:14b
+  recommended_frameworks:
+  - continue
+- id: web_research
+  label: 웹 리서치·요약
+  description: 검색, 트렌드 분석, 뉴스 요약
+  keywords:
+  - 검색
+  - 리서치
+  - 조사
+  - 트렌드
+  - 뉴스
+  - 요약
+  - search
+  - research
+  - trend
+  - news
+  - summarize
+  - analysis
+  min_memory_gb: 16
+  needs_always_on: false
+  recommended_models:
+  - qwen3.5:9b
+  - qwen3.5:14b
+  - llama3.1:8b
+  - mistral:7b
+  recommended_frameworks:
+  - smolagents
+  - qwen-agent
+- id: document_rag
+  label: 문서 RAG
+  description: PDF·문서 기반 질문 응답
+  keywords:
+  - PDF
+  - 문서
+  - RAG
+  - 질문
+  - 요약
+  - 파일
+  - document
+  - rag
+  - retrieval
+  - augmented
+  - generation
+  - qa
+  - pdf
+  - embed
+  min_memory_gb: 16
+  needs_always_on: false
+  recommended_models:
+  - qwen3.5:14b
+  - qwen3.5:27b
+  - gemma3:12b
+  - gemma3:27b
+  recommended_frameworks:
+  - qwen-agent
+  - llamaindex
+- id: general_qa
+  label: 일반 Q&A 챗봇
+  description: ChatGPT 대체 로컬 대화 AI
+  keywords:
+  - 챗봇
+  - 질문
+  - 대화
+  - ChatGPT
+  - 대체
+  - 비서
+  - chat
+  - question
+  - answer
+  - conversation
+  - assistant
+  - chatgpt
+  - local
+  min_memory_gb: 8
+  needs_always_on: false
+  recommended_models:
+  - qwen3.5:9b
+  - qwen3.5:14b
+  - llama3.1:8b
+  - gemma3:12b
+  recommended_frameworks:
+  - open-webui
+- id: multi_agent
+  label: 멀티에이전트 파이프라인
+  description: 여러 Agent가 협업하는 워크플로우
+  keywords:
+  - 멀티에이전트
+  - CrewAI
+  - 파이프라인
+  - 오케스트레이션
+  - 협업
+  - multi-agent
+  - crew
+  - pipeline
+  - orchestration
+  - collaboration
+  - workflow
+  min_memory_gb: 32
+  needs_always_on: false
+  recommended_models:
+  - qwen3.5:27b
+  - qwen3.5:35b-a3b
+  - llama3.3:70b
+  recommended_frameworks:
+  - crewai
+  - langgraph
+- id: agent_monitoring
+  label: 에이전트 평가·모니터링
+  description: LLM-as-Judge, trace 분석, 품질 평가
+  keywords:
+  - 모니터링
+  - 평가
+  - judge
+  - trace
+  - 품질
+  - 분석
+  - monitoring
+  - evaluation
+  - judge
+  - trace
+  - quality
+  - analysis
+  - llm-as-judge
+  min_memory_gb: 32
+  needs_always_on: false
+  recommended_models:
+  - qwen3.5:27b
+  - qwen3.5:35b-a3b
+  - deepseek-r1:32b
+  - llama3.3:70b
+  recommended_frameworks:
+  - smolagents
+  - langgraph
+- id: fine_tuning
+  label: 파인튜닝·LoRA
+  description: 로컬 모델 커스터마이징
+  keywords:
+  - 파인튜닝
+  - LoRA
+  - QLoRA
+  - 학습
+  - 훈련
+  - fine-tuning
+  - lora
+  - qlora
+  - training
+  - finetune
+  - custom
+  - adapter
+  min_memory_gb: 32
+  requires_gpu: true
+  recommended_models:
+  - qwen3.5:9b
+  - qwen3.5:14b
+  - llama3.1:8b
+  - mistral:7b
+  recommended_frameworks: []
+- id: deep_research
+  label: 딥 리서치
+  description: 멀티스텝 리서치, 출처 종합, 장문 보고서 작성
+  keywords:
+  - 딥리서치
+  - 리포트
+  - 분석
+  - 조사
+  - 출처
+  - 종합
+  - deep research
+  - multi-step
+  - report
+  - long-form
+  - synthesis
+  - sources
+  - survey
+  min_memory_gb: 32
+  needs_always_on: false
+  recommended_models:
+  - qwen3.5:27b
+  - qwen3.5:35b-a3b
+  - llama3.3:70b
+  - deepseek-r1:32b
+  recommended_frameworks:
+  - crewai
+  - llamaindex
+  - smolagents
+  note: 'Requires multiple sequential tool calls (search → read → summarize → synthesize).
+    Standard-plus or pro tier model strongly recommended for coherent long-form output.
+
+    '
+- id: writing_assistant
+  label: 글쓰기·문서 작성
+  description: 초안 작성, 교정, 번역, 스타일 개선
+  keywords:
+  - 글쓰기
+  - 작성
+  - 교정
+  - 번역
+  - 스타일
+  - 에세이
+  - 문서
+  - writing
+  - draft
+  - proofread
+  - translate
+  - style
+  - essay
+  - document
+  - editing
+  min_memory_gb: 8
+  needs_always_on: false
+  recommended_models:
+  - qwen3.5:9b
+  - qwen3.5:14b
+  - gemma3:12b
+  - gemma3:27b
+  - phi4:14b
+  recommended_frameworks:
+  - open-webui
+  - anythingllm
+  note: 'tool_calling not required. Gemma models are strong here despite no function
+    calling. Chat UI (open-webui, anythingllm) is sufficient — no agent framework
+    needed.
+
+    '
+- id: schedule_task
+  label: 예약·자동 실행
+  description: 정해진 시간에 작업 자동 실행 (크론, 배치)
+  keywords:
+  - 예약
+  - 자동실행
+  - 크론
+  - 배치
+  - 스케줄
+  - 반복
+  - schedule
+  - cron
+  - batch
+  - recurring
+  - automatic
+  - timed
+  - periodic
+  min_memory_gb: 8
+  needs_always_on: true
+  recommended_models:
+  - qwen3.5:4b
+  - qwen3.5:9b
+  - llama3.2:3b
+  recommended_frameworks:
+  - smolagents
+  - openclaw
+  note: 'Requires the device to be always-on (mac-mini, stationary PC preferred).
+    Light models are sufficient for most scheduled tasks — speed matters less than
+    availability.
+
+    '

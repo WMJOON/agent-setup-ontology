@@ -1,0 +1,41 @@
+# agent-setup-ontology — API Service Concept Definitions
+# Semantic definitions for cloud LLM API fields and cost concepts.
+version: "0.1.0"
+
+api_service:
+
+  what: >
+    A cloud LLM API accessed by API key. No hardware required.
+    The recommended starting point before investing in local hardware —
+    low friction, pay-as-you-go, immediately available.
+    As usage grows, the monthly API cost may exceed the amortized cost
+    of a local device, at which point local setup becomes worth considering.
+
+  fields:
+
+    quality: >
+      Same quality tiers as local models (light / standard / standard-plus / pro).
+      Maps directly to comparable local models via local_alternative.
+      Quality is roughly equivalent for most agent tasks; the main differences
+      are speed (API can be faster for small models), privacy (API sends data
+      to provider), and cost at scale (local has zero per-token cost).
+
+    local_alternative: >
+      The Ollama model that provides comparable output quality for the same
+      use cases. References models[*].id. Used by the copilot to show the
+      user which local model they could switch to if they go local.
+
+    pricing: >
+      Approximate USD cost per 1 million tokens (input and output separately).
+      Always verify at the provider's official pricing page before budgeting.
+      Prices change frequently. For agent workloads, assume ~60% input / 40% output.
+
+    context_window_k: >
+      Maximum context window in thousands of tokens (K).
+      Relevant for document_rag and deep_research use cases that require
+      processing long documents. Local models typically support 8K–262K;
+      some APIs support 1M+.
+
+    tool_calling: >
+      Whether the API model reliably supports structured tool/function calls.
+      Required for agent frameworks (smolagents, crewai, qwen-agent, openclaw).

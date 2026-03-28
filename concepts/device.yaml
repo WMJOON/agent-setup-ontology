@@ -1,0 +1,61 @@
+# agent-setup-ontology — Device Concept Definitions
+# Semantic definitions for device fields, tiers, and types.
+version: "0.1.0"
+
+device:
+
+  what: >
+    A physical machine capable of running a local LLM via Ollama.
+    Devices are categorized by memory, chip, and portability —
+    not by brand or generation.
+
+  fields:
+
+    tier:
+      what: >
+        Practical capability bracket derived from memory size and bandwidth.
+        Used by the copilot to quickly filter viable stacks without
+        checking every individual spec.
+      values:
+        light: >
+          8 GB or less unified/system memory.
+          Limited to sub-7B models (4B class recommended).
+          Suitable for single, lightweight tasks: autocomplete, simple Q&A.
+          Not practical for multi-step agents or RAG over large documents.
+        standard: >
+          16 GB memory.
+          Runs 9B models comfortably at practical speeds (15-35 t/s on Apple Silicon).
+          Covers most single-agent use cases: web search, code generation,
+          document RAG on moderate-length texts.
+          The minimum recommended tier for a daily-driver local agent.
+        standard-plus: >
+          32 GB memory with a base chip (e.g. Apple M4, not Pro).
+          Runs MoE models like qwen3.5:35b-a3b (activates only 3B per token),
+          achieving 27B-class output quality at 18-25 t/s.
+          Full single-agent coverage. Limited multi-agent due to lower bandwidth.
+          Best price-to-capability sweet spot in 2026.
+        pro: >
+          32 GB+ with high-bandwidth chip (M3/M4 Pro/Max, ≥273 GB/s),
+          or 24 GB+ dedicated GPU VRAM.
+          Runs 27B+ dense models or 72B MoE models.
+          Suitable for: multi-agent pipelines, LLM-as-Judge evaluation,
+          LoRA fine-tuning, and team-shared AI servers.
+
+    type:
+      what: Device form factor and platform.
+      values:
+        macbook: Portable Apple Silicon laptop. Fan-throttling risk on long inference.
+        mac-mini: Stationary, fanless or quiet. Ideal always-on local AI server.
+        mac-studio: High-performance stationary Apple Silicon. Highest bandwidth per dollar.
+        pc: Windows or Linux desktop/laptop with discrete GPU. Best for fine-tuning (CUDA).
+        other: Any other device (e.g. custom server, Raspberry Pi, mobile).
+
+    max_model: >
+      The most capable Ollama model that runs at practically usable speeds
+      (≥10 t/s for interactive use, ≥5 t/s for batch) on this device,
+      using Q4_K_M quantization. Must reference a valid models[*].id.
+
+    memory_bandwidth_gbs: >
+      Peak memory bandwidth in GB/s. Critical for large model inference speed —
+      higher bandwidth means faster token generation for the same model.
+      Apple M4 base: 120 GB/s, M4 Pro: 273 GB/s, RTX 4090: ~1000 GB/s.

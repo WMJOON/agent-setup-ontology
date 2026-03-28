@@ -1,0 +1,63 @@
+# agent-setup-ontology — Component concept definitions
+# Semantic layer: what component fields mean.
+version: "0.1.0"
+
+component:
+
+  what: >
+    An individual hardware part used to build a PC-based local AI setup.
+    Mac devices are complete products in devices[]; components are the
+    building blocks for PC builds (GPU card + RAM kit + existing PC).
+    The copilot uses components to recommend PC builds and estimate
+    total build cost via web search.
+
+  fields:
+
+    component_type:
+      what: The hardware category.
+      values:
+        gpu: >
+          Graphics Processing Unit. The primary inference accelerator.
+          GPU VRAM is the key bottleneck — model must fit entirely in VRAM
+          for full GPU speed. If model exceeds VRAM, layers spill to CPU RAM
+          (drastically slower). Choose GPU primarily based on VRAM size.
+        cpu: >
+          Central Processing Unit. Used for CPU-offload layers when GPU VRAM
+          is insufficient, or for pure CPU inference (slow but no GPU needed).
+          For LLM inference, more cores and higher memory bandwidth matter more
+          than clock speed.
+        memory: >
+          System RAM. Required for CPU inference and as overflow when GPU VRAM
+          is full. Does not directly accelerate GPU inference speed, but
+          prevents swap (which makes inference unusably slow).
+
+    inference_tier: >
+      The model quality tier this component enables, using the same
+      scale as device.tier. For GPUs, determined by VRAM size.
+      For RAM, determined by capacity relative to model size.
+      GPU-only reference:
+        8 GB VRAM  → standard  (9B models)
+        12 GB VRAM → standard  (9B fast, 14B with offload)
+        16 GB VRAM → standard-plus  (14B comfortably)
+        24 GB VRAM → pro  (27B dense or 35B MoE)
+        32 GB VRAM → pro  (32B dense, 72B Q2)
+
+    memory_bandwidth_gbs: >
+      How fast data moves between the GPU's compute cores and its VRAM.
+      The primary determinant of tokens-per-second for a given model size.
+      Higher bandwidth = faster token generation.
+      Rule of thumb: ~2-4 GB/s bandwidth per token/second for 9B models.
+      RTX 4060: 272 GB/s → ~30 t/s. RTX 4090: 1008 GB/s → ~45 t/s.
+
+    price_search_query: >
+      A web search query string for finding current market prices.
+      Prices are NOT hardcoded in the ontology — they change frequently.
+      The copilot should use this query with a web search tool when
+      the user asks about pricing or build cost estimation.
+      Format: "<component label> price" or "<component label> buy".
+
+    tdp_w: >
+      Thermal Design Power in watts. Represents power consumption under load.
+      Important for estimating electricity costs and PC case requirements.
+      High-end GPUs (RTX 4090: 450W, RTX 5090: 575W) require adequate
+      power supply and cooling. Lower TDP is preferred for always-on builds.

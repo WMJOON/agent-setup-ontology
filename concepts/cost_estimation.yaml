@@ -1,0 +1,46 @@
+# agent-setup-ontology — Cost Estimation concept definitions
+# Semantic layer: formulas and profiles for API vs local cost analysis.
+version: "0.1.0"
+
+cost_estimation:
+
+  what: >
+    Framework for estimating monthly LLM API costs and determining
+    when a local hardware investment becomes cost-effective.
+
+  token_usage_profiles:
+    what: >
+      Approximate daily token consumption by use case.
+      Actual usage varies significantly by workflow design and model verbosity.
+      Agent tasks are typically input-heavy due to tool call context and history.
+    values:
+      general_qa:        { typical_k: 20,   heavy_k: 100  }
+      code_generation:   { typical_k: 80,   heavy_k: 300  }
+      local_copilot:     { typical_k: 50,   heavy_k: 200  }
+      web_automation:    { typical_k: 150,  heavy_k: 500  }
+      document_rag:      { typical_k: 100,  heavy_k: 400  }
+      web_research:      { typical_k: 200,  heavy_k: 600  }
+      code_review:       { typical_k: 120,  heavy_k: 400  }
+      deep_research:     { typical_k: 300,  heavy_k: 800  }
+      agent_monitoring:  { typical_k: 300,  heavy_k: 1000 }
+      multi_agent:       { typical_k: 500,  heavy_k: 2000 }
+
+  monthly_cost_formula: >
+    monthly_tokens = tokens_per_day × 30
+    input_tokens   = monthly_tokens × 0.60
+    output_tokens  = monthly_tokens × 0.40
+    monthly_cost   = (input_tokens / 1_000_000 × input_price)
+                   + (output_tokens / 1_000_000 × output_price)
+
+  device_monthly_cost: >
+    Amortized over 24 months (2-year lifespan assumption).
+    device_monthly = device_price / 24
+    Add $2–5/month electricity for Mac Mini, $10–20/month for high-end PC.
+
+  break_even_rule: >
+    When monthly_api_cost > device_monthly_cost, local hardware
+    starts paying for itself. Payback period in months:
+      payback = device_price / (monthly_api_cost - device_monthly_cost)
+    Payback < 6 months → strong case for local.
+    Payback 6–18 months → worth considering.
+    Payback > 18 months → stay on API unless privacy requires local.
