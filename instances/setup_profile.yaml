@@ -1,122 +1,114 @@
-# agent-setup-ontology — Setup Profile instances
-# Concept definitions → concepts/setup_profile.yaml
+# agent-setup-ontology — Setup Profile Instances
+# All setup_profile entries extracted from ontology.yaml.
 version: "0.1.0"
 
 setup_profiles:
-- id: setup-mac-mini-openclaw
-  label: 'Personal Automation Server: Mac Mini M4 32GB + OpenClaw'
-  devices:
-  - mac_mini_m4_32gb
-  model: qwen3.5:35b-a3b
-  framework: openclaw
-  repo: repo-openclaw
-  use_cases:
-  - web_automation
-  - file_automation
-  - schedule_task
-  complexity: medium
-  always_on: true
-  monthly_cost: $0 (local only)
-  note: 'Silent, low-power (~20W) always-on automation server. 35b-a3b MoE runs at
-    ~20 t/s — responsive enough for browser tasks. OpenClaw connects to Telegram/Slack
-    for remote control.
 
-    '
-  setup_steps:
-  - ollama pull qwen3.5:35b-a3b
-  - git clone https://github.com/openclaw/openclaw && cd openclaw
-  - cp .env.example .env && set OLLAMA_HOST=http://localhost:11434
-  - npm install && npm start
-- id: setup-mac-mini-chat
-  label: 'Local ChatGPT: Mac Mini M4 16GB + Open WebUI'
-  devices:
-  - mac_mini_16gb
-  model: qwen3.5:9b
-  framework: open-webui
-  repo: repo-open-webui
-  use_cases:
-  - general_qa
-  - writing_assistant
-  - document_rag
-  complexity: low
-  always_on: true
-  monthly_cost: $0
-  note: Simplest personal AI server. No coding required after setup.
-  setup_steps:
-  - ollama pull qwen3.5:9b
-  - docker run -d -p 3000:8080 -e OLLAMA_BASE_URL=http://host.docker.internal:11434
-    ghcr.io/open-webui/open-webui:main
-  - Open http://localhost:3000
-- id: setup-dgx-spark-solo
-  label: 'High-Power Local AI: NVIDIA DGX Spark'
-  devices:
-  - nvidia_dgx_spark
-  model: qwen3.5:72b
-  framework: qwen-agent
-  repo: repo-qwen-agent
-  use_cases: all
-  complexity: medium
-  always_on: true
-  monthly_cost: ~$8 (electricity)
-  note: '128GB unified memory at 900 GB/s. Runs 72B models locally. 2.5x faster after
-    2026 TensorRT-LLM update. Overkill for single-user but excellent for team inference
-    server.
+  # ── Single device setups ───────────────────────────────
 
-    '
-  setup_steps:
-  - 'ollama pull qwen3.5:72b   # or qwen3.5:35b-a3b for faster response'
-  - pip install qwen-agent
-- id: setup-mac-mini-dgx-hybrid
-  label: 'Hybrid AI Stack: Mac Mini M4 32GB + DGX Spark'
-  devices:
-  - mac_mini_m4_32gb
-  - nvidia_dgx_spark
-  roles:
-    mac_mini_m4_32gb: Control plane — daily tasks, light inference (9B-35B)
-    nvidia_dgx_spark: Inference server — heavy models (72B+), batch jobs
-  model_light: qwen3.5:35b-a3b
-  model_heavy: qwen3.5:72b
-  framework: qwen-agent
-  repo: repo-qwen-agent
-  use_cases: all
-  complexity: medium
-  always_on: true
-  monthly_cost: ~$11 (both devices)
-  note: 'Mac Mini handles everyday agent tasks with 35b-a3b MoE (~20 t/s). DGX Spark
-    handles demanding jobs: deep research, agent evaluation, fine-tuning, 72B inference.
-    Point Ollama on Mac Mini to DGX Spark via OLLAMA_HOST for transparent model routing.
+  - id: setup-mac-mini-openclaw
+    label: "Personal Automation Server: Mac Mini M4 32GB + OpenClaw"
+    devices: [mac_mini_m4_32gb]
+    model: "qwen3.5:35b-a3b"
+    framework: openclaw
+    repo: repo-openclaw
+    use_cases: [web_automation, file_automation, schedule_task]
+    complexity: medium
+    always_on: true
+    monthly_cost: "$0 (local only)"
+    note: >
+      Silent, low-power (~20W) always-on automation server.
+      35b-a3b MoE runs at ~20 t/s — responsive enough for browser tasks.
+      OpenClaw connects to Telegram/Slack for remote control.
+    setup_steps:
+      - "ollama pull qwen3.5:35b-a3b"
+      - "git clone https://github.com/openclaw/openclaw && cd openclaw"
+      - "cp .env.example .env && set OLLAMA_HOST=http://localhost:11434"
+      - "npm install && npm start"
 
-    '
-  setup_steps:
-  - '# On DGX Spark:'
-  - OLLAMA_HOST=0.0.0.0:11434 ollama serve
-  - ollama pull qwen3.5:72b
-  - '# On Mac Mini (point to DGX Spark for heavy models):'
-  - export OLLAMA_HOST=http://[dgx-spark-ip]:11434
-  - 'ollama pull qwen3.5:35b-a3b   # stays local on Mac Mini'
-  - pip install qwen-agent
-- id: setup-mac-mini-rtx-hybrid
-  label: 'Hybrid AI Stack: Mac Mini M4 32GB + PC RTX 4090'
-  devices:
-  - mac_mini_m4_32gb
-  - pc_rtx4090
-  roles:
-    mac_mini_m4_32gb: Always-on control plane — chat, automation, scheduling
-    pc_rtx4090: GPU inference server — when high speed or large models needed
-  model_light: qwen3.5:9b
-  model_heavy: qwen3.5:27b
-  framework: smolagents
-  repo: repo-smolagents
-  use_cases: all
-  complexity: medium
-  always_on: false
-  note: 'Budget-friendly alternative to DGX Spark hybrid. Mac Mini silent and always
-    on; RTX 4090 PC for power-user sessions.
+  - id: setup-mac-mini-chat
+    label: "Local ChatGPT: Mac Mini M4 16GB + Open WebUI"
+    devices: [mac_mini_16gb]
+    model: "qwen3.5:9b"
+    framework: open-webui
+    repo: repo-open-webui
+    use_cases: [general_qa, writing_assistant, document_rag]
+    complexity: low
+    always_on: true
+    monthly_cost: "$0"
+    note: "Simplest personal AI server. No coding required after setup."
+    setup_steps:
+      - "ollama pull qwen3.5:9b"
+      - "docker run -d -p 3000:8080 -e OLLAMA_BASE_URL=http://host.docker.internal:11434 ghcr.io/open-webui/open-webui:main"
+      - "Open http://localhost:3000"
 
-    '
-  setup_steps:
-  - '# On PC (RTX 4090 inference server):'
-  - OLLAMA_HOST=0.0.0.0:11434 ollama serve && ollama pull qwen3.5:27b
-  - '# On Mac Mini:'
-  - 'ollama pull qwen3.5:9b   # local fallback'
-  - pip install smolagents[ollama]
+  - id: setup-dgx-spark-solo
+    label: "High-Power Local AI: NVIDIA DGX Spark"
+    devices: [nvidia_dgx_spark]
+    model: "qwen3.5:72b"
+    framework: qwen-agent
+    repo: repo-qwen-agent
+    use_cases: all
+    complexity: medium
+    always_on: true
+    monthly_cost: "~$8 (electricity)"
+    note: >
+      128GB unified memory at 900 GB/s. Runs 72B models locally.
+      2.5x faster after 2026 TensorRT-LLM update.
+      Overkill for single-user but excellent for team inference server.
+    setup_steps:
+      - "ollama pull qwen3.5:72b   # or qwen3.5:35b-a3b for faster response"
+      - "pip install qwen-agent"
+
+  # ── Multi-device (hybrid) setups ───────────────────────
+
+  - id: setup-mac-mini-dgx-hybrid
+    label: "Hybrid AI Stack: Mac Mini M4 32GB + DGX Spark"
+    devices: [mac_mini_m4_32gb, nvidia_dgx_spark]
+    roles:
+      mac_mini_m4_32gb: "Control plane — daily tasks, light inference (9B-35B)"
+      nvidia_dgx_spark: "Inference server — heavy models (72B+), batch jobs"
+    model_light: "qwen3.5:35b-a3b"
+    model_heavy: "qwen3.5:72b"
+    framework: qwen-agent
+    repo: repo-qwen-agent
+    use_cases: all
+    complexity: medium
+    always_on: true
+    monthly_cost: "~$11 (both devices)"
+    note: >
+      Mac Mini handles everyday agent tasks with 35b-a3b MoE (~20 t/s).
+      DGX Spark handles demanding jobs: deep research, agent evaluation,
+      fine-tuning, 72B inference. Point Ollama on Mac Mini to DGX Spark
+      via OLLAMA_HOST for transparent model routing.
+    setup_steps:
+      - "# On DGX Spark:"
+      - "OLLAMA_HOST=0.0.0.0:11434 ollama serve"
+      - "ollama pull qwen3.5:72b"
+      - "# On Mac Mini (point to DGX Spark for heavy models):"
+      - "export OLLAMA_HOST=http://[dgx-spark-ip]:11434"
+      - "ollama pull qwen3.5:35b-a3b   # stays local on Mac Mini"
+      - "pip install qwen-agent"
+
+  - id: setup-mac-mini-rtx-hybrid
+    label: "Hybrid AI Stack: Mac Mini M4 32GB + PC RTX 4090"
+    devices: [mac_mini_m4_32gb, pc_rtx4090]
+    roles:
+      mac_mini_m4_32gb: "Always-on control plane — chat, automation, scheduling"
+      pc_rtx4090: "GPU inference server — when high speed or large models needed"
+    model_light: "qwen3.5:9b"
+    model_heavy: "qwen3.5:27b"
+    framework: smolagents
+    repo: repo-smolagents
+    use_cases: all
+    complexity: medium
+    always_on: false
+    note: >
+      Budget-friendly alternative to DGX Spark hybrid.
+      Mac Mini silent and always on; RTX 4090 PC for power-user sessions.
+    setup_steps:
+      - "# On PC (RTX 4090 inference server):"
+      - "OLLAMA_HOST=0.0.0.0:11434 ollama serve && ollama pull qwen3.5:27b"
+      - "# On Mac Mini:"
+      - "ollama pull qwen3.5:9b   # local fallback"
+      - "pip install smolagents[ollama]"

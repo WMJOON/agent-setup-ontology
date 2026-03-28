@@ -1,210 +1,230 @@
-# agent-setup-ontology — Repo instances
-# Concept definitions → concepts/repo.yaml
+# agent-setup-ontology — Repo Instances
+# All repo entries extracted from ontology.yaml.
 version: "0.1.0"
 
 repos:
-- id: repo-openclaw
-  label: OpenClaw
-  github: openclaw/openclaw
-  framework_ref: openclaw
-  category: automation
-  stars_approx: 40K+
-  min_model_quality: standard
-  min_memory_gb: 16
-  ollama_compatible: true
-  install: 'git clone https://github.com/openclaw/openclaw
 
-    cd openclaw && npm install
+  # ── Automation ─────────────────────────────────────────
 
-    cp .env.example .env   # set OLLAMA_HOST=http://localhost:11434
+  - id: repo-openclaw
+    label: "OpenClaw"
+    github: "openclaw/openclaw"
+    framework_ref: openclaw
+    category: automation
+    stars_approx: "40K+"
+    min_model_quality: standard
+    min_memory_gb: 16
+    ollama_compatible: true
+    install: |
+      git clone https://github.com/openclaw/openclaw
+      cd openclaw && npm install
+      cp .env.example .env   # set OLLAMA_HOST=http://localhost:11434
+      npm start
+    setup_guide: "https://github.com/Ryuki0x1/openclaw-local-llm-setup"
+    awesome_list: "https://github.com/mergisi/awesome-openclaw-agents"
+    note: >
+      Personal AI agent: browser, file, shell, calendar, messaging.
+      Connects via WhatsApp / Telegram / Slack / Signal.
+      Reliable threshold: 32B+ models (24GB VRAM or Apple Silicon 32GB+).
 
-    npm start
+  # ── UI ─────────────────────────────────────────────────
 
-    '
-  setup_guide: https://github.com/Ryuki0x1/openclaw-local-llm-setup
-  awesome_list: https://github.com/mergisi/awesome-openclaw-agents
-  note: 'Personal AI agent: browser, file, shell, calendar, messaging. Connects via
-    WhatsApp / Telegram / Slack / Signal. Reliable threshold: 32B+ models (24GB VRAM
-    or Apple Silicon 32GB+).
+  - id: repo-open-webui
+    label: "Open WebUI"
+    github: "open-webui/open-webui"
+    framework_ref: open-webui
+    category: ui
+    stars_approx: "80K+"
+    min_model_quality: light
+    min_memory_gb: 8
+    ollama_compatible: true
+    install: |
+      docker run -d -p 3000:8080 \
+        -e OLLAMA_BASE_URL=http://host.docker.internal:11434 \
+        -v open-webui:/app/backend/data \
+        ghcr.io/open-webui/open-webui:main
+    note: "ChatGPT-like UI for Ollama. No coding required."
 
-    '
-- id: repo-open-webui
-  label: Open WebUI
-  github: open-webui/open-webui
-  framework_ref: open-webui
-  category: ui
-  stars_approx: 80K+
-  min_model_quality: light
-  min_memory_gb: 8
-  ollama_compatible: true
-  install: "docker run -d -p 3000:8080 \\\n  -e OLLAMA_BASE_URL=http://host.docker.internal:11434\
-    \ \\\n  -v open-webui:/app/backend/data \\\n  ghcr.io/open-webui/open-webui:main\n"
-  note: ChatGPT-like UI for Ollama. No coding required.
-- id: repo-smolagents
-  label: smolagents (HuggingFace)
-  github: huggingface/smolagents
-  framework_ref: smolagents
-  category: agent
-  stars_approx: 20K+
-  min_model_quality: standard
-  min_memory_gb: 16
-  ollama_compatible: true
-  install: 'pip install smolagents[ollama]
+  # ── Agent Frameworks ────────────────────────────────────
 
-    '
-  quickstart: "from smolagents import CodeAgent, OllamaModel, DuckDuckGoSearchTool\n\
-    agent = CodeAgent(tools=[DuckDuckGoSearchTool()],\n                  model=OllamaModel(\"\
-    qwen3.5:9b\"))\nagent.run(\"Search and summarize today's AI news\")\n"
-- id: repo-qwen-agent
-  label: Qwen-Agent
-  github: QwenLM/Qwen-Agent
-  framework_ref: qwen-agent
-  category: agent
-  stars_approx: 7K+
-  min_model_quality: standard
-  min_memory_gb: 16
-  ollama_compatible: true
-  install: 'pip install qwen-agent
+  - id: repo-smolagents
+    label: "smolagents (HuggingFace)"
+    github: "huggingface/smolagents"
+    framework_ref: smolagents
+    category: agent
+    stars_approx: "20K+"
+    min_model_quality: standard
+    min_memory_gb: 16
+    ollama_compatible: true
+    install: |
+      pip install smolagents[ollama]
+    quickstart: |
+      from smolagents import CodeAgent, OllamaModel, DuckDuckGoSearchTool
+      agent = CodeAgent(tools=[DuckDuckGoSearchTool()],
+                        model=OllamaModel("qwen3.5:9b"))
+      agent.run("Search and summarize today's AI news")
 
-    '
-  note: Qwen official agent framework. MCP + Function Calling + RAG.
-- id: repo-crewai
-  label: CrewAI
-  github: crewAIInc/crewAI
-  framework_ref: crewai
-  category: agent
-  stars_approx: 30K+
-  min_model_quality: standard-plus
-  min_memory_gb: 32
-  ollama_compatible: true
-  install: 'pip install crewai
+  - id: repo-qwen-agent
+    label: "Qwen-Agent"
+    github: "QwenLM/Qwen-Agent"
+    framework_ref: qwen-agent
+    category: agent
+    stars_approx: "7K+"
+    min_model_quality: standard
+    min_memory_gb: 16
+    ollama_compatible: true
+    install: |
+      pip install qwen-agent
+    note: "Qwen official agent framework. MCP + Function Calling + RAG."
 
-    '
-- id: repo-langgraph
-  label: LangGraph
-  github: langchain-ai/langgraph
-  framework_ref: langgraph
-  category: agent
-  stars_approx: 15K+
-  min_model_quality: standard
-  min_memory_gb: 16
-  ollama_compatible: true
-  install: 'pip install langgraph langchain-community
+  - id: repo-crewai
+    label: "CrewAI"
+    github: "crewAIInc/crewAI"
+    framework_ref: crewai
+    category: agent
+    stars_approx: "30K+"
+    min_model_quality: standard-plus
+    min_memory_gb: 32
+    ollama_compatible: true
+    install: |
+      pip install crewai
 
-    '
-- id: repo-continue
-  label: Continue
-  github: continuedev/continue
-  framework_ref: continue
-  category: ide
-  stars_approx: 25K+
-  min_model_quality: light
-  min_memory_gb: 8
-  ollama_compatible: true
-  install: VSCode Marketplace → search 'Continue' → Install
-  note: Open-source Copilot alternative. Configure Ollama in settings.json.
-- id: repo-llamaindex
-  label: LlamaIndex
-  github: run-llama/llama_index
-  framework_ref: llamaindex
-  category: rag
-  stars_approx: 40K+
-  min_model_quality: standard
-  min_memory_gb: 16
-  ollama_compatible: true
-  install: 'pip install llama-index llama-index-llms-ollama
+  - id: repo-langgraph
+    label: "LangGraph"
+    github: "langchain-ai/langgraph"
+    framework_ref: langgraph
+    category: agent
+    stars_approx: "15K+"
+    min_model_quality: standard
+    min_memory_gb: 16
+    ollama_compatible: true
+    install: |
+      pip install langgraph langchain-community
 
-    '
-- id: repo-autogen
-  label: AutoGen (Microsoft)
-  github: microsoft/autogen
-  framework_ref: autogen
-  category: agent
-  stars_approx: 40K+
-  min_model_quality: standard-plus
-  min_memory_gb: 32
-  ollama_compatible: true
-  install: 'pip install pyautogen
+  # ── IDE ────────────────────────────────────────────────
 
-    '
-  quickstart: "from autogen import AssistantAgent, UserProxyAgent\nassistant = AssistantAgent(\"\
-    assistant\",\n    llm_config={\"config_list\": [{\"model\": \"qwen3.5:35b-a3b\"\
-    ,\n                                 \"base_url\": \"http://localhost:11434/v1\"\
-    ,\n                                 \"api_key\": \"ollama\"}]})\nuser = UserProxyAgent(\"\
-    user\", human_input_mode=\"NEVER\")\nuser.initiate_chat(assistant, message=\"\
-    Write a Python hello world\")\n"
-  note: 'Supports Ollama via OpenAI-compatible endpoint. Set base_url to http://localhost:11434/v1,
-    api_key to "ollama". Recommended model: qwen3.5:35b-a3b or qwen3.5:27b for multi-agent
-    tasks.
+  - id: repo-continue
+    label: "Continue"
+    github: "continuedev/continue"
+    framework_ref: continue
+    category: ide
+    stars_approx: "25K+"
+    min_model_quality: light
+    min_memory_gb: 8
+    ollama_compatible: true
+    install: "VSCode Marketplace → search 'Continue' → Install"
+    note: "Open-source Copilot alternative. Configure Ollama in settings.json."
 
-    '
-- id: repo-agno
-  label: Agno
-  github: agno-agi/agno
-  framework_ref: agno
-  category: agent
-  stars_approx: 25K+
-  min_model_quality: standard
-  min_memory_gb: 16
-  ollama_compatible: true
-  install: 'pip install agno
+  # ── RAG ────────────────────────────────────────────────
 
-    '
-  quickstart: "from agno.agent import Agent\nfrom agno.models.ollama import Ollama\n\
-    from agno.tools.duckduckgo import DuckDuckGoTools\nagent = Agent(model=Ollama(id=\"\
-    qwen3.5:9b\"),\n              tools=[DuckDuckGoTools()], markdown=True)\nagent.print_response(\"\
-    Search for the latest AI news\", stream=True)\n"
-  note: Built-in tool library (web, finance, news). Fastest to a working agent.
-- id: repo-openhands
-  label: OpenHands (OpenDevin)
-  github: All-Hands-AI/OpenHands
-  framework_ref: openhands
-  category: automation
-  stars_approx: 50K+
-  min_model_quality: pro
-  min_memory_gb: 32
-  ollama_compatible: true
-  install: "docker run -it --pull=always \\\n  -e SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.38-nikolaik\
-    \ \\\n  -e LOG_ALL_EVENTS=true \\\n  -v /var/run/docker.sock:/var/run/docker.sock\
-    \ \\\n  -v ~/.openhands-state:/.openhands-state \\\n  -p 3000:3000 \\\n  docker.all-hands.dev/all-hands-ai/openhands:0.38\n"
-  note: 'Set OLLAMA_BASE_URL=http://host.docker.internal:11434 in Docker env to connect
-    to local Ollama. Select model in the UI settings. Reliable threshold: pro-tier
-    model (qwen3.5:35b-a3b or larger).
+  - id: repo-llamaindex
+    label: "LlamaIndex"
+    github: "run-llama/llama_index"
+    framework_ref: llamaindex
+    category: rag
+    stars_approx: "40K+"
+    min_model_quality: standard
+    min_memory_gb: 16
+    ollama_compatible: true
+    install: |
+      pip install llama-index llama-index-llms-ollama
 
-    '
-- id: repo-haystack
-  label: Haystack (deepset)
-  github: deepset-ai/haystack
-  framework_ref: haystack
-  category: rag
-  stars_approx: 20K+
-  min_model_quality: standard
-  min_memory_gb: 16
-  ollama_compatible: true
-  install: 'pip install haystack-ai ollama-haystack
+  # ── Additional Framework Repos ─────────────────────────
 
-    '
-  note: Component-based RAG pipelines. Alternative to LlamaIndex for complex retrieval
-    workflows.
-- id: repo-dify
-  label: Dify
-  github: langgenius/dify
-  framework_ref: dify
-  category: ui
-  stars_approx: 90K+
-  min_model_quality: light
-  min_memory_gb: 8
-  ollama_compatible: true
-  install: 'git clone https://github.com/langgenius/dify
+  - id: repo-autogen
+    label: "AutoGen (Microsoft)"
+    github: "microsoft/autogen"
+    framework_ref: autogen
+    category: agent
+    stars_approx: "40K+"
+    min_model_quality: standard-plus
+    min_memory_gb: 32
+    ollama_compatible: true
+    install: |
+      pip install pyautogen
+    quickstart: |
+      from autogen import AssistantAgent, UserProxyAgent
+      assistant = AssistantAgent("assistant",
+          llm_config={"config_list": [{"model": "qwen3.5:35b-a3b",
+                                       "base_url": "http://localhost:11434/v1",
+                                       "api_key": "ollama"}]})
+      user = UserProxyAgent("user", human_input_mode="NEVER")
+      user.initiate_chat(assistant, message="Write a Python hello world")
+    note: >
+      Supports Ollama via OpenAI-compatible endpoint.
+      Set base_url to http://localhost:11434/v1, api_key to "ollama".
+      Recommended model: qwen3.5:35b-a3b or qwen3.5:27b for multi-agent tasks.
 
-    cd dify/docker && cp .env.example .env
+  - id: repo-agno
+    label: "Agno"
+    github: "agno-agi/agno"
+    framework_ref: agno
+    category: agent
+    stars_approx: "25K+"
+    min_model_quality: standard
+    min_memory_gb: 16
+    ollama_compatible: true
+    install: |
+      pip install agno
+    quickstart: |
+      from agno.agent import Agent
+      from agno.models.ollama import Ollama
+      from agno.tools.duckduckgo import DuckDuckGoTools
+      agent = Agent(model=Ollama(id="qwen3.5:9b"),
+                    tools=[DuckDuckGoTools()], markdown=True)
+      agent.print_response("Search for the latest AI news", stream=True)
+    note: "Built-in tool library (web, finance, news). Fastest to a working agent."
 
-    docker compose up -d
+  - id: repo-openhands
+    label: "OpenHands (OpenDevin)"
+    github: "All-Hands-AI/OpenHands"
+    framework_ref: openhands
+    category: automation
+    stars_approx: "50K+"
+    min_model_quality: pro
+    min_memory_gb: 32
+    ollama_compatible: true
+    install: |
+      docker run -it --pull=always \
+        -e SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.38-nikolaik \
+        -e LOG_ALL_EVENTS=true \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        -v ~/.openhands-state:/.openhands-state \
+        -p 3000:3000 \
+        docker.all-hands.dev/all-hands-ai/openhands:0.38
+    note: >
+      Set OLLAMA_BASE_URL=http://host.docker.internal:11434 in Docker env
+      to connect to local Ollama. Select model in the UI settings.
+      Reliable threshold: pro-tier model (qwen3.5:35b-a3b or larger).
 
-    # Then open http://localhost/install → Settings → Model Provider → Ollama
+  - id: repo-haystack
+    label: "Haystack (deepset)"
+    github: "deepset-ai/haystack"
+    framework_ref: haystack
+    category: rag
+    stars_approx: "20K+"
+    min_model_quality: standard
+    min_memory_gb: 16
+    ollama_compatible: true
+    install: |
+      pip install haystack-ai ollama-haystack
+    note: "Component-based RAG pipelines. Alternative to LlamaIndex for complex retrieval workflows."
 
-    '
-  note: 'Most starred self-hosted LLM platform. Visual workflow builder, RAG pipeline,
-    and agent creation without code. Connect Ollama: Model Provider → Ollama → http://host.docker.internal:11434.
-
-    '
+  - id: repo-dify
+    label: "Dify"
+    github: "langgenius/dify"
+    framework_ref: dify
+    category: ui
+    stars_approx: "90K+"
+    min_model_quality: light
+    min_memory_gb: 8
+    ollama_compatible: true
+    install: |
+      git clone https://github.com/langgenius/dify
+      cd dify/docker && cp .env.example .env
+      docker compose up -d
+      # Then open http://localhost/install → Settings → Model Provider → Ollama
+    note: >
+      Most starred self-hosted LLM platform.
+      Visual workflow builder, RAG pipeline, and agent creation without code.
+      Connect Ollama: Model Provider → Ollama → http://host.docker.internal:11434.

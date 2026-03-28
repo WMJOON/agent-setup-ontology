@@ -1,151 +1,321 @@
-# agent-setup-ontology — Device instances
-# Concept definitions → concepts/device.yaml
+# agent-setup-ontology — Device Instances
+# All device entries extracted from ontology.yaml.
 version: "0.1.0"
 
 devices:
-- id: macbook_air_8gb
-  label: MacBook Air 8GB (M1/M2/M3)
-  type: macbook
-  memory_gb: 8
-  memory_bandwidth_gbs: 100
-  gpu_vram_gb: 0
-  portability: portable
-  always_on: false
-  price_range: 150만원~
-  tier: light
-  max_model: qwen3.5:4b
-  note: 팬리스. 장시간 추론 시 throttling 가능
-  supported_use_cases:
-  - file_automation
-  - local_copilot
-  - general_qa
-- id: macbook_16gb
-  label: MacBook Air/Pro 16GB (M2/M3/M4)
-  type: macbook
-  memory_gb: 16
-  memory_bandwidth_gbs: 100
-  gpu_vram_gb: 0
-  portability: portable
-  always_on: false
-  price_range: 180만원~
-  tier: standard
-  max_model: qwen3.5:9b
-  note: 개인 로컬 Agent 실질적 시작점
-  supported_use_cases:
-  - web_automation
-  - file_automation
-  - code_generation
-  - local_copilot
-  - web_research
-  - document_rag
-  - general_qa
-- id: macbook_pro_32gb
-  label: MacBook Pro 32GB+ (M3/M4 Pro/Max)
-  type: macbook
-  memory_gb: 32
-  memory_bandwidth_gbs: 273
-  gpu_vram_gb: 0
-  portability: portable
-  always_on: false
-  price_range: 300만원~
-  tier: pro
-  max_model: qwen3.5:35b-a3b
-  supported_use_cases: all
-- id: mac_mini_16gb
-  label: Mac Mini 16GB (M2/M4)
-  type: mac-mini
-  memory_gb: 16
-  memory_bandwidth_gbs: 100
-  gpu_vram_gb: 0
-  portability: stationary
-  always_on: true
-  price_range: 90만원~
-  tier: standard
-  max_model: qwen3.5:9b
-  note: 저예산 상시 AI 서버 최적
-  supported_use_cases:
-  - web_automation
-  - file_automation
-  - code_generation
-  - local_copilot
-  - web_research
-  - document_rag
-  - general_qa
-- id: mac_mini_m4_32gb
-  label: Mac Mini M4 32GB
-  type: mac-mini
-  chip: M4 (base)
-  memory_gb: 32
-  memory_bandwidth_gbs: 120
-  gpu_vram_gb: 0
-  portability: stationary
-  always_on: true
-  price_range: 120만원~
-  tier: standard-plus
-  max_model: qwen3.5:35b-a3b
-  note: 가성비 최고 상시 AI 서버. 35b-a3b MoE가 쾌적하게 동작
-  supported_use_cases: all
-  unsupported_use_cases:
-  - fine_tuning
-- id: mac_mini_pro_48gb
-  label: Mac Mini M4 Pro 24-48GB
-  type: mac-mini
-  memory_gb: 48
-  memory_bandwidth_gbs: 273
-  gpu_vram_gb: 0
-  portability: stationary
-  always_on: true
-  price_range: 200만원~
-  tier: pro
-  max_model: qwen3.5:72b
-  note: 팀 공유 AI 서버 / 72B 모델 가능
-  supported_use_cases: all
-- id: pc_no_gpu
-  label: PC (CPU Only / iGPU)
-  type: pc
-  memory_gb: 32
-  memory_bandwidth_gbs: 50
-  gpu_vram_gb: 0
-  portability: stationary
-  always_on: true
-  price_range: 보유 장비
-  tier: light
-  max_model: qwen3.5:4b
-  note: CPU 추론은 Apple Silicon 대비 5-10배 느림
-  supported_use_cases:
-  - file_automation
-  - local_copilot
-  - general_qa
-- id: pc_rtx4060
-  label: PC + RTX 4060 8GB VRAM
-  type: pc
-  memory_gb: 32
-  memory_bandwidth_gbs: 50
-  gpu_vram_gb: 8
-  portability: stationary
-  always_on: true
-  price_range: 35만원 (GPU 추가)
-  tier: standard
-  max_model: qwen3.5:9b
-  note: Windows 환경에서 9B 모델 쾌적 실행. CUDA 생태계 활용
-  supported_use_cases:
-  - web_automation
-  - file_automation
-  - code_generation
-  - local_copilot
-  - web_research
-  - document_rag
-  - general_qa
-- id: pc_rtx4090
-  label: PC + RTX 4090 24GB VRAM
-  type: pc
-  memory_gb: 64
-  memory_bandwidth_gbs: 50
-  gpu_vram_gb: 24
-  portability: stationary
-  always_on: true
-  price_range: 200만원 (GPU)
-  tier: pro
-  max_model: qwen3.5:32b
-  note: 파인튜닝 + 고성능 Agent. CUDA 필요 시 선택
-  supported_use_cases: all
+
+  - id: macbook_air_8gb
+    label: "MacBook Air 8GB (M1/M2/M3)"
+    type: macbook
+    memory_gb: 8
+    memory_bandwidth_gbs: 100
+    gpu_vram_gb: 0
+    portability: portable
+    always_on: false
+    price_range: "150만원~"
+    tier: light
+    max_model: qwen3.5:4b
+    note: "팬리스. 장시간 추론 시 throttling 가능"
+    supported_use_cases: [file_automation, local_copilot, general_qa]
+
+  - id: macbook_16gb
+    label: "MacBook Air/Pro 16GB (M2/M3/M4)"
+    type: macbook
+    memory_gb: 16
+    memory_bandwidth_gbs: 100
+    gpu_vram_gb: 0
+    portability: portable
+    always_on: false
+    price_range: "180만원~"
+    tier: standard
+    max_model: qwen3.5:9b
+    note: "개인 로컬 Agent 실질적 시작점"
+    supported_use_cases:
+      - web_automation
+      - file_automation
+      - code_generation
+      - local_copilot
+      - web_research
+      - document_rag
+      - general_qa
+
+  - id: macbook_pro_32gb
+    label: "MacBook Pro 32GB+ (M3/M4 Pro/Max)"
+    type: macbook
+    memory_gb: 32
+    memory_bandwidth_gbs: 273
+    gpu_vram_gb: 0
+    portability: portable
+    always_on: false
+    price_range: "300만원~"
+    tier: pro
+    max_model: qwen3.5:35b-a3b
+    supported_use_cases: all
+
+  - id: mac_mini_16gb
+    label: "Mac Mini 16GB (M2/M4)"
+    type: mac-mini
+    memory_gb: 16
+    memory_bandwidth_gbs: 100
+    gpu_vram_gb: 0
+    portability: stationary
+    always_on: true
+    price_range: "90만원~"
+    tier: standard
+    max_model: qwen3.5:9b
+    note: "저예산 상시 AI 서버 최적"
+    supported_use_cases:
+      - web_automation
+      - file_automation
+      - code_generation
+      - local_copilot
+      - web_research
+      - document_rag
+      - general_qa
+
+  - id: mac_mini_m4_32gb
+    label: "Mac Mini M4 32GB"
+    type: mac-mini
+    chip: M4 (base)
+    memory_gb: 32
+    memory_bandwidth_gbs: 120
+    gpu_vram_gb: 0
+    portability: stationary
+    always_on: true
+    price_range: "120만원~"
+    tier: standard-plus
+    max_model: qwen3.5:35b-a3b
+    note: "가성비 최고 상시 AI 서버. 35b-a3b MoE가 쾌적하게 동작"
+    supported_use_cases: all
+    unsupported_use_cases: [fine_tuning]
+
+  - id: mac_mini_pro_48gb
+    label: "Mac Mini M4 Pro 24-48GB"
+    type: mac-mini
+    memory_gb: 48
+    memory_bandwidth_gbs: 273
+    gpu_vram_gb: 0
+    portability: stationary
+    always_on: true
+    price_range: "200만원~"
+    tier: pro
+    max_model: qwen3.5:72b
+    note: "팀 공유 AI 서버 / 72B 모델 가능"
+    supported_use_cases: all
+
+  - id: pc_no_gpu
+    label: "PC (CPU Only / iGPU)"
+    type: pc
+    memory_gb: 32
+    memory_bandwidth_gbs: 50
+    gpu_vram_gb: 0
+    portability: stationary
+    always_on: true
+    price_range: "보유 장비"
+    tier: light
+    max_model: qwen3.5:4b
+    note: "CPU 추론은 Apple Silicon 대비 5-10배 느림"
+    supported_use_cases: [file_automation, local_copilot, general_qa]
+
+  - id: pc_rtx4060
+    label: "PC + RTX 4060 8GB VRAM"
+    type: pc
+    memory_gb: 32
+    memory_bandwidth_gbs: 50
+    gpu_vram_gb: 8
+    portability: stationary
+    always_on: true
+    price_range: "35만원 (GPU 추가)"
+    tier: standard
+    max_model: qwen3.5:9b
+    note: "Windows 환경에서 9B 모델 쾌적 실행. CUDA 생태계 활용"
+    supported_use_cases:
+      - web_automation
+      - file_automation
+      - code_generation
+      - local_copilot
+      - web_research
+      - document_rag
+      - general_qa
+
+  - id: pc_rtx4090
+    label: "PC + RTX 4090 24GB VRAM"
+    type: pc
+    memory_gb: 64
+    memory_bandwidth_gbs: 50
+    gpu_vram_gb: 24
+    portability: stationary
+    always_on: true
+    price_range: "200만원 (GPU)"
+    tier: pro
+    max_model: qwen3.5:32b
+    note: "파인튜닝 + 고성능 Agent. CUDA 필요 시 선택"
+    supported_use_cases: all
+
+  - id: mac_mini_m4_24gb
+    label: "Mac Mini M4 24GB"
+    type: mac-mini
+    chip: M4 (base)
+    memory_gb: 24
+    memory_bandwidth_gbs: 120
+    gpu_vram_gb: 0
+    portability: stationary
+    always_on: true
+    tier: standard
+    max_model: "qwen3.5:14b"
+    price_search_query: "Mac Mini M4 24GB price"
+    note: "Base M4 with 24GB. Fits 14B comfortably. Good entry server."
+    supported_use_cases: all
+    unsupported_use_cases: [fine_tuning]
+
+  - id: mac_studio_m4_max_64gb
+    label: "Mac Studio M4 Max 64GB"
+    type: mac-studio
+    chip: M4 Max
+    memory_gb: 64
+    memory_bandwidth_gbs: 410
+    gpu_vram_gb: 0
+    portability: stationary
+    always_on: true
+    tier: pro
+    max_model: "qwen3.5:72b"
+    price_search_query: "Mac Studio M4 Max 64GB price"
+    note: "410 GB/s bandwidth. Runs 72B models at practical speed (~15 t/s)."
+    supported_use_cases: all
+
+  - id: mac_studio_m4_max_128gb
+    label: "Mac Studio M4 Max 128GB"
+    type: mac-studio
+    chip: M4 Max
+    memory_gb: 128
+    memory_bandwidth_gbs: 410
+    gpu_vram_gb: 0
+    portability: stationary
+    always_on: true
+    tier: pro
+    max_model: "qwen3.5:72b"
+    price_search_query: "Mac Studio M4 Max 128GB price"
+    note: "128GB unified memory. Runs multiple large models simultaneously."
+    supported_use_cases: all
+
+  - id: macbook_pro_m4_max_48gb
+    label: "MacBook Pro M4 Max 48GB"
+    type: macbook
+    chip: M4 Max
+    memory_gb: 48
+    memory_bandwidth_gbs: 300
+    gpu_vram_gb: 0
+    portability: portable
+    always_on: false
+    tier: pro
+    max_model: "qwen3.5:35b-a3b"
+    price_search_query: "MacBook Pro M4 Max 48GB price"
+    note: "Portable pro-tier. 300 GB/s bandwidth, 48GB fits 35B-a3b + system."
+    supported_use_cases: all
+
+  - id: pc_rtx4060ti_16gb
+    label: "PC — RTX 4060 Ti 16GB + 32GB RAM"
+    type: pc
+    chip: null
+    memory_gb: 32
+    memory_bandwidth_gbs: 50
+    gpu_vram_gb: 16
+    portability: stationary
+    always_on: true
+    tier: standard-plus
+    max_model: "qwen3.5:14b"
+    gpu_component: rtx-4060-ti-16gb
+    ram_component: ram-32gb-ddr5
+    price_search_query: "RTX 4060 Ti 16GB + 32GB DDR5 RAM price"
+    note: "Best value 16GB VRAM build. Runs 14B in full VRAM. Low power (~165W GPU)."
+    supported_use_cases:
+      - web_automation
+      - file_automation
+      - code_generation
+      - code_review
+      - local_copilot
+      - web_research
+      - document_rag
+      - general_qa
+      - writing_assistant
+      - agent_monitoring
+
+  - id: pc_rtx4070ti_super_16gb
+    label: "PC — RTX 4070 Ti Super 16GB + 64GB RAM"
+    type: pc
+    memory_gb: 64
+    memory_bandwidth_gbs: 50
+    gpu_vram_gb: 16
+    portability: stationary
+    always_on: true
+    tier: standard-plus
+    max_model: "qwen3.5:14b"
+    gpu_component: rtx-4070-ti-super
+    ram_component: ram-64gb-ddr5
+    price_search_query: "RTX 4070 Ti Super 16GB GPU + 64GB DDR5 RAM price"
+    note: "Fast 16GB build with high bandwidth (672 GB/s). ~40 t/s for 14B."
+    supported_use_cases:
+      - web_automation
+      - file_automation
+      - code_generation
+      - code_review
+      - local_copilot
+      - web_research
+      - document_rag
+      - general_qa
+      - writing_assistant
+      - agent_monitoring
+      - multi_agent
+
+  - id: pc_rtx5090_32gb
+    label: "PC — RTX 5090 32GB + 64GB RAM"
+    type: pc
+    memory_gb: 64
+    memory_bandwidth_gbs: 50
+    gpu_vram_gb: 32
+    portability: stationary
+    always_on: true
+    tier: pro
+    max_model: "qwen3.5:32b"
+    gpu_component: rtx-5090
+    ram_component: ram-64gb-ddr5
+    price_search_query: "RTX 5090 32GB GPU + 64GB DDR5 RAM build price"
+    note: "Highest performance consumer build. 32GB VRAM fits 32B dense. ~80 t/s for 27B."
+    supported_use_cases: all
+
+  - id: pc_amd_rx7900xtx
+    label: "PC — AMD RX 7900 XTX 24GB + 64GB RAM"
+    type: pc
+    memory_gb: 64
+    memory_bandwidth_gbs: 50
+    gpu_vram_gb: 24
+    portability: stationary
+    always_on: true
+    tier: pro
+    max_model: "qwen3.5:27b"
+    gpu_component: amd-rx-7900-xtx
+    ram_component: ram-64gb-ddr5
+    price_search_query: "AMD RX 7900 XTX 24GB GPU price + 64GB DDR5 RAM"
+    note: "Best AMD alternative to RTX 4090. Good ROCm/Ollama support."
+    supported_use_cases: all
+    unsupported_use_cases: [fine_tuning]
+
+  - id: nvidia_dgx_spark
+    label: "NVIDIA DGX Spark (GB10)"
+    type: ai-supercomputer
+    chip: Grace Blackwell GB10
+    memory_gb: 128
+    memory_bandwidth_gbs: 900
+    gpu_vram_gb: 0          # unified — same pool as CPU memory
+    portability: stationary
+    always_on: true
+    price_range: "~$3,000"
+    price_search_query: "NVIDIA DGX Spark price buy"
+    tier: pro
+    max_model: "qwen3.5:72b"
+    note: >
+      Grace Blackwell SoC. 128GB unified memory at ~900 GB/s.
+      1000 AI TOPS (FP4). Runs 200B+ parameter models locally.
+      After CES 2026 update: 2.5x faster via TensorRT-LLM + speculative decoding.
+      Ollama-compatible. Pairs well with Mac Mini as control plane.
+    supported_use_cases: all
