@@ -1,0 +1,1161 @@
+# agent-setup-copilot ontology
+# 누구나 PR로 기여할 수 있습니다.
+# 스키마: use_cases / devices / models / frameworks
+version: "0.1.0"
+
+# ──────────────────────────────────────────────────────────
+# 사용 목적 Taxonomy
+# ──────────────────────────────────────────────────────────
+use_cases:
+
+  - id: web_automation
+    label: "웹 자동화"
+    description: "브라우저 조작, 스크래핑, 폼 자동화"
+    keywords: [OpenClaw, 브라우저, 크롤링, 자동화, 웹, 스크래핑]
+    min_memory_gb: 16
+    needs_always_on: false
+    recommended_models: [qwen3.5:9b, qwen3.5:35b-a3b]
+    recommended_frameworks: [openclaw, smolagents]
+
+  - id: file_automation
+    label: "파일·시스템 자동화"
+    description: "파일 정리, 변환, 백업 스크립트"
+    keywords: [파일, 정리, 변환, 백업, 스크립트, 자동화]
+    min_memory_gb: 8
+    needs_always_on: false
+    recommended_models: [qwen3.5:4b, qwen3.5:9b]
+    recommended_frameworks: [smolagents, qwen-agent]
+
+  - id: code_generation
+    label: "코드 생성·보조"
+    description: "함수·클래스 작성, 보일러플레이트, 테스트 코드"
+    keywords: [코드, 개발, 프로그래밍, 함수, 클래스, 코딩]
+    min_memory_gb: 16
+    needs_always_on: false
+    recommended_models: [qwen3.5:14b, qwen3.5:35b-a3b]
+    recommended_frameworks: [smolagents, qwen-agent, continue]
+
+  - id: code_review
+    label: "코드 리뷰·리팩토링"
+    description: "PR 리뷰, 버그 탐지, 개선 제안"
+    keywords: [리뷰, 리팩토링, 버그, 개선, PR]
+    min_memory_gb: 32
+    needs_always_on: false
+    recommended_models: [qwen3.5:27b, qwen3.5:35b-a3b]
+    recommended_frameworks: [smolagents, qwen-agent]
+
+  - id: local_copilot
+    label: "로컬 코파일럿 (IDE)"
+    description: "IDE 인라인 자동완성 및 제안"
+    keywords: [코파일럿, 자동완성, Continue, IDE, VSCode]
+    min_memory_gb: 8
+    needs_always_on: true
+    recommended_models: [qwen3.5:4b, qwen3.5:9b]
+    recommended_frameworks: [continue]
+
+  - id: web_research
+    label: "웹 리서치·요약"
+    description: "검색, 트렌드 분석, 뉴스 요약"
+    keywords: [검색, 리서치, 조사, 트렌드, 뉴스, 요약]
+    min_memory_gb: 16
+    needs_always_on: false
+    recommended_models: [qwen3.5:9b, qwen3.5:14b]
+    recommended_frameworks: [smolagents, qwen-agent]
+
+  - id: document_rag
+    label: "문서 RAG"
+    description: "PDF·문서 기반 질문 응답"
+    keywords: [PDF, 문서, RAG, 질문, 요약, 파일]
+    min_memory_gb: 16
+    needs_always_on: false
+    recommended_models: [qwen3.5:14b, qwen3.5:27b]
+    recommended_frameworks: [qwen-agent, llamaindex]
+
+  - id: general_qa
+    label: "일반 Q&A 챗봇"
+    description: "ChatGPT 대체 로컬 대화 AI"
+    keywords: [챗봇, 질문, 대화, ChatGPT, 대체, 비서]
+    min_memory_gb: 8
+    needs_always_on: false
+    recommended_models: [qwen3.5:9b, qwen3.5:14b]
+    recommended_frameworks: [open-webui]
+
+  - id: multi_agent
+    label: "멀티에이전트 파이프라인"
+    description: "여러 Agent가 협업하는 워크플로우"
+    keywords: [멀티에이전트, CrewAI, 파이프라인, 오케스트레이션, 협업]
+    min_memory_gb: 32
+    needs_always_on: false
+    recommended_models: [qwen3.5:27b, qwen3.5:35b-a3b]
+    recommended_frameworks: [crewai, langgraph]
+
+  - id: agent_monitoring
+    label: "에이전트 평가·모니터링"
+    description: "LLM-as-Judge, trace 분석, 품질 평가"
+    keywords: [모니터링, 평가, judge, trace, 품질, 분석]
+    min_memory_gb: 32
+    needs_always_on: false
+    recommended_models: [qwen3.5:27b, qwen3.5:35b-a3b]
+    recommended_frameworks: [smolagents, langgraph]
+
+  - id: fine_tuning
+    label: "파인튜닝·LoRA"
+    description: "로컬 모델 커스터마이징"
+    keywords: [파인튜닝, LoRA, QLoRA, 학습, 훈련, 파인튜닝]
+    min_memory_gb: 32
+    requires_gpu: true
+    recommended_models: [qwen3.5:9b, qwen3.5:14b]
+    recommended_frameworks: []
+
+# ──────────────────────────────────────────────────────────
+# 디바이스
+# ──────────────────────────────────────────────────────────
+devices:
+
+  - id: macbook_air_8gb
+    label: "MacBook Air 8GB (M1/M2/M3)"
+    type: macbook
+    memory_gb: 8
+    memory_bandwidth_gbs: 100
+    gpu_vram_gb: 0
+    portability: portable
+    always_on: false
+    price_range: "150만원~"
+    tier: light
+    max_model: qwen3.5:4b
+    note: "팬리스. 장시간 추론 시 throttling 가능"
+    supported_use_cases: [file_automation, local_copilot, general_qa]
+
+  - id: macbook_16gb
+    label: "MacBook Air/Pro 16GB (M2/M3/M4)"
+    type: macbook
+    memory_gb: 16
+    memory_bandwidth_gbs: 100
+    gpu_vram_gb: 0
+    portability: portable
+    always_on: false
+    price_range: "180만원~"
+    tier: standard
+    max_model: qwen3.5:9b
+    note: "개인 로컬 Agent 실질적 시작점"
+    supported_use_cases:
+      - web_automation
+      - file_automation
+      - code_generation
+      - local_copilot
+      - web_research
+      - document_rag
+      - general_qa
+
+  - id: macbook_pro_32gb
+    label: "MacBook Pro 32GB+ (M3/M4 Pro/Max)"
+    type: macbook
+    memory_gb: 32
+    memory_bandwidth_gbs: 273
+    gpu_vram_gb: 0
+    portability: portable
+    always_on: false
+    price_range: "300만원~"
+    tier: pro
+    max_model: qwen3.5:35b-a3b
+    supported_use_cases: all
+
+  - id: mac_mini_16gb
+    label: "Mac Mini 16GB (M2/M4)"
+    type: mac-mini
+    memory_gb: 16
+    memory_bandwidth_gbs: 100
+    gpu_vram_gb: 0
+    portability: stationary
+    always_on: true
+    price_range: "90만원~"
+    tier: standard
+    max_model: qwen3.5:9b
+    note: "저예산 상시 AI 서버 최적"
+    supported_use_cases:
+      - web_automation
+      - file_automation
+      - code_generation
+      - local_copilot
+      - web_research
+      - document_rag
+      - general_qa
+
+  - id: mac_mini_m4_32gb
+    label: "Mac Mini M4 32GB"
+    type: mac-mini
+    chip: M4 (base)
+    memory_gb: 32
+    memory_bandwidth_gbs: 120
+    gpu_vram_gb: 0
+    portability: stationary
+    always_on: true
+    price_range: "120만원~"
+    tier: standard-plus
+    max_model: qwen3.5:35b-a3b
+    note: "가성비 최고 상시 AI 서버. 35b-a3b MoE가 쾌적하게 동작"
+    supported_use_cases: all
+    unsupported_use_cases: [fine_tuning]
+
+  - id: mac_mini_pro_48gb
+    label: "Mac Mini M4 Pro 24-48GB"
+    type: mac-mini
+    memory_gb: 48
+    memory_bandwidth_gbs: 273
+    gpu_vram_gb: 0
+    portability: stationary
+    always_on: true
+    price_range: "200만원~"
+    tier: pro
+    max_model: qwen3.5:72b
+    note: "팀 공유 AI 서버 / 72B 모델 가능"
+    supported_use_cases: all
+
+  - id: pc_no_gpu
+    label: "PC (CPU Only / iGPU)"
+    type: pc
+    memory_gb: 32
+    memory_bandwidth_gbs: 50
+    gpu_vram_gb: 0
+    portability: stationary
+    always_on: true
+    price_range: "보유 장비"
+    tier: light
+    max_model: qwen3.5:4b
+    note: "CPU 추론은 Apple Silicon 대비 5-10배 느림"
+    supported_use_cases: [file_automation, local_copilot, general_qa]
+
+  - id: pc_rtx4060
+    label: "PC + RTX 4060 8GB VRAM"
+    type: pc
+    memory_gb: 32
+    memory_bandwidth_gbs: 50
+    gpu_vram_gb: 8
+    portability: stationary
+    always_on: true
+    price_range: "35만원 (GPU 추가)"
+    tier: standard
+    max_model: qwen3.5:9b
+    note: "Windows 환경에서 9B 모델 쾌적 실행. CUDA 생태계 활용"
+    supported_use_cases:
+      - web_automation
+      - file_automation
+      - code_generation
+      - local_copilot
+      - web_research
+      - document_rag
+      - general_qa
+
+  - id: pc_rtx4090
+    label: "PC + RTX 4090 24GB VRAM"
+    type: pc
+    memory_gb: 64
+    memory_bandwidth_gbs: 50
+    gpu_vram_gb: 24
+    portability: stationary
+    always_on: true
+    price_range: "200만원 (GPU)"
+    tier: pro
+    max_model: qwen3.5:32b
+    note: "파인튜닝 + 고성능 Agent. CUDA 필요 시 선택"
+    supported_use_cases: all
+
+# ──────────────────────────────────────────────────────────
+# 모델
+# ──────────────────────────────────────────────────────────
+models:
+
+  - id: qwen3.5:4b
+    label: "qwen3.5:4b"
+    params_b: 4
+    type: dense
+    min_memory_gb: 8
+    quality: light
+    tool_calling: true
+    speed_note: "CPU에서도 동작. ~15-25 t/s (M-series)"
+
+  - id: qwen3.5:9b
+    label: "qwen3.5:9b"
+    params_b: 9
+    type: dense
+    min_memory_gb: 16
+    quality: standard
+    tool_calling: true
+    speed_note: "~20-35 t/s (M-series 16GB)"
+    sweet_spot: true
+    note: "개인 사용 가성비 최강. 16GB 기기의 기본 선택"
+
+  - id: qwen3.5:14b
+    label: "qwen3.5:14b"
+    params_b: 14
+    type: dense
+    min_memory_gb: 16
+    quality: standard-plus
+    tool_calling: true
+    speed_note: "~14-20 t/s (M-series 16GB)"
+
+  - id: qwen3.5:35b-a3b
+    label: "qwen3.5:35b-a3b"
+    params_b: 35
+    active_params_b: 3
+    type: MoE
+    min_memory_gb: 32
+    quality: pro
+    tool_calling: true
+    speed_note: "~18-25 t/s (M4 base 32GB)"
+    sweet_spot: true
+    note: "MoE — 35B 품질, 실제 3B 활성화. 32GB 기기 베스트픽"
+
+  - id: qwen3.5:27b
+    label: "qwen3.5:27b"
+    params_b: 27
+    type: dense
+    min_memory_gb: 32
+    quality: pro
+    tool_calling: true
+    speed_note: "~10-15 t/s (M4 base 32GB)"
+    note: "dense 최고 단일 모델. 대역폭 의존도 높음"
+
+  - id: qwen3.5:32b
+    label: "qwen3.5:32b"
+    params_b: 32
+    type: dense
+    min_memory_gb: 32
+    quality: pro
+    tool_calling: true
+    speed_note: "~7-10 t/s (M4 base 32GB)"
+
+  - id: qwen3.5:72b
+    label: "qwen3.5:72b"
+    params_b: 72
+    type: dense
+    min_memory_gb: 64
+    quality: pro
+    tool_calling: true
+    speed_note: "~12-15 t/s (Mac Studio M4 Max 128GB / DGX Spark)"
+    note: "Highest quality open-weight model. Requires 64GB+ unified memory or 48GB VRAM."
+
+# ──────────────────────────────────────────────────────────
+# Frameworks
+# ──────────────────────────────────────────────────────────
+frameworks:
+
+  # ── Agent Frameworks ───────────────────────────────────
+
+  - id: smolagents
+    label: "smolagents (HuggingFace)"
+    kind: agent
+    complexity: low
+    local_capable: true
+    runtime_support: [ollama, huggingface, litellm, openai, anthropic]
+    multiagent: true
+    mcp_support: false
+    install: "pip install smolagents[ollama]"
+    best_for: [web_automation, file_automation, web_research, schedule_task]
+    note: "Lowest barrier to entry. Agent running in 5 lines. Code-execution approach."
+
+  - id: qwen-agent
+    label: "Qwen-Agent"
+    kind: agent
+    complexity: low
+    local_capable: true
+    runtime_support: [ollama, openai, any]
+    multiagent: true
+    mcp_support: true
+    install: "pip install qwen-agent"
+    best_for: [web_automation, code_generation, document_rag, agent_monitoring]
+    note: "Optimized for Qwen models. Native MCP protocol support."
+
+  - id: crewai
+    label: "CrewAI"
+    kind: agent
+    complexity: medium
+    local_capable: true
+    runtime_support: [ollama, openai, anthropic, any]
+    multiagent: true
+    mcp_support: false
+    install: "pip install crewai"
+    best_for: [multi_agent, deep_research, code_review]
+    note: "Role-based multi-agent orchestration. Best for collaborative pipelines."
+
+  - id: langgraph
+    label: "LangGraph"
+    kind: agent
+    complexity: high
+    local_capable: true
+    runtime_support: [ollama, openai, anthropic, huggingface, any]
+    multiagent: true
+    mcp_support: false
+    install: "pip install langgraph langchain-community"
+    best_for: [multi_agent, agent_monitoring]
+    note: "Graph-based stateful workflows. Most flexible, steepest learning curve."
+
+  # ── Automation Frameworks ──────────────────────────────
+
+  - id: openclaw
+    label: "OpenClaw"
+    kind: automation
+    complexity: medium
+    local_capable: true
+    runtime_support: [ollama, openai, anthropic]
+    multiagent: false
+    mcp_support: false
+    install: "https://github.com/openclaw/openclaw"
+    best_for: [web_automation]
+    note: "Autonomous browser, file, and code execution. LLM wrapper for desktop automation."
+
+  # ── UI Front-ends ──────────────────────────────────────
+
+  - id: open-webui
+    label: "Open WebUI"
+    kind: ui
+    complexity: low
+    local_capable: true
+    runtime_support: [ollama, openai]
+    multiagent: false
+    mcp_support: false
+    install: "docker run -d -p 3000:8080 ghcr.io/open-webui/open-webui"
+    best_for: [general_qa, writing_assistant]
+    note: "ChatGPT-like web UI for Ollama. No coding required."
+
+  - id: anythingllm
+    label: "AnythingLLM"
+    kind: ui
+    complexity: low
+    local_capable: true
+    runtime_support: [ollama, openai, anthropic, any]
+    multiagent: false
+    mcp_support: false
+    install: "https://anythingllm.com/download"
+    best_for: [general_qa, document_rag]
+    note: "Desktop app with built-in RAG. Good for non-technical users."
+
+  # ── IDE Extensions ─────────────────────────────────────
+
+  - id: continue
+    label: "Continue (VSCode / JetBrains)"
+    kind: ide
+    complexity: low
+    local_capable: true
+    runtime_support: [ollama, openai, anthropic, any]
+    multiagent: false
+    mcp_support: false
+    install: "VSCode Marketplace: Continue"
+    best_for: [local_copilot, code_generation]
+    note: "Inline code copilot. Drop-in replacement for GitHub Copilot."
+
+  # ── RAG Frameworks ─────────────────────────────────────
+
+  - id: llamaindex
+    label: "LlamaIndex"
+    kind: rag
+    complexity: medium
+    local_capable: true
+    runtime_support: [ollama, openai, anthropic, huggingface, any]
+    multiagent: false
+    mcp_support: false
+    install: "pip install llama-index llama-index-llms-ollama"
+    best_for: [document_rag, deep_research]
+    note: "Production-grade RAG. Best for large document collections."
+
+# ──────────────────────────────────────────────────────────
+# API Services
+# Cloud LLM APIs as an alternative or starting point before
+# committing to local hardware. Pricing is approximate —
+# always verify at the provider's official pricing page.
+# ──────────────────────────────────────────────────────────
+api_services:
+
+  # ── Anthropic ──────────────────────────────────────────
+
+  - id: claude-haiku-4-5
+    label: "Claude Haiku 4.5"
+    provider: anthropic
+    quality: standard
+    tool_calling: true
+    context_window_k: 200
+    pricing:
+      input_per_1m: 0.80
+      output_per_1m: 4.00
+      currency: USD
+      source: "https://www.anthropic.com/pricing"
+    local_alternative: "qwen3.5:9b"
+    note: "Fastest Anthropic model. Best cost-per-task for simple agents."
+
+  - id: claude-sonnet-4-6
+    label: "Claude Sonnet 4.6"
+    provider: anthropic
+    quality: pro
+    tool_calling: true
+    context_window_k: 200
+    pricing:
+      input_per_1m: 3.00
+      output_per_1m: 15.00
+      currency: USD
+      source: "https://www.anthropic.com/pricing"
+    local_alternative: "qwen3.5:27b"
+    note: "High-quality reasoning. Good for complex agent tasks and code review."
+
+  # ── OpenAI ─────────────────────────────────────────────
+
+  - id: gpt-4o-mini
+    label: "GPT-4o mini"
+    provider: openai
+    quality: standard
+    tool_calling: true
+    context_window_k: 128
+    pricing:
+      input_per_1m: 0.15
+      output_per_1m: 0.60
+      currency: USD
+      source: "https://openai.com/pricing"
+    local_alternative: "qwen3.5:9b"
+    note: "Cheapest capable OpenAI model. Good entry point for API-first workflows."
+
+  - id: gpt-4o
+    label: "GPT-4o"
+    provider: openai
+    quality: pro
+    tool_calling: true
+    context_window_k: 128
+    pricing:
+      input_per_1m: 2.50
+      output_per_1m: 10.00
+      currency: USD
+      source: "https://openai.com/pricing"
+    local_alternative: "qwen3.5:27b"
+    note: "Strong all-rounder. High cost at scale."
+
+  # ── Google ─────────────────────────────────────────────
+
+  - id: gemini-2-flash
+    label: "Gemini 2.0 Flash"
+    provider: google
+    quality: standard
+    tool_calling: true
+    context_window_k: 1000
+    pricing:
+      input_per_1m: 0.10
+      output_per_1m: 0.40
+      currency: USD
+      source: "https://ai.google.dev/pricing"
+    local_alternative: "qwen3.5:9b"
+    note: "Cheapest capable model with 1M context. Good for long-document tasks."
+
+  - id: gemini-2-pro
+    label: "Gemini 2.0 Pro"
+    provider: google
+    quality: pro
+    tool_calling: true
+    context_window_k: 1000
+    pricing:
+      input_per_1m: 1.25
+      output_per_1m: 5.00
+      currency: USD
+      source: "https://ai.google.dev/pricing"
+    local_alternative: "qwen3.5:27b"
+    note: "High quality with massive context window."
+
+# ──────────────────────────────────────────────────────────
+# Components
+# Individual hardware parts for PC builds.
+# Mac/complete devices are in devices[].
+#
+# price_search_query: use this string with a web search tool
+# to get current market prices — do not rely on hardcoded values.
+# ──────────────────────────────────────────────────────────
+components:
+
+  # ── NVIDIA GPUs (Ada Lovelace — RTX 40 series) ─────────
+
+  - id: rtx-4060
+    label: "NVIDIA GeForce RTX 4060"
+    component_type: gpu
+    vram_gb: 8
+    memory_bandwidth_gbs: 272
+    tdp_w: 115
+    architecture: ada-lovelace
+    inference_tier: standard
+    llm_perf_note: "~25-35 t/s for 9B Q4. Best value 8GB GPU. Low power."
+    price_search_query: "NVIDIA RTX 4060 8GB GPU price"
+
+  - id: rtx-4060-ti-16gb
+    label: "NVIDIA GeForce RTX 4060 Ti 16GB"
+    component_type: gpu
+    vram_gb: 16
+    memory_bandwidth_gbs: 288
+    tdp_w: 165
+    architecture: ada-lovelace
+    inference_tier: standard-plus
+    llm_perf_note: "~22-30 t/s for 14B Q4. 16GB VRAM fits 14B comfortably."
+    price_search_query: "NVIDIA RTX 4060 Ti 16GB price"
+    note: "Preferred over RTX 4060 if 14B+ models are needed."
+
+  - id: rtx-4070-super
+    label: "NVIDIA GeForce RTX 4070 Super"
+    component_type: gpu
+    vram_gb: 12
+    memory_bandwidth_gbs: 504
+    tdp_w: 220
+    architecture: ada-lovelace
+    inference_tier: standard
+    llm_perf_note: "~40-50 t/s for 9B Q4. Fast but only 12GB VRAM."
+    price_search_query: "NVIDIA RTX 4070 Super 12GB price"
+
+  - id: rtx-4070-ti-super
+    label: "NVIDIA GeForce RTX 4070 Ti Super"
+    component_type: gpu
+    vram_gb: 16
+    memory_bandwidth_gbs: 672
+    tdp_w: 285
+    architecture: ada-lovelace
+    inference_tier: standard-plus
+    llm_perf_note: "~35-45 t/s for 14B Q4. Good bandwidth-to-VRAM ratio."
+    price_search_query: "NVIDIA RTX 4070 Ti Super 16GB price"
+
+  - id: rtx-4080-super
+    label: "NVIDIA GeForce RTX 4080 Super"
+    component_type: gpu
+    vram_gb: 16
+    memory_bandwidth_gbs: 736
+    tdp_w: 320
+    architecture: ada-lovelace
+    inference_tier: standard-plus
+    llm_perf_note: "~40-50 t/s for 14B Q4. Fast 16GB option."
+    price_search_query: "NVIDIA RTX 4080 Super 16GB price"
+
+  - id: rtx-4090
+    label: "NVIDIA GeForce RTX 4090"
+    component_type: gpu
+    vram_gb: 24
+    memory_bandwidth_gbs: 1008
+    tdp_w: 450
+    architecture: ada-lovelace
+    inference_tier: pro
+    llm_perf_note: "~40-50 t/s for 27B Q4. Runs 32B dense in VRAM."
+    price_search_query: "NVIDIA RTX 4090 24GB GPU price"
+
+  # ── NVIDIA GPUs (Blackwell — RTX 50 series) ────────────
+
+  - id: rtx-5080
+    label: "NVIDIA GeForce RTX 5080"
+    component_type: gpu
+    vram_gb: 16
+    memory_bandwidth_gbs: 960
+    tdp_w: 360
+    architecture: blackwell
+    inference_tier: standard-plus
+    llm_perf_note: "~50-60 t/s for 14B Q4. High bandwidth 16GB."
+    price_search_query: "NVIDIA RTX 5080 16GB price"
+
+  - id: rtx-5090
+    label: "NVIDIA GeForce RTX 5090"
+    component_type: gpu
+    vram_gb: 32
+    memory_bandwidth_gbs: 1792
+    tdp_w: 575
+    architecture: blackwell
+    inference_tier: pro
+    llm_perf_note: "~70-85 t/s for 27B Q4. 32GB VRAM fits 32B dense."
+    price_search_query: "NVIDIA RTX 5090 32GB GPU price"
+    note: "Fastest consumer GPU for LLM inference as of 2025."
+
+  # ── AMD GPUs ────────────────────────────────────────────
+
+  - id: amd-rx-7800-xt
+    label: "AMD Radeon RX 7800 XT"
+    component_type: gpu
+    vram_gb: 16
+    memory_bandwidth_gbs: 624
+    tdp_w: 263
+    architecture: rdna3
+    inference_tier: standard-plus
+    llm_perf_note: "~25-35 t/s for 14B Q4. Good value 16GB AMD option."
+    price_search_query: "AMD Radeon RX 7800 XT 16GB price"
+
+  - id: amd-rx-7900-xtx
+    label: "AMD Radeon RX 7900 XTX"
+    component_type: gpu
+    vram_gb: 24
+    memory_bandwidth_gbs: 960
+    tdp_w: 355
+    architecture: rdna3
+    inference_tier: pro
+    llm_perf_note: "~35-45 t/s for 27B Q4. ROCm support in Ollama."
+    price_search_query: "AMD Radeon RX 7900 XTX 24GB price"
+
+  - id: amd-rx-9070-xt
+    label: "AMD Radeon RX 9070 XT"
+    component_type: gpu
+    vram_gb: 16
+    memory_bandwidth_gbs: 717
+    tdp_w: 250
+    architecture: rdna4
+    inference_tier: standard-plus
+    llm_perf_note: "~40-50 t/s for 14B Q4. RDNA 4 efficiency gains."
+    price_search_query: "AMD Radeon RX 9070 XT price"
+
+  # ── RAM (System Memory) ─────────────────────────────────
+
+  - id: ram-16gb-ddr5
+    label: "16GB DDR5 Kit (2×8GB)"
+    component_type: memory
+    capacity_gb: 16
+    generation: DDR5
+    llm_use: "Minimum for 9B GPU inference + OS overhead."
+    price_search_query: "16GB DDR5 RAM kit 2x8GB price"
+
+  - id: ram-32gb-ddr5
+    label: "32GB DDR5 Kit (2×16GB)"
+    component_type: memory
+    capacity_gb: 32
+    generation: DDR5
+    llm_use: "Recommended alongside any GPU. Allows CPU fallback for layers."
+    price_search_query: "32GB DDR5 RAM kit 2x16GB price"
+
+  - id: ram-64gb-ddr5
+    label: "64GB DDR5 Kit (2×32GB)"
+    component_type: memory
+    capacity_gb: 64
+    generation: DDR5
+    llm_use: "For CPU inference of large models or GPU with heavy CPU offload."
+    price_search_query: "64GB DDR5 RAM kit 2x32GB price"
+
+  - id: ram-128gb-ddr5
+    label: "128GB DDR5 Kit (4×32GB)"
+    component_type: memory
+    capacity_gb: 128
+    generation: DDR5
+    llm_use: "CPU-only inference of 70B+ models. Extreme build only."
+    price_search_query: "128GB DDR5 RAM kit 4x32GB price"
+
+# ──────────────────────────────────────────────────────────
+# Additional Devices (v0.0.1 expansion)
+# price_search_query added for web-search-based pricing
+  # ── Additional devices (v0.0.1 expansion) ─────────────
+
+  # ── Mac Mini (expanded configs) ────────────────────────
+
+  - id: mac_mini_m4_24gb
+    label: "Mac Mini M4 24GB"
+    type: mac-mini
+    chip: M4 (base)
+    memory_gb: 24
+    memory_bandwidth_gbs: 120
+    gpu_vram_gb: 0
+    portability: stationary
+    always_on: true
+    tier: standard
+    max_model: "qwen3.5:14b"
+    price_search_query: "Mac Mini M4 24GB price"
+    note: "Base M4 with 24GB. Fits 14B comfortably. Good entry server."
+    supported_use_cases: all
+    unsupported_use_cases: [fine_tuning]
+
+  # ── Mac Studio ─────────────────────────────────────────
+
+  - id: mac_studio_m4_max_64gb
+    label: "Mac Studio M4 Max 64GB"
+    type: mac-studio
+    chip: M4 Max
+    memory_gb: 64
+    memory_bandwidth_gbs: 410
+    gpu_vram_gb: 0
+    portability: stationary
+    always_on: true
+    tier: pro
+    max_model: "qwen3.5:72b"
+    price_search_query: "Mac Studio M4 Max 64GB price"
+    note: "410 GB/s bandwidth. Runs 72B models at practical speed (~15 t/s)."
+    supported_use_cases: all
+
+  - id: mac_studio_m4_max_128gb
+    label: "Mac Studio M4 Max 128GB"
+    type: mac-studio
+    chip: M4 Max
+    memory_gb: 128
+    memory_bandwidth_gbs: 410
+    gpu_vram_gb: 0
+    portability: stationary
+    always_on: true
+    tier: pro
+    max_model: "qwen3.5:72b"
+    price_search_query: "Mac Studio M4 Max 128GB price"
+    note: "128GB unified memory. Runs multiple large models simultaneously."
+    supported_use_cases: all
+
+  # ── MacBook Pro M4 Max (high-end portable) ──────────────
+
+  - id: macbook_pro_m4_max_48gb
+    label: "MacBook Pro M4 Max 48GB"
+    type: macbook
+    chip: M4 Max
+    memory_gb: 48
+    memory_bandwidth_gbs: 300
+    gpu_vram_gb: 0
+    portability: portable
+    always_on: false
+    tier: pro
+    max_model: "qwen3.5:35b-a3b"
+    price_search_query: "MacBook Pro M4 Max 48GB price"
+    note: "Portable pro-tier. 300 GB/s bandwidth, 48GB fits 35B-a3b + system."
+    supported_use_cases: all
+
+  # ── PC builds (GPU + RAM combos) ───────────────────────
+
+  - id: pc_rtx4060ti_16gb
+    label: "PC — RTX 4060 Ti 16GB + 32GB RAM"
+    type: pc
+    chip: null
+    memory_gb: 32
+    memory_bandwidth_gbs: 50
+    gpu_vram_gb: 16
+    portability: stationary
+    always_on: true
+    tier: standard-plus
+    max_model: "qwen3.5:14b"
+    gpu_component: rtx-4060-ti-16gb
+    ram_component: ram-32gb-ddr5
+    price_search_query: "RTX 4060 Ti 16GB + 32GB DDR5 RAM price"
+    note: "Best value 16GB VRAM build. Runs 14B in full VRAM. Low power (~165W GPU)."
+    supported_use_cases:
+      - web_automation
+      - file_automation
+      - code_generation
+      - code_review
+      - local_copilot
+      - web_research
+      - document_rag
+      - general_qa
+      - writing_assistant
+      - agent_monitoring
+
+  - id: pc_rtx4070ti_super_16gb
+    label: "PC — RTX 4070 Ti Super 16GB + 64GB RAM"
+    type: pc
+    memory_gb: 64
+    memory_bandwidth_gbs: 50
+    gpu_vram_gb: 16
+    portability: stationary
+    always_on: true
+    tier: standard-plus
+    max_model: "qwen3.5:14b"
+    gpu_component: rtx-4070-ti-super
+    ram_component: ram-64gb-ddr5
+    price_search_query: "RTX 4070 Ti Super 16GB GPU + 64GB DDR5 RAM price"
+    note: "Fast 16GB build with high bandwidth (672 GB/s). ~40 t/s for 14B."
+    supported_use_cases:
+      - web_automation
+      - file_automation
+      - code_generation
+      - code_review
+      - local_copilot
+      - web_research
+      - document_rag
+      - general_qa
+      - writing_assistant
+      - agent_monitoring
+      - multi_agent
+
+  - id: pc_rtx5090_32gb
+    label: "PC — RTX 5090 32GB + 64GB RAM"
+    type: pc
+    memory_gb: 64
+    memory_bandwidth_gbs: 50
+    gpu_vram_gb: 32
+    portability: stationary
+    always_on: true
+    tier: pro
+    max_model: "qwen3.5:32b"
+    gpu_component: rtx-5090
+    ram_component: ram-64gb-ddr5
+    price_search_query: "RTX 5090 32GB GPU + 64GB DDR5 RAM build price"
+    note: "Highest performance consumer build. 32GB VRAM fits 32B dense. ~80 t/s for 27B."
+    supported_use_cases: all
+
+  - id: pc_amd_rx7900xtx
+    label: "PC — AMD RX 7900 XTX 24GB + 64GB RAM"
+    type: pc
+    memory_gb: 64
+    memory_bandwidth_gbs: 50
+    gpu_vram_gb: 24
+    portability: stationary
+    always_on: true
+    tier: pro
+    max_model: "qwen3.5:27b"
+    gpu_component: amd-rx-7900-xtx
+    ram_component: ram-64gb-ddr5
+    price_search_query: "AMD RX 7900 XTX 24GB GPU price + 64GB DDR5 RAM"
+    note: "Best AMD alternative to RTX 4090. Good ROCm/Ollama support."
+    supported_use_cases: all
+    unsupported_use_cases: [fine_tuning]
+
+  # ── NVIDIA AI Supercomputer ────────────────────────────
+
+  - id: nvidia_dgx_spark
+    label: "NVIDIA DGX Spark (GB10)"
+    type: ai-supercomputer
+    chip: Grace Blackwell GB10
+    memory_gb: 128
+    memory_bandwidth_gbs: 900
+    gpu_vram_gb: 0          # unified — same pool as CPU memory
+    portability: stationary
+    always_on: true
+    price_range: "~$3,000"
+    price_search_query: "NVIDIA DGX Spark price buy"
+    tier: pro
+    max_model: "qwen3.5:72b"
+    note: >
+      Grace Blackwell SoC. 128GB unified memory at ~900 GB/s.
+      1000 AI TOPS (FP4). Runs 200B+ parameter models locally.
+      After CES 2026 update: 2.5x faster via TensorRT-LLM + speculative decoding.
+      Ollama-compatible. Pairs well with Mac Mini as control plane.
+    supported_use_cases: all
+
+# ──────────────────────────────────────────────────────────
+# Repos
+# Key open-source GitHub repositories for local AI agent setups.
+# Augments frameworks[] with install/setup detail and community links.
+# ──────────────────────────────────────────────────────────
+repos:
+
+  # ── Automation ─────────────────────────────────────────
+
+  - id: repo-openclaw
+    label: "OpenClaw"
+    github: "openclaw/openclaw"
+    framework_ref: openclaw
+    category: automation
+    stars_approx: "40K+"
+    min_model_quality: standard
+    min_memory_gb: 16
+    ollama_compatible: true
+    install: |
+      git clone https://github.com/openclaw/openclaw
+      cd openclaw && npm install
+      cp .env.example .env   # set OLLAMA_HOST=http://localhost:11434
+      npm start
+    setup_guide: "https://github.com/Ryuki0x1/openclaw-local-llm-setup"
+    awesome_list: "https://github.com/mergisi/awesome-openclaw-agents"
+    note: >
+      Personal AI agent: browser, file, shell, calendar, messaging.
+      Connects via WhatsApp / Telegram / Slack / Signal.
+      Reliable threshold: 32B+ models (24GB VRAM or Apple Silicon 32GB+).
+
+  # ── UI ─────────────────────────────────────────────────
+
+  - id: repo-open-webui
+    label: "Open WebUI"
+    github: "open-webui/open-webui"
+    framework_ref: open-webui
+    category: ui
+    stars_approx: "80K+"
+    min_model_quality: light
+    min_memory_gb: 8
+    ollama_compatible: true
+    install: |
+      docker run -d -p 3000:8080 \
+        -e OLLAMA_BASE_URL=http://host.docker.internal:11434 \
+        -v open-webui:/app/backend/data \
+        ghcr.io/open-webui/open-webui:main
+    note: "ChatGPT-like UI for Ollama. No coding required."
+
+  # ── Agent Frameworks ────────────────────────────────────
+
+  - id: repo-smolagents
+    label: "smolagents (HuggingFace)"
+    github: "huggingface/smolagents"
+    framework_ref: smolagents
+    category: agent
+    stars_approx: "20K+"
+    min_model_quality: standard
+    min_memory_gb: 16
+    ollama_compatible: true
+    install: |
+      pip install smolagents[ollama]
+    quickstart: |
+      from smolagents import CodeAgent, OllamaModel, DuckDuckGoSearchTool
+      agent = CodeAgent(tools=[DuckDuckGoSearchTool()],
+                        model=OllamaModel("qwen3.5:9b"))
+      agent.run("Search and summarize today's AI news")
+
+  - id: repo-qwen-agent
+    label: "Qwen-Agent"
+    github: "QwenLM/Qwen-Agent"
+    framework_ref: qwen-agent
+    category: agent
+    stars_approx: "7K+"
+    min_model_quality: standard
+    min_memory_gb: 16
+    ollama_compatible: true
+    install: |
+      pip install qwen-agent
+    note: "Qwen official agent framework. MCP + Function Calling + RAG."
+
+  - id: repo-crewai
+    label: "CrewAI"
+    github: "crewAIInc/crewAI"
+    framework_ref: crewai
+    category: agent
+    stars_approx: "30K+"
+    min_model_quality: standard-plus
+    min_memory_gb: 32
+    ollama_compatible: true
+    install: |
+      pip install crewai
+
+  - id: repo-langgraph
+    label: "LangGraph"
+    github: "langchain-ai/langgraph"
+    framework_ref: langgraph
+    category: agent
+    stars_approx: "15K+"
+    min_model_quality: standard
+    min_memory_gb: 16
+    ollama_compatible: true
+    install: |
+      pip install langgraph langchain-community
+
+  # ── IDE ────────────────────────────────────────────────
+
+  - id: repo-continue
+    label: "Continue"
+    github: "continuedev/continue"
+    framework_ref: continue
+    category: ide
+    stars_approx: "25K+"
+    min_model_quality: light
+    min_memory_gb: 8
+    ollama_compatible: true
+    install: "VSCode Marketplace → search 'Continue' → Install"
+    note: "Open-source Copilot alternative. Configure Ollama in settings.json."
+
+  # ── RAG ────────────────────────────────────────────────
+
+  - id: repo-llamaindex
+    label: "LlamaIndex"
+    github: "run-llama/llama_index"
+    framework_ref: llamaindex
+    category: rag
+    stars_approx: "40K+"
+    min_model_quality: standard
+    min_memory_gb: 16
+    ollama_compatible: true
+    install: |
+      pip install llama-index llama-index-llms-ollama
+
+# ──────────────────────────────────────────────────────────
+# Setup Profiles
+# Curated device + model + framework combinations for specific goals.
+# These are validated, real-world configurations.
+# ──────────────────────────────────────────────────────────
+setup_profiles:
+
+  # ── Single device setups ───────────────────────────────
+
+  - id: setup-mac-mini-openclaw
+    label: "Personal Automation Server: Mac Mini M4 32GB + OpenClaw"
+    devices: [mac_mini_m4_32gb]
+    model: "qwen3.5:35b-a3b"
+    framework: openclaw
+    repo: repo-openclaw
+    use_cases: [web_automation, file_automation, schedule_task]
+    complexity: medium
+    always_on: true
+    monthly_cost: "$0 (local only)"
+    note: >
+      Silent, low-power (~20W) always-on automation server.
+      35b-a3b MoE runs at ~20 t/s — responsive enough for browser tasks.
+      OpenClaw connects to Telegram/Slack for remote control.
+    setup_steps:
+      - "ollama pull qwen3.5:35b-a3b"
+      - "git clone https://github.com/openclaw/openclaw && cd openclaw"
+      - "cp .env.example .env && set OLLAMA_HOST=http://localhost:11434"
+      - "npm install && npm start"
+
+  - id: setup-mac-mini-chat
+    label: "Local ChatGPT: Mac Mini M4 16GB + Open WebUI"
+    devices: [mac_mini_16gb]
+    model: "qwen3.5:9b"
+    framework: open-webui
+    repo: repo-open-webui
+    use_cases: [general_qa, writing_assistant, document_rag]
+    complexity: low
+    always_on: true
+    monthly_cost: "$0"
+    note: "Simplest personal AI server. No coding required after setup."
+    setup_steps:
+      - "ollama pull qwen3.5:9b"
+      - "docker run -d -p 3000:8080 -e OLLAMA_BASE_URL=http://host.docker.internal:11434 ghcr.io/open-webui/open-webui:main"
+      - "Open http://localhost:3000"
+
+  - id: setup-dgx-spark-solo
+    label: "High-Power Local AI: NVIDIA DGX Spark"
+    devices: [nvidia_dgx_spark]
+    model: "qwen3.5:72b"
+    framework: qwen-agent
+    repo: repo-qwen-agent
+    use_cases: all
+    complexity: medium
+    always_on: true
+    monthly_cost: "~$8 (electricity)"
+    note: >
+      128GB unified memory at 900 GB/s. Runs 72B models locally.
+      2.5x faster after 2026 TensorRT-LLM update.
+      Overkill for single-user but excellent for team inference server.
+    setup_steps:
+      - "ollama pull qwen3.5:72b   # or qwen3.5:35b-a3b for faster response"
+      - "pip install qwen-agent"
+
+  # ── Multi-device (hybrid) setups ───────────────────────
+
+  - id: setup-mac-mini-dgx-hybrid
+    label: "Hybrid AI Stack: Mac Mini M4 32GB + DGX Spark"
+    devices: [mac_mini_m4_32gb, nvidia_dgx_spark]
+    roles:
+      mac_mini_m4_32gb: "Control plane — daily tasks, light inference (9B-35B)"
+      nvidia_dgx_spark: "Inference server — heavy models (72B+), batch jobs"
+    model_light: "qwen3.5:35b-a3b"
+    model_heavy: "qwen3.5:72b"
+    framework: qwen-agent
+    repo: repo-qwen-agent
+    use_cases: all
+    complexity: medium
+    always_on: true
+    monthly_cost: "~$11 (both devices)"
+    note: >
+      Mac Mini handles everyday agent tasks with 35b-a3b MoE (~20 t/s).
+      DGX Spark handles demanding jobs: deep research, agent evaluation,
+      fine-tuning, 72B inference. Point Ollama on Mac Mini to DGX Spark
+      via OLLAMA_HOST for transparent model routing.
+    setup_steps:
+      - "# On DGX Spark:"
+      - "OLLAMA_HOST=0.0.0.0:11434 ollama serve"
+      - "ollama pull qwen3.5:72b"
+      - "# On Mac Mini (point to DGX Spark for heavy models):"
+      - "export OLLAMA_HOST=http://[dgx-spark-ip]:11434"
+      - "ollama pull qwen3.5:35b-a3b   # stays local on Mac Mini"
+      - "pip install qwen-agent"
+
+  - id: setup-mac-mini-rtx-hybrid
+    label: "Hybrid AI Stack: Mac Mini M4 32GB + PC RTX 4090"
+    devices: [mac_mini_m4_32gb, pc_rtx4090]
+    roles:
+      mac_mini_m4_32gb: "Always-on control plane — chat, automation, scheduling"
+      pc_rtx4090: "GPU inference server — when high speed or large models needed"
+    model_light: "qwen3.5:9b"
+    model_heavy: "qwen3.5:27b"
+    framework: smolagents
+    repo: repo-smolagents
+    use_cases: all
+    complexity: medium
+    always_on: false
+    note: >
+      Budget-friendly alternative to DGX Spark hybrid.
+      Mac Mini silent and always on; RTX 4090 PC for power-user sessions.
+    setup_steps:
+      - "# On PC (RTX 4090 inference server):"
+      - "OLLAMA_HOST=0.0.0.0:11434 ollama serve && ollama pull qwen3.5:27b"
+      - "# On Mac Mini:"
+      - "ollama pull qwen3.5:9b   # local fallback"
+      - "pip install smolagents[ollama]"

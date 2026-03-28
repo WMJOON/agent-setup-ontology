@@ -1,0 +1,281 @@
+# agent-setup-ontology — Relation Definitions
+# v0.0.1: foundational data only.
+#
+# Structure:
+#   categories       — relation type taxonomy (범주 정의)
+#   relation_types   — formal relation type definitions with derivation rules
+#   instances        — explicit relation instances that cannot be auto-derived
+#     upgrade_paths      — device → device upgrade path
+#     api_to_local_paths — api_service → device transition recommendation
+version: "0.0.1"
+
+# ──────────────────────────────────────────────────────────
+# Relation Category Taxonomy (범주)
+# ──────────────────────────────────────────────────────────
+categories:
+
+  compatibility:
+    label: "Compatibility"
+    description: >
+      Can X work with Y?
+      Whether two entities can be used together in a stack.
+      Example: device can run model, framework supports runtime.
+
+  equivalence:
+    label: "Equivalence"
+    description: >
+      X and Y provide comparable capability.
+      Used to map between cloud API and local model quality.
+      Does not imply identical output — indicates same quality tier.
+
+  transition:
+    label: "Transition"
+    description: >
+      When and how to move from X to Y.
+      Covers both device upgrades and API-to-local migration.
+      The primary relation category for cost-based recommendations.
+
+  capability:
+    label: "Capability"
+    description: >
+      X is capable of handling Y.
+      Whether a model or device has sufficient quality/resources
+      to support a given use case at practical speeds.
+
+  requirement:
+    label: "Requirement"
+    description: >
+      Y needs X to function at a useful level.
+      Minimum tier or resource required by a use case.
+
+  recommendation:
+    label: "Recommendation"
+    description: >
+      X is well-suited for Y.
+      Preferred pairing, not a hard constraint.
+      The copilot prioritizes recommendation relations when multiple
+      compatible options exist.
+
+# ──────────────────────────────────────────────────────────
+# Relation Type Definitions
+# ──────────────────────────────────────────────────────────
+relation_types:
+
+  # ── Compatibility ──────────────────────────────────────
+
+  - id: device_runs_model
+    label: "Device — runs → Model"
+    category: compatibility
+    source: device
+    target: model
+    inverse: model_runs_on_device
+    derivation: >
+      device.memory_gb >= model.min_memory_gb
+      For PC with discrete GPU: device.gpu_vram_gb >= model's VRAM requirement
+    note: >
+      Fully derivable from data.
+      The copilot computes this at query time — no explicit instances needed.
+
+  - id: framework_uses_runtime
+    label: "Framework — uses → Runtime"
+    category: compatibility
+    source: framework
+    target: runtime  # values: ollama | openai | anthropic | ...
+    field: "framework.runtime_support[]"
+    note: "Stored explicitly in framework.runtime_support[]."
+
+  # ── Equivalence ─────────────────────────────────────────
+
+  - id: api_equivalent_local
+    label: "API Service — equivalent_to → Model"
+    category: equivalence
+    source: api_service
+    target: model
+    field: "api_service.local_alternative"
+    basis: >
+      Same quality tier (light/standard/standard-plus/pro).
+      Comparable tool_calling reliability and instruction-following
+      for typical agent tasks. Does not guarantee identical outputs.
+    note: "Stored explicitly in api_service.local_alternative field."
+
+  # ── Transition ──────────────────────────────────────────
+
+  - id: api_transitions_to_device
+    label: "API Service — transitions_to → Device"
+    category: transition
+    source: api_service
+    target: device
+    trigger: >
+      monthly_api_cost > device.price / 24
+      (monthly API spend exceeds 2-year amortized device cost)
+    derivation: >
+      1. api_service.local_alternative → model_id
+      2. Find devices where memory_gb >= model.min_memory_gb
+      3. Filter by lowest price among qualifying devices
+      4. Prefer same OS/platform as user's current setup
+    note: >
+      Computed at query time using cost_estimation formulas in concepts.yaml.
+      Explicit instances provided below for the most common paths.
+
+  - id: device_upgrades_to
+    label: "Device — upgrades_to → Device"
+    category: transition
+    source: device
+    target: device
+    derivation: >
+      Follow tier ordering: light → standard → standard-plus → pro
+      Prefer same form_factor (mac-mini → mac-mini, pc → pc).
+      Skip tiers if use case requirements jump significantly.
+    note: "Explicit upgrade_paths instances provided below."
+
+  # ── Capability ──────────────────────────────────────────
+
+  - id: model_enables_use_case
+    label: "Model — enables → Use Case"
+    category: capability
+    source: model
+    target: use_case
+    derivation: >
+      model.quality >= use_case's minimum quality requirement
+      AND model.tool_calling = true  (for agent/automation use cases)
+    note: "Derivable. Use concepts.yaml quality descriptions to map quality → use_case."
+
+  - id: device_supports_use_case
+    label: "Device — supports → Use Case"
+    category: capability
+    source: device
+    target: use_case
+    derivation: >
+      device.memory_gb >= use_case.min_memory_gb
+      AND (NOT use_case.requires_gpu OR device.gpu_vram_gb > 0)
+      AND (NOT use_case.needs_always_on OR device.always_on = true)
+    note: "Derivable. Combines device specs with use_case requirements."
+
+  # ── Requirement ─────────────────────────────────────────
+
+  - id: use_case_requires_tier
+    label: "Use Case — requires → Device Tier"
+    category: requirement
+    source: use_case
+    target: device_tier  # light | standard | standard-plus | pro
+    derivation: >
+      min_memory_gb < 16  → light (or higher)
+      min_memory_gb = 16  → standard (or higher)
+      min_memory_gb = 32  → standard-plus or pro
+      requires_gpu = true → must have gpu_vram_gb > 0
+    note: "Derivable from use_case.min_memory_gb and requires_gpu."
+
+  # ── Recommendation ──────────────────────────────────────
+
+  - id: framework_suits_use_case
+    label: "Framework — suits → Use Case"
+    category: recommendation
+    source: framework
+    target: use_case
+    field: "framework.best_for[]"
+    note: "Stored explicitly in framework.best_for[]."
+
+  - id: model_sweet_spot_for_tier
+    label: "Model — sweet_spot_for → Device Tier"
+    category: recommendation
+    source: model
+    target: device_tier
+    field: "model.sweet_spot"
+    note: >
+      When sweet_spot=true, this model is the first recommendation
+      for devices of the matching tier. Copilot ranks sweet_spot
+      models above others with equal quality.
+
+# ──────────────────────────────────────────────────────────
+# Instances — Explicit Relation Data
+# (only where derivation rules are insufficient)
+# ──────────────────────────────────────────────────────────
+instances:
+
+  # ── Device Upgrade Paths ────────────────────────────────
+  # relation: device_upgrades_to
+  # rationale: form_factor preference makes this non-trivially derivable
+
+  upgrade_paths:
+
+    macbook:
+      - from: macbook_air_8gb
+        to: macbook_16gb
+        reason: "16GB unlocks 9B models and most single-agent use cases."
+      - from: macbook_16gb
+        to: macbook_pro_32gb
+        reason: "32GB unlocks MoE 35B-class models and multi-agent workflows."
+
+    mac_mini:
+      - from: mac_mini_16gb
+        to: mac_mini_m4_32gb
+        reason: "Same form factor. 32GB unlocks 35b-a3b at ~$150 more."
+      - from: mac_mini_m4_32gb
+        to: mac_mini_pro_48gb
+        reason: "M4 Pro doubles bandwidth. 48GB unlocks 72B models."
+
+    pc:
+      - from: pc_no_gpu
+        to: pc_rtx4060
+        reason: "RTX 4060 8GB (~$300) enables 9B model at 5-10x CPU speed."
+      - from: pc_rtx4060
+        to: pc_rtx4090
+        reason: "24GB VRAM unlocks 32B dense models and LoRA fine-tuning."
+
+  # ── API → Local Transition Paths ───────────────────────
+  # relation: api_transitions_to_device
+  # rationale: includes platform preference and form_factor hints
+
+  api_to_local_paths:
+
+    # Standard quality tier transitions
+    - from_api: gpt-4o-mini
+      quality: standard
+      local_model: "qwen3.5:9b"
+      min_device: mac_mini_16gb
+      recommended_device: mac_mini_m4_32gb
+      reason: >
+        mac_mini_16gb is the lowest-cost device that runs qwen3.5:9b comfortably.
+        mac_mini_m4_32gb adds MoE 35b-a3b capability for ~$150 more.
+
+    - from_api: gemini-2-flash
+      quality: standard
+      local_model: "qwen3.5:9b"
+      min_device: mac_mini_16gb
+      recommended_device: mac_mini_m4_32gb
+      reason: "Same as gpt-4o-mini transition — standard quality tier."
+
+    - from_api: claude-haiku-4-5
+      quality: standard
+      local_model: "qwen3.5:9b"
+      min_device: mac_mini_16gb
+      recommended_device: mac_mini_m4_32gb
+      reason: "Claude Haiku is standard tier. qwen3.5:9b is the local equivalent."
+
+    # Pro quality tier transitions
+    - from_api: gpt-4o
+      quality: pro
+      local_model: "qwen3.5:35b-a3b"
+      min_device: mac_mini_m4_32gb
+      recommended_device: mac_mini_pro_48gb
+      reason: >
+        qwen3.5:35b-a3b (MoE) matches GPT-4o quality at pro tier.
+        mac_mini_m4_32gb runs it at ~20 t/s.
+        mac_mini_pro_48gb (M4 Pro) adds 2x bandwidth for ~30 t/s.
+
+    - from_api: gemini-2-pro
+      quality: pro
+      local_model: "qwen3.5:35b-a3b"
+      min_device: mac_mini_m4_32gb
+      recommended_device: mac_mini_pro_48gb
+      reason: "Same as gpt-4o transition — pro quality tier."
+
+    - from_api: claude-sonnet-4-6
+      quality: pro
+      local_model: "qwen3.5:35b-a3b"
+      min_device: mac_mini_m4_32gb
+      recommended_device: mac_mini_pro_48gb
+      reason: >
+        Claude Sonnet is high pro tier.
+        qwen3.5:35b-a3b is the closest open-weight equivalent.
+        For users needing true Sonnet-level quality, qwen3.5:27b (dense) may be better.

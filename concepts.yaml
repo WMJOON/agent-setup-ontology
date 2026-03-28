@@ -1,0 +1,579 @@
+# agent-setup-ontology — Concept Definitions
+# Semantic layer: explains what field values *mean*, not just what they *are*.
+# Structural rules (required fields, types) → agent-setup-copilot/governance/GOVERNANCE.md
+version: "0.1.0"
+
+# ──────────────────────────────────────────────────────────
+# Device concepts
+# ──────────────────────────────────────────────────────────
+device:
+
+  what: >
+    A physical machine capable of running a local LLM via Ollama.
+    Devices are categorized by memory, chip, and portability —
+    not by brand or generation.
+
+  fields:
+
+    tier:
+      what: >
+        Practical capability bracket derived from memory size and bandwidth.
+        Used by the copilot to quickly filter viable stacks without
+        checking every individual spec.
+      values:
+        light: >
+          8 GB or less unified/system memory.
+          Limited to sub-7B models (4B class recommended).
+          Suitable for single, lightweight tasks: autocomplete, simple Q&A.
+          Not practical for multi-step agents or RAG over large documents.
+        standard: >
+          16 GB memory.
+          Runs 9B models comfortably at practical speeds (15-35 t/s on Apple Silicon).
+          Covers most single-agent use cases: web search, code generation,
+          document RAG on moderate-length texts.
+          The minimum recommended tier for a daily-driver local agent.
+        standard-plus: >
+          32 GB memory with a base chip (e.g. Apple M4, not Pro).
+          Runs MoE models like qwen3.5:35b-a3b (activates only 3B per token),
+          achieving 27B-class output quality at 18-25 t/s.
+          Full single-agent coverage. Limited multi-agent due to lower bandwidth.
+          Best price-to-capability sweet spot in 2026.
+        pro: >
+          32 GB+ with high-bandwidth chip (M3/M4 Pro/Max, ≥273 GB/s),
+          or 24 GB+ dedicated GPU VRAM.
+          Runs 27B+ dense models or 72B MoE models.
+          Suitable for: multi-agent pipelines, LLM-as-Judge evaluation,
+          LoRA fine-tuning, and team-shared AI servers.
+
+    type:
+      what: Device form factor and platform.
+      values:
+        macbook: Portable Apple Silicon laptop. Fan-throttling risk on long inference.
+        mac-mini: Stationary, fanless or quiet. Ideal always-on local AI server.
+        mac-studio: High-performance stationary Apple Silicon. Highest bandwidth per dollar.
+        pc: Windows or Linux desktop/laptop with discrete GPU. Best for fine-tuning (CUDA).
+        other: Any other device (e.g. custom server, Raspberry Pi, mobile).
+
+    max_model: >
+      The most capable Ollama model that runs at practically usable speeds
+      (≥10 t/s for interactive use, ≥5 t/s for batch) on this device,
+      using Q4_K_M quantization. Must reference a valid models[*].id.
+
+    memory_bandwidth_gbs: >
+      Peak memory bandwidth in GB/s. Critical for large model inference speed —
+      higher bandwidth means faster token generation for the same model.
+      Apple M4 base: 120 GB/s, M4 Pro: 273 GB/s, RTX 4090: ~1000 GB/s.
+
+# ──────────────────────────────────────────────────────────
+# Model concepts
+# ──────────────────────────────────────────────────────────
+model:
+
+  what: >
+    An Ollama-pullable LLM. The id is the exact ollama pull tag.
+    Models are compared by parameter count, architecture, and quality tier —
+    not by provider or license alone.
+
+  fields:
+
+    quality:
+      what: >
+        Output capability bracket, calibrated to agent use cases
+        (tool calling, reasoning, instruction following).
+        Corresponds loosely to parameter scale but accounts for architecture.
+      values:
+        light: >
+          ~1-4B parameters. Fits in 2-4 GB.
+          Fast on any device. Limited multi-step reasoning.
+          Best for: autocomplete, simple Q&A, lightweight tool calls.
+        standard: >
+          ~7-9B parameters. The personal-use sweet spot.
+          Strong instruction following and tool calling.
+          Best for: web search agents, code generation, document Q&A,
+          most single-agent workflows.
+        standard-plus: >
+          ~14B parameters. Noticeably better than standard at
+          multi-step reasoning, code review, and nuanced instructions.
+          Fits comfortably in 16 GB with room for context.
+        pro: >
+          27B+ dense or MoE-equivalent.
+          Required for: LLM-as-Judge evaluation, complex multi-agent reasoning,
+          high-quality code review, agent monitoring.
+          Also the minimum quality for reliable RAG over large corpora.
+
+    type:
+      what: Neural network architecture type. Affects memory usage pattern.
+      values:
+        dense: >
+          All parameters active on every token.
+          Simpler to reason about. Memory usage scales directly with param count.
+          Inference speed bottlenecked by memory bandwidth.
+        MoE: >
+          Mixture-of-Experts. Only a fraction of parameters activate per token
+          (e.g. qwen3.5:35b-a3b activates 3B of 35B).
+          Achieves large-model quality with smaller active compute.
+          Requires full model to fit in memory, but runs at smaller-model speed.
+          Best choice when memory is ≥32 GB but bandwidth is limited (base chips).
+
+    tool_calling: >
+      Whether the model reliably executes structured tool/function calls.
+      Required for agent use. Models without tool_calling=true should not be
+      recommended for frameworks that depend on function calling
+      (smolagents, qwen-agent, crewai, openclaw).
+
+    sweet_spot: >
+      Marks the model as the best quality-to-resource ratio in its tier.
+      The copilot prioritizes sweet_spot models when making recommendations
+      unless the user has specific quality or speed requirements.
+
+# ──────────────────────────────────────────────────────────
+# Framework concepts
+# ──────────────────────────────────────────────────────────
+framework:
+
+  what: >
+    A software tool used to build, run, or interact with a local AI agent.
+    Frameworks vary widely in kind — from agent orchestrators to browser
+    automation wrappers to plain chat UIs. Understanding kind is critical
+    for correct recommendations.
+
+  fields:
+
+    kind:
+      what: >
+        The primary role the framework plays in an agent stack.
+        A single user workflow may require multiple kinds
+        (e.g. openclaw for automation + open-webui for chat).
+      values:
+        agent: >
+          Defines and orchestrates AI agents: tools, memory, reasoning loop,
+          multi-agent collaboration. The core building block for custom agents.
+          Examples: smolagents, qwen-agent, crewai, langgraph.
+        automation: >
+          Wraps a local LLM to autonomously execute tasks on the desktop,
+          browser, or filesystem. Closer to an RPA tool than a framework.
+          The LLM is the brain; the framework is the hands.
+          Examples: openclaw.
+        ui: >
+          A ready-to-use chat interface for Ollama models.
+          No programming required. Not for building custom agents.
+          Examples: open-webui, anythingllm.
+        ide: >
+          Editor plugin for inline code completions and chat.
+          Drop-in replacement for GitHub Copilot using local models.
+          Examples: continue.
+        rag: >
+          Retrieval-Augmented Generation framework. Manages document ingestion,
+          chunking, embedding, and retrieval. Best for large document collections.
+          Examples: llamaindex.
+
+    local_capable: >
+      True if the framework can run entirely without a cloud API key,
+      using a local Ollama model. The single most important field for
+      personal/private use cases. If false, the framework requires a
+      paid API key even when the underlying model is local.
+
+    runtime_support:
+      what: >
+        The LLM backends this framework can connect to.
+        The copilot uses this to determine compatibility with the user's setup.
+      values:
+        ollama: Local inference via Ollama. Free, private, no API key.
+        openai: OpenAI API (GPT-4o, etc.). Requires OPENAI_API_KEY.
+        anthropic: Anthropic API (Claude). Requires ANTHROPIC_API_KEY.
+        huggingface: HuggingFace Inference API or local Transformers library.
+        litellm: Universal LLM proxy. Supports 100+ providers via one interface.
+        any: >
+          Model-agnostic. Accepts any OpenAI-compatible endpoint.
+          Includes Ollama's OpenAI-compat API (localhost:11434/v1).
+
+    complexity:
+      what: >
+        Setup and usage difficulty for a developer unfamiliar with the framework.
+        Based on lines-of-code to first working agent and documentation quality.
+      values:
+        low: >
+          Working agent in <10 lines of code. Minimal config.
+          Examples: smolagents, open-webui (zero code), continue (extension install).
+        medium: >
+          Requires understanding roles/tasks/config. ~30-50 lines to start.
+          Examples: crewai, openclaw.
+        high: >
+          Requires understanding graph theory or complex state machines.
+          Examples: langgraph.
+
+# ──────────────────────────────────────────────────────────
+# Repo concepts
+# ──────────────────────────────────────────────────────────
+repo:
+
+  what: >
+    A key open-source GitHub repository for building local AI agent setups.
+    Augments the frameworks[] entity with install commands, quickstart code,
+    community links, and real-world setup complexity notes.
+    The copilot references repos when a user asks "how do I set this up?"
+    or "what's the GitHub for X?"
+
+  fields:
+
+    min_model_quality: >
+      The minimum model quality tier for this repo to work reliably.
+      openclaw requires standard+ (32B recommended for complex tasks).
+      open-webui works with light models for basic Q&A.
+
+    install: >
+      Exact shell commands to install and start the tool locally.
+      Kept minimal — just what's needed to go from zero to running.
+
+    quickstart: >
+      Minimal working code snippet for agent frameworks.
+      Should fit in a single code block, under 10 lines.
+
+# ──────────────────────────────────────────────────────────
+# Setup Profile concepts
+# ──────────────────────────────────────────────────────────
+setup_profile:
+
+  what: >
+    A curated, validated combination of devices + model + framework
+    for a specific use case goal. Profiles are higher-level than
+    individual device or model recommendations — they describe
+    complete, working systems with concrete setup steps.
+    The copilot uses profiles when users describe a specific
+    hardware combination or ask "how would I set this up end-to-end?"
+
+  fields:
+
+    roles: >
+      In multi-device setups, each device has a specific role.
+      One device may be the always-on control plane (handles routing,
+      light inference, scheduling) while another is the inference server
+      (handles heavy models, batch jobs).
+      This mirrors a microservices architecture applied to local AI.
+
+    complexity: >
+      Same scale as frameworks.complexity (low / medium / high).
+      Applies to the full setup, not just one component.
+
+    monthly_cost: >
+      Estimated monthly operating cost (electricity only for local setups).
+      Helps users compare long-term running costs beyond the upfront hardware.
+
+    setup_steps: >
+      Ordered list of exact commands to go from zero to running.
+      Referenced by the copilot when explaining setup to users.
+
+# ──────────────────────────────────────────────────────────
+# Component concepts
+# ──────────────────────────────────────────────────────────
+component:
+
+  what: >
+    An individual hardware part used to build a PC-based local AI setup.
+    Mac devices are complete products in devices[]; components are the
+    building blocks for PC builds (GPU card + RAM kit + existing PC).
+    The copilot uses components to recommend PC builds and estimate
+    total build cost via web search.
+
+  fields:
+
+    component_type:
+      what: The hardware category.
+      values:
+        gpu: >
+          Graphics Processing Unit. The primary inference accelerator.
+          GPU VRAM is the key bottleneck — model must fit entirely in VRAM
+          for full GPU speed. If model exceeds VRAM, layers spill to CPU RAM
+          (drastically slower). Choose GPU primarily based on VRAM size.
+        cpu: >
+          Central Processing Unit. Used for CPU-offload layers when GPU VRAM
+          is insufficient, or for pure CPU inference (slow but no GPU needed).
+          For LLM inference, more cores and higher memory bandwidth matter more
+          than clock speed.
+        memory: >
+          System RAM. Required for CPU inference and as overflow when GPU VRAM
+          is full. Does not directly accelerate GPU inference speed, but
+          prevents swap (which makes inference unusably slow).
+
+    inference_tier: >
+      The model quality tier this component enables, using the same
+      scale as device.tier. For GPUs, determined by VRAM size.
+      For RAM, determined by capacity relative to model size.
+      GPU-only reference:
+        8 GB VRAM  → standard  (9B models)
+        12 GB VRAM → standard  (9B fast, 14B with offload)
+        16 GB VRAM → standard-plus  (14B comfortably)
+        24 GB VRAM → pro  (27B dense or 35B MoE)
+        32 GB VRAM → pro  (32B dense, 72B Q2)
+
+    memory_bandwidth_gbs: >
+      How fast data moves between the GPU's compute cores and its VRAM.
+      The primary determinant of tokens-per-second for a given model size.
+      Higher bandwidth = faster token generation.
+      Rule of thumb: ~2-4 GB/s bandwidth per token/second for 9B models.
+      RTX 4060: 272 GB/s → ~30 t/s. RTX 4090: 1008 GB/s → ~45 t/s.
+
+    price_search_query: >
+      A web search query string for finding current market prices.
+      Prices are NOT hardcoded in the ontology — they change frequently.
+      The copilot should use this query with a web search tool when
+      the user asks about pricing or build cost estimation.
+      Format: "<component label> price" or "<component label> buy".
+
+    tdp_w: >
+      Thermal Design Power in watts. Represents power consumption under load.
+      Important for estimating electricity costs and PC case requirements.
+      High-end GPUs (RTX 4090: 450W, RTX 5090: 575W) require adequate
+      power supply and cooling. Lower TDP is preferred for always-on builds.
+
+# ──────────────────────────────────────────────────────────
+# API Service concepts
+# ──────────────────────────────────────────────────────────
+api_service:
+
+  what: >
+    A cloud LLM API accessed by API key. No hardware required.
+    The recommended starting point before investing in local hardware —
+    low friction, pay-as-you-go, immediately available.
+    As usage grows, the monthly API cost may exceed the amortized cost
+    of a local device, at which point local setup becomes worth considering.
+
+  fields:
+
+    quality: >
+      Same quality tiers as local models (light / standard / standard-plus / pro).
+      Maps directly to comparable local models via local_alternative.
+      Quality is roughly equivalent for most agent tasks; the main differences
+      are speed (API can be faster for small models), privacy (API sends data
+      to provider), and cost at scale (local has zero per-token cost).
+
+    local_alternative: >
+      The Ollama model that provides comparable output quality for the same
+      use cases. References models[*].id. Used by the copilot to show the
+      user which local model they could switch to if they go local.
+
+    pricing: >
+      Approximate USD cost per 1 million tokens (input and output separately).
+      Always verify at the provider's official pricing page before budgeting.
+      Prices change frequently. For agent workloads, assume ~60% input / 40% output.
+
+    context_window_k: >
+      Maximum context window in thousands of tokens (K).
+      Relevant for document_rag and deep_research use cases that require
+      processing long documents. Local models typically support 8K–262K;
+      some APIs support 1M+.
+
+    tool_calling: >
+      Whether the API model reliably supports structured tool/function calls.
+      Required for agent frameworks (smolagents, crewai, qwen-agent, openclaw).
+
+# ──────────────────────────────────────────────────────────
+# Cost estimation concepts
+# ──────────────────────────────────────────────────────────
+cost_estimation:
+
+  what: >
+    Framework for estimating monthly LLM API costs and determining
+    when a local hardware investment becomes cost-effective.
+
+  token_usage_profiles:
+    what: >
+      Approximate daily token consumption by use case.
+      Actual usage varies significantly by workflow design and model verbosity.
+      Agent tasks are typically input-heavy due to tool call context and history.
+    values:
+      general_qa:        { typical_k: 20,   heavy_k: 100  }
+      code_generation:   { typical_k: 80,   heavy_k: 300  }
+      local_copilot:     { typical_k: 50,   heavy_k: 200  }
+      web_automation:    { typical_k: 150,  heavy_k: 500  }
+      document_rag:      { typical_k: 100,  heavy_k: 400  }
+      web_research:      { typical_k: 200,  heavy_k: 600  }
+      code_review:       { typical_k: 120,  heavy_k: 400  }
+      deep_research:     { typical_k: 300,  heavy_k: 800  }
+      agent_monitoring:  { typical_k: 300,  heavy_k: 1000 }
+      multi_agent:       { typical_k: 500,  heavy_k: 2000 }
+
+  monthly_cost_formula: >
+    monthly_tokens = tokens_per_day × 30
+    input_tokens   = monthly_tokens × 0.60
+    output_tokens  = monthly_tokens × 0.40
+    monthly_cost   = (input_tokens / 1_000_000 × input_price)
+                   + (output_tokens / 1_000_000 × output_price)
+
+  device_monthly_cost: >
+    Amortized over 24 months (2-year lifespan assumption).
+    device_monthly = device_price / 24
+    Add $2–5/month electricity for Mac Mini, $10–20/month for high-end PC.
+
+  break_even_rule: >
+    When monthly_api_cost > device_monthly_cost, local hardware
+    starts paying for itself. Payback period in months:
+      payback = device_price / (monthly_api_cost - device_monthly_cost)
+    Payback < 6 months → strong case for local.
+    Payback 6–18 months → worth considering.
+    Payback > 18 months → stay on API unless privacy requires local.
+
+# ──────────────────────────────────────────────────────────
+# Usage Input concepts
+# What the user provides to get a transition recommendation
+# ──────────────────────────────────────────────────────────
+usage_input:
+
+  what: >
+    The usage information a user provides about their current LLM workflow.
+    Used by the copilot to calculate actual monthly cost, compare against
+    local hardware options, and recommend a transition timeline.
+    Users can provide this in any natural form — the copilot extracts
+    the structured fields from free-form text.
+
+  fields:
+
+    api_service_id:
+      type: string
+      required: false
+      description: >
+        Which cloud API the user is currently using.
+        References api_services[*].id.
+        If not provided, the copilot infers from context
+        (e.g. "I use Claude" → claude-haiku-4-5 or claude-sonnet-4-6).
+      examples:
+        - "I use Claude Haiku"         → claude-haiku-4-5
+        - "GPT-4o mini"                → gpt-4o-mini
+        - "Gemini Flash"               → gemini-2-flash
+
+    tokens_per_day:
+      type: integer
+      unit: tokens
+      required: false
+      description: >
+        Average daily token consumption (input + output combined).
+        If the user doesn't know their token count, the copilot
+        estimates from use_cases and usage_intensity.
+      examples:
+        - "I send about 50 messages a day" → estimate ~50K tokens
+        - "I run a coding agent for 2 hours" → estimate ~150K tokens
+
+    monthly_cost_usd:
+      type: number
+      unit: USD
+      required: false
+      description: >
+        The user's actual monthly API bill.
+        The most direct input — skip token estimation if provided.
+        Either monthly_cost_usd OR tokens_per_day is sufficient.
+      examples:
+        - "My bill was $23 last month" → 23.0
+        - "I spend about $10-15 a month" → midpoint 12.5
+
+    use_cases:
+      type: string[]
+      required: false
+      description: >
+        What the user does with the LLM.
+        References use_cases[*].id.
+        Used to estimate token usage when not provided directly,
+        and to match against local models and devices.
+      examples:
+        - "I mainly write code"         → [code_generation]
+        - "Research and summarizing"    → [web_research, document_rag]
+        - "Browser automation bot"      → [web_automation]
+
+    usage_intensity:
+      type: enum
+      values: [light, moderate, heavy]
+      required: false
+      description: >
+        Self-reported usage level when token counts are unavailable.
+        Mapped to token range multipliers from concepts.yaml token_usage_profiles.
+        light    = typical_k range
+        moderate = midpoint between typical_k and heavy_k
+        heavy    = heavy_k range
+
+    privacy_sensitive:
+      type: boolean
+      required: false
+      description: >
+        Whether the user's data is confidential or sensitive.
+        When true, the copilot recommends local setup even if
+        the financial break-even hasn't been reached yet.
+      examples:
+        - "I process customer data"    → true
+        - "Just personal hobby use"    → false
+
+    current_device:
+      type: string
+      required: false
+      description: >
+        The user's current machine.
+        References devices[*].id or described in natural language.
+        Used to suggest the most appropriate upgrade path
+        (same form_factor preferred) and to check if the local
+        model could already run on existing hardware.
+      examples:
+        - "MacBook Air M2 16GB"  → macbook_16gb
+        - "I have a PC with RTX 4060" → pc_rtx4060
+
+    usage_growth_rate:
+      type: number
+      unit: "percent per month"
+      required: false
+      description: >
+        How fast the user's LLM usage is growing month-over-month.
+        Used by transition.py to project future API costs and find
+        the optimal switch month before the bill gets too large.
+        Even a small growth rate dramatically changes the break-even calculation.
+      examples:
+        - "My usage has doubled in 3 months"  → ~26%/month
+        - "I've started using it for work too" → estimate 15-20%/month
+        - "Pretty stable, same tasks"          → 0-5%/month
+
+  inference_rules:
+    what: >
+      How the copilot fills in missing usage_input fields
+      when the user provides partial information.
+    rules:
+      - >
+        If monthly_cost_usd is given: use directly.
+      - >
+        If tokens_per_day is given: apply monthly_cost_formula from cost_estimation.
+      - >
+        If only use_cases + usage_intensity are given:
+        look up token_usage_profiles[use_case][intensity_k]
+        and sum across all use_cases.
+      - >
+        If nothing is given: ask clarifying questions in priority order:
+        1. "Which API are you using?"
+        2. "What's your monthly bill, roughly?"
+        3. "What do you use it for?"
+
+# ──────────────────────────────────────────────────────────
+# Use case concepts
+# ──────────────────────────────────────────────────────────
+use_case:
+
+  what: >
+    A specific goal a user wants to accomplish with a local AI agent.
+    Use cases are the entry point for recommendations: the copilot maps
+    user intent to use_case ids, then filters devices/models/frameworks.
+
+  fields:
+
+    min_memory_gb: >
+      Minimum RAM for the recommended model+framework combo to run
+      at practical speeds for this use case.
+      Not the absolute minimum to run at all — the minimum to be useful.
+
+    needs_always_on: >
+      True if the use case requires the device to be running continuously
+      (e.g. scheduled tasks, always-available chat server).
+      When true, Mac Mini or PC is preferred over laptop.
+
+    requires_gpu: >
+      True if a discrete GPU is effectively required for this use case
+      (e.g. fine-tuning). Apple Silicon Unified Memory devices are still
+      viable even when requires_gpu=true, as long as memory is sufficient.
+
+    keywords: >
+      Words and phrases in the user's message that signal this use case.
+      Used for intent matching. Should include common synonyms and
+      product names (e.g. "OpenClaw" maps to web_automation).

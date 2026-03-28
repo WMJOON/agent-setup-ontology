@@ -1,0 +1,34 @@
+name: Validate Ontology
+
+on:
+  push:
+    paths: ["ontology.yaml"]
+  pull_request:
+    paths: ["ontology.yaml"]
+
+jobs:
+  validate:
+    name: Consumer Governance Validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: pip install pyyaml jsonschema
+
+      # consumer governance validate.py를 직접 fetch해서 실행
+      - name: Fetch consumer validate.py
+        run: |
+          curl -fsSL \
+            "https://raw.githubusercontent.com/WMJOON/agent-setup-copilot/main/governance/scripts/validate.py" \
+            -o /tmp/consumer_validate.py
+
+      - name: Run governance validation
+        run: |
+          python /tmp/consumer_validate.py \
+            --ontology ontology.yaml \
+            --strict
