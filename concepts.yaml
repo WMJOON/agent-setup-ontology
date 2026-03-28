@@ -114,6 +114,16 @@ model:
           Achieves large-model quality with smaller active compute.
           Requires full model to fit in memory, but runs at smaller-model speed.
           Best choice when memory is ≥32 GB but bandwidth is limited (base chips).
+        reasoning: >
+          Chain-of-thought reasoning model (e.g. DeepSeek-R1 family).
+          Generates extended internal reasoning tokens (<think>...</think>) before
+          the final answer, consuming more tokens and adding latency.
+          Significantly stronger at multi-step math, logic, code analysis, and
+          complex problem solving vs same-size dense models.
+          Trade-off: slower time-to-first-token, higher per-query token cost.
+          Not suitable for real-time tool-calling agent loops — best for batch
+          evaluation, LLM-as-Judge tasks, and offline reasoning workloads.
+          tool_calling is typically false for current reasoning distillations.
 
     tool_calling: >
       Whether the model reliably executes structured tool/function calls.
