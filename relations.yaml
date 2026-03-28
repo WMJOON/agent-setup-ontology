@@ -299,6 +299,10 @@ instances:
           reason: "DuckDuckGoSearchTool built-in. Works out of the box."
         - use_case: agent_monitoring
           reason: "Code-execution approach makes logging and tracing straightforward."
+        - use_case: schedule_task
+          reason: "Lightweight agent loop is easy to wrap in a cron job or scheduled runner."
+        - use_case: deep_research
+          reason: "Multi-step search + code execution enables iterative research pipelines."
       weak_fit:
         - use_case: document_rag
           reason: "No native RAG pipeline — use llamaindex or qwen-agent instead."
@@ -327,11 +331,15 @@ instances:
           reason: "Reviewer + refactoring + documentation roles work well together."
         - use_case: web_research
           reason: "Researcher + summarizer roles are a natural pattern."
+        - use_case: deep_research
+          reason: "Researcher + analyst + writer crew pattern is ideal for long-form research."
       weak_fit:
         - use_case: web_automation
           reason: "Requires standard-plus+ model for role coordination. Overhead for simple tasks."
         - use_case: local_copilot
           reason: "Designed for multi-step pipelines, not IDE autocomplete."
+        - use_case: schedule_task
+          reason: "Crew overhead not needed for simple scheduled tasks — use smolagents."
 
     langgraph:
       strong_fit:
@@ -387,11 +395,29 @@ instances:
           reason: "Zero-code ChatGPT-like interface. Easiest to set up."
         - use_case: document_rag
           reason: "Built-in document upload and RAG for non-technical users."
+        - use_case: writing_assistant
+          reason: "Chat interface is ideal for iterative writing and editing workflows."
       weak_fit:
         - use_case: web_automation
           reason: "UI only. Cannot trigger browser actions programmatically."
         - use_case: multi_agent
           reason: "Single-user chat interface. Not designed for agent orchestration."
+
+    anythingllm:
+      strong_fit:
+        - use_case: general_qa
+          reason: "Desktop app with persistent workspaces. Good non-technical user experience."
+        - use_case: document_rag
+          reason: "Built-in document ingestion pipeline. No code required for RAG setup."
+        - use_case: writing_assistant
+          reason: "Workspace-based organization suits iterative writing projects."
+      weak_fit:
+        - use_case: web_automation
+          reason: "Desktop UI only. No programmatic browser or shell control."
+        - use_case: multi_agent
+          reason: "Single-agent by design. Not suitable for orchestrated pipelines."
+        - use_case: code_generation
+          reason: "No IDE integration. Use Continue for inline code assistance."
 
   # ── Model → Use Case Notes ──────────────────────────────
   # relation: model_enables_use_case (special cases / cross-family notes)
@@ -474,3 +500,272 @@ instances:
       use_case: local_copilot
       fit: standard
       reason: "Fast 7B model. Compatible with Continue IDE extension via Ollama."
+
+    # Writing / RAG — tool_calling not required
+    - model: gemma3:12b
+      use_case: writing_assistant
+      fit: strong
+      reason: "Strong instruction following and language quality. No tool calling needed for writing."
+    - model: gemma3:27b
+      use_case: writing_assistant
+      fit: strong
+      reason: "Pro-tier language quality without needing function calls."
+    - model: phi4:14b
+      use_case: writing_assistant
+      fit: strong
+      reason: "Phi-4 excels at text quality, style, and clarity improvements."
+    - model: deepseek-r1:8b
+      use_case: deep_research
+      fit: standard
+      reason: "Chain-of-thought helps with multi-step synthesis but 8B size limits coverage."
+    - model: deepseek-r1:32b
+      use_case: deep_research
+      fit: strong
+      reason: "Best open-weight reasoning model for long-form multi-source research synthesis."
+    - model: llama3.3:70b
+      use_case: deep_research
+      fit: strong
+      reason: "Strong instruction following at 70B handles complex research pipelines."
+
+    # Schedule tasks — lightweight is fine
+    - model: llama3.2:3b
+      use_case: schedule_task
+      fit: strong
+      reason: "Minimal memory footprint. Good for always-on background task execution."
+    - model: qwen3.5:4b
+      use_case: schedule_task
+      fit: strong
+      reason: "Light tier. Reliable tool calling for simple scheduled actions."
+
+  # ── Model ↔ Framework Fit ────────────────────────────────
+  # relation: framework_suits_use_case (model-family dimension)
+  # rationale: runtime_support[] captures technical compatibility,
+  #   but model family × framework ecosystem affinity is not derivable.
+  #   These notes guide copilot when a user specifies a preferred model family.
+
+  model_framework_fit:
+
+    # Qwen — qwen-agent is the native home
+    - model_family: qwen
+      framework: qwen-agent
+      fit: native
+      reason: >
+        Qwen models are the primary development target for qwen-agent.
+        Function calling, MCP tools, and RAG pipelines are tested and tuned
+        for Qwen series first. Prefer qwen-agent when running any Qwen model.
+    - model_family: qwen
+      framework: smolagents
+      fit: strong
+      reason: "smolagents supports Ollama natively. Qwen tool calling is reliable."
+    - model_family: qwen
+      framework: crewai
+      fit: strong
+      reason: "Qwen standard-plus/pro tiers handle role coordination well."
+
+    # Llama — LangChain/LangGraph is the native ecosystem
+    - model_family: llama
+      framework: langgraph
+      fit: native
+      reason: >
+        Meta Llama is the primary target model in most LangChain/LangGraph examples.
+        The ecosystem is most tested with Llama models via OllamaFunctions.
+    - model_family: llama
+      framework: crewai
+      fit: strong
+      reason: "Llama 3.1/3.3 tool calling is well-tested in CrewAI agent patterns."
+    - model_family: llama
+      framework: smolagents
+      fit: strong
+      reason: "smolagents works well with Llama via Ollama. Good code execution support."
+
+    # Mistral — LangChain / LangGraph ecosystem
+    - model_family: mistral
+      framework: langgraph
+      fit: strong
+      reason: "LangChain has a dedicated MistralAI integration. OllamaFunctions also works."
+    - model_family: mistral
+      framework: smolagents
+      fit: strong
+      reason: "Mistral 7B tool calling is reliable in smolagents CodeAgent."
+
+    # Gemma — no tool calling; limit to non-agent frameworks
+    - model_family: gemma
+      framework: open-webui
+      fit: strong
+      reason: "No tool calling required. Gemma's language quality shines in chat."
+    - model_family: gemma
+      framework: anythingllm
+      fit: strong
+      reason: "Built-in RAG in AnythingLLM bypasses tool calling — suits Gemma well."
+    - model_family: gemma
+      framework: llamaindex
+      fit: strong
+      reason: "LlamaIndex can use Gemma as the LLM for RAG without function calls."
+    - model_family: gemma
+      framework: smolagents
+      fit: weak
+      reason: "Gemma lacks reliable tool calling. CodeAgent will fail on tool-use tasks."
+    - model_family: gemma
+      framework: crewai
+      fit: none
+      reason: "CrewAI relies on function calling for role coordination. Gemma is incompatible."
+
+    # Phi-4 — reasoning strength, works best with structured frameworks
+    - model_family: phi4
+      framework: smolagents
+      fit: strong
+      reason: "Phi-4 strong code generation makes it a good fit for CodeAgent pattern."
+    - model_family: phi4
+      framework: continue
+      fit: strong
+      reason: "Excellent code quality for IDE autocomplete with fast enough latency at 14B."
+
+    # DeepSeek-R1 — batch only, no agent loops
+    - model_family: deepseek-r1
+      framework: langgraph
+      fit: weak
+      reason: >
+        Reasoning models generate long think tokens before responding.
+        Real-time agent loops become too slow. Use for offline evaluation nodes only.
+    - model_family: deepseek-r1
+      framework: open-webui
+      fit: strong
+      reason: "Chat UI works well for interactive reasoning. Thinking tokens are shown inline."
+    - model_family: deepseek-r1
+      framework: llamaindex
+      fit: strong
+      reason: "Batch document analysis and Q&A pipelines benefit from chain-of-thought."
+
+  # ── Device ↔ Model Fit (explicit) ───────────────────────
+  # relation: device_runs_model (special cases)
+  # rationale: derivation covers memory threshold checks,
+  #   but speed-quality trade-offs, thermal risk, and tier mismatch
+  #   for specific device-model pairs need explicit curation.
+
+  device_model_fit:
+
+    # MacBook Air 8GB — tight constraints
+    - device: macbook_air_8gb
+      model: "llama3.2:3b"
+      fit: good
+      reason: "3B fits easily. Fast and usable for local_copilot and simple Q&A."
+    - device: macbook_air_8gb
+      model: "qwen3.5:4b"
+      fit: good
+      reason: "4B sweet spot for 8GB. Reliable tool calling on minimal hardware."
+    - device: macbook_air_8gb
+      model: "gemma3:4b"
+      fit: good
+      reason: "Good language quality within 8GB. No tool calling is fine for general_qa."
+    - device: macbook_air_8gb
+      model: "qwen3.5:9b"
+      fit: marginal
+      reason: >
+        9B technically fits (8GB model + 8GB device is tight).
+        May swap under system load. Throttling risk on sustained inference.
+        Not recommended for production agent use on 8GB.
+
+    # MacBook 16GB — standard workhorse
+    - device: macbook_16gb
+      model: "qwen3.5:9b"
+      fit: excellent
+      reason: "Primary recommendation. 20-35 t/s. Best daily-driver on 16GB Apple Silicon."
+    - device: macbook_16gb
+      model: "mistral:7b"
+      fit: good
+      reason: "Good alternative to qwen3.5:9b. Strong LangChain ecosystem fit."
+    - device: macbook_16gb
+      model: "llama3.1:8b"
+      fit: good
+      reason: "Reliable tool calling. Fits comfortably in 16GB with room for context."
+    - device: macbook_16gb
+      model: "gemma3:12b"
+      fit: good
+      reason: "12B fits in 16GB. Good for writing and RAG without needing tool calls."
+    - device: macbook_16gb
+      model: "phi4:14b"
+      fit: marginal
+      reason: >
+        14B on 16GB is tight. Works but leaves little room for context.
+        Recommend 32GB+ for phi4:14b in production agent use.
+
+    # Mac Mini M4 32GB — sweet spot device
+    - device: mac_mini_m4_32gb
+      model: "qwen3.5:35b-a3b"
+      fit: excellent
+      reason: "The defining pairing. MoE activates 3B, achieving 27B quality at 18-25 t/s."
+    - device: mac_mini_m4_32gb
+      model: "deepseek-r1:8b"
+      fit: good
+      reason: "32GB has plenty of headroom. Good for offline reasoning jobs on always-on server."
+    - device: mac_mini_m4_32gb
+      model: "gemma3:27b"
+      fit: good
+      reason: "27B fits in 32GB. Slower than MoE but excellent for writing/RAG workloads."
+    - device: mac_mini_m4_32gb
+      model: "qwen3.5:27b"
+      fit: good
+      reason: "Dense 27B fits but runs slower than 35b-a3b MoE (~10-15 t/s vs ~20 t/s)."
+
+    # Mac Mini Pro 48GB
+    - device: mac_mini_pro_48gb
+      model: "llama3.3:70b"
+      fit: good
+      reason: "70B requires 64GB minimum — fits on 48GB only with aggressive quantization (Q2/Q3). Verify before relying on this."
+    - device: mac_mini_pro_48gb
+      model: "deepseek-r1:32b"
+      fit: excellent
+      reason: "32B fits with ample headroom. M4 Pro bandwidth enables good throughput."
+
+    # PC RTX 4060 — CUDA entry tier
+    - device: pc_rtx4060
+      model: "mistral:7b"
+      fit: excellent
+      reason: "7B fits entirely in 8GB VRAM. CUDA + Mistral is a popular Windows stack."
+    - device: pc_rtx4060
+      model: "llama3.1:8b"
+      fit: good
+      reason: "8B fits in 8GB VRAM. Standard Windows/Linux CUDA inference."
+    - device: pc_rtx4060
+      model: "qwen3.5:9b"
+      fit: marginal
+      reason: >
+        9B slightly exceeds 8GB VRAM. Some layers spill to CPU RAM.
+        Results in mixed CUDA/CPU inference — slower but functional.
+
+    # PC RTX 4090 — pro CUDA tier
+    - device: pc_rtx4090
+      model: "qwen3.5:27b"
+      fit: excellent
+      reason: "27B fits in 24GB VRAM entirely. ~40-50 t/s. Best CUDA dense model pairing."
+    - device: pc_rtx4090
+      model: "deepseek-r1:32b"
+      fit: marginal
+      reason: >
+        32B exceeds 24GB VRAM. Partial CPU offload required.
+        Still functional for batch reasoning but not optimal.
+
+  # ── API → Local Paths (expanded) ────────────────────────
+  # Additional paths for Mistral API
+
+  api_to_local_paths_extended:
+
+    - from_api: mistral-small
+      quality: standard
+      local_model: "mistral:7b"
+      min_device: mac_mini_16gb
+      recommended_device: mac_mini_m4_32gb
+      reason: >
+        mistral:7b is the direct local equivalent of Mistral Small API.
+        Users already familiar with Mistral's behavior will get the most
+        consistent local experience using the same model family.
+
+    - from_api: mistral-large
+      quality: pro
+      local_model: "qwen3.5:35b-a3b"
+      min_device: mac_mini_m4_32gb
+      recommended_device: mac_mini_pro_48gb
+      reason: >
+        No open-weight Mistral Large equivalent is Ollama-pullable at this tier.
+        qwen3.5:35b-a3b provides comparable pro-tier quality at similar cost.
+        Users wanting Mistral-family continuity can use mistral:7b but accept quality downgrade.

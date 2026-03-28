@@ -118,6 +118,45 @@ use_cases:
     recommended_models: [qwen3.5:9b, qwen3.5:14b, llama3.1:8b, mistral:7b]
     recommended_frameworks: []
 
+  - id: deep_research
+    label: "딥 리서치"
+    description: "멀티스텝 리서치, 출처 종합, 장문 보고서 작성"
+    keywords: [딥리서치, 리포트, 분석, 조사, 출처, 종합,
+               deep research, multi-step, report, long-form, synthesis, sources, survey]
+    min_memory_gb: 32
+    needs_always_on: false
+    recommended_models: [qwen3.5:27b, qwen3.5:35b-a3b, llama3.3:70b, deepseek-r1:32b]
+    recommended_frameworks: [crewai, llamaindex, smolagents]
+    note: >
+      Requires multiple sequential tool calls (search → read → summarize → synthesize).
+      Standard-plus or pro tier model strongly recommended for coherent long-form output.
+
+  - id: writing_assistant
+    label: "글쓰기·문서 작성"
+    description: "초안 작성, 교정, 번역, 스타일 개선"
+    keywords: [글쓰기, 작성, 교정, 번역, 스타일, 에세이, 문서,
+               writing, draft, proofread, translate, style, essay, document, editing]
+    min_memory_gb: 8
+    needs_always_on: false
+    recommended_models: [qwen3.5:9b, qwen3.5:14b, gemma3:12b, gemma3:27b, phi4:14b]
+    recommended_frameworks: [open-webui, anythingllm]
+    note: >
+      tool_calling not required. Gemma models are strong here despite no function calling.
+      Chat UI (open-webui, anythingllm) is sufficient — no agent framework needed.
+
+  - id: schedule_task
+    label: "예약·자동 실행"
+    description: "정해진 시간에 작업 자동 실행 (크론, 배치)"
+    keywords: [예약, 자동실행, 크론, 배치, 스케줄, 반복,
+               schedule, cron, batch, recurring, automatic, timed, periodic]
+    min_memory_gb: 8
+    needs_always_on: true
+    recommended_models: [qwen3.5:4b, qwen3.5:9b, llama3.2:3b]
+    recommended_frameworks: [smolagents, openclaw]
+    note: >
+      Requires the device to be always-on (mac-mini, stationary PC preferred).
+      Light models are sufficient for most scheduled tasks — speed matters less than availability.
+
 # ──────────────────────────────────────────────────────────
 # 디바이스
 # ──────────────────────────────────────────────────────────
@@ -683,6 +722,36 @@ api_services:
       source: "https://ai.google.dev/pricing"
     local_alternative: "qwen3.5:27b"
     note: "High quality with massive context window."
+
+  # ── Mistral AI ─────────────────────────────────────────
+
+  - id: mistral-small
+    label: "Mistral Small"
+    provider: mistral
+    quality: standard
+    tool_calling: true
+    context_window_k: 128
+    pricing:
+      input_per_1m: 0.10
+      output_per_1m: 0.30
+      currency: USD
+      source: "https://mistral.ai/technology/#pricing"
+    local_alternative: "mistral:7b"
+    note: "Cheapest Mistral API. Well-suited for LangChain/LangGraph tool-calling pipelines."
+
+  - id: mistral-large
+    label: "Mistral Large"
+    provider: mistral
+    quality: pro
+    tool_calling: true
+    context_window_k: 128
+    pricing:
+      input_per_1m: 2.00
+      output_per_1m: 6.00
+      currency: USD
+      source: "https://mistral.ai/technology/#pricing"
+    local_alternative: "qwen3.5:27b"
+    note: "Flagship Mistral model. Strong function calling and instruction following."
 
 # ──────────────────────────────────────────────────────────
 # Components
