@@ -36,10 +36,30 @@ Add a device, model, or framework by editing `ontology.yaml` — no code knowled
 
 ## Schema contract
 
-Structural rules (required fields, types, enums) are owned by the consumer repo:
+Structural rules (required fields, types, enums) are currently owned by the consumer repo:
 [agent-setup-copilot/governance/](https://github.com/WMJOON/agent-setup-copilot/tree/main/governance)
 
 PRs to this repo are validated by CI using the consumer's `validate.py`.
+
+**Versioning direction:** As this ontology matures and additional consumers emerge,
+the schema contract will be versioned here (`schema_version` in each YAML file)
+and the governance rules migrated to a shared contract definition.
+This keeps the SOT self-contained and enables independent consumers to pin
+to specific schema versions without coupling to a single consumer's validation logic.
+
+---
+
+## Design principles
+
+- **Knowledge ≠ execution** — YAML here, logic in the consumer. Updating a model or device
+  requires no code change in any consumer application.
+- **Git as audit trail** — every recommendation rule change is a PR with a diff, reviewer,
+  and merge history. No wiki drift.
+- **Use-case first** — entries are organized around what users want to accomplish, not
+  around hardware specs or model names.
+- **Derivation over duplication** — relationships that can be computed from existing fields
+  are documented as derivation rules in `relations.yaml`, not hard-coded as data.
+  Explicit instances are reserved for cases where derivation is insufficient.
 
 ---
 

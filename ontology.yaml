@@ -11,100 +11,111 @@ use_cases:
   - id: web_automation
     label: "웹 자동화"
     description: "브라우저 조작, 스크래핑, 폼 자동화"
-    keywords: [OpenClaw, 브라우저, 크롤링, 자동화, 웹, 스크래핑]
+    keywords: [OpenClaw, 브라우저, 크롤링, 자동화, 웹, 스크래핑,
+               browser, crawling, scraping, automation, web, form]
     min_memory_gb: 16
     needs_always_on: false
-    recommended_models: [qwen3.5:9b, qwen3.5:35b-a3b]
+    recommended_models: [qwen3.5:9b, qwen3.5:35b-a3b, llama3.1:8b, mistral:7b]
     recommended_frameworks: [openclaw, smolagents]
 
   - id: file_automation
     label: "파일·시스템 자동화"
     description: "파일 정리, 변환, 백업 스크립트"
-    keywords: [파일, 정리, 변환, 백업, 스크립트, 자동화]
+    keywords: [파일, 정리, 변환, 백업, 스크립트, 자동화,
+               file, organize, convert, backup, script, automation]
     min_memory_gb: 8
     needs_always_on: false
-    recommended_models: [qwen3.5:4b, qwen3.5:9b]
+    recommended_models: [qwen3.5:4b, qwen3.5:9b, llama3.2:3b, llama3.1:8b]
     recommended_frameworks: [smolagents, qwen-agent]
 
   - id: code_generation
     label: "코드 생성·보조"
     description: "함수·클래스 작성, 보일러플레이트, 테스트 코드"
-    keywords: [코드, 개발, 프로그래밍, 함수, 클래스, 코딩]
+    keywords: [코드, 개발, 프로그래밍, 함수, 클래스, 코딩,
+               code, development, programming, function, class, coding, boilerplate, test]
     min_memory_gb: 16
     needs_always_on: false
-    recommended_models: [qwen3.5:14b, qwen3.5:35b-a3b]
+    recommended_models: [qwen3.5:14b, qwen3.5:35b-a3b, phi4:14b, llama3.1:8b]
     recommended_frameworks: [smolagents, qwen-agent, continue]
 
   - id: code_review
     label: "코드 리뷰·리팩토링"
     description: "PR 리뷰, 버그 탐지, 개선 제안"
-    keywords: [리뷰, 리팩토링, 버그, 개선, PR]
+    keywords: [리뷰, 리팩토링, 버그, 개선, PR,
+               review, refactoring, bug, improvement, pull request, diff]
     min_memory_gb: 32
     needs_always_on: false
-    recommended_models: [qwen3.5:27b, qwen3.5:35b-a3b]
+    recommended_models: [qwen3.5:27b, qwen3.5:35b-a3b, deepseek-r1:32b]
     recommended_frameworks: [smolagents, qwen-agent]
 
   - id: local_copilot
     label: "로컬 코파일럿 (IDE)"
     description: "IDE 인라인 자동완성 및 제안"
-    keywords: [코파일럿, 자동완성, Continue, IDE, VSCode]
+    keywords: [코파일럿, 자동완성, Continue, IDE, VSCode,
+               copilot, autocomplete, inline, suggestion, editor, jetbrains]
     min_memory_gb: 8
     needs_always_on: true
-    recommended_models: [qwen3.5:4b, qwen3.5:9b]
+    recommended_models: [qwen3.5:4b, qwen3.5:9b, llama3.2:3b, phi4:14b]
     recommended_frameworks: [continue]
 
   - id: web_research
     label: "웹 리서치·요약"
     description: "검색, 트렌드 분석, 뉴스 요약"
-    keywords: [검색, 리서치, 조사, 트렌드, 뉴스, 요약]
+    keywords: [검색, 리서치, 조사, 트렌드, 뉴스, 요약,
+               search, research, trend, news, summarize, analysis]
     min_memory_gb: 16
     needs_always_on: false
-    recommended_models: [qwen3.5:9b, qwen3.5:14b]
+    recommended_models: [qwen3.5:9b, qwen3.5:14b, llama3.1:8b, mistral:7b]
     recommended_frameworks: [smolagents, qwen-agent]
 
   - id: document_rag
     label: "문서 RAG"
     description: "PDF·문서 기반 질문 응답"
-    keywords: [PDF, 문서, RAG, 질문, 요약, 파일]
+    keywords: [PDF, 문서, RAG, 질문, 요약, 파일,
+               document, rag, retrieval, augmented, generation, qa, pdf, embed]
     min_memory_gb: 16
     needs_always_on: false
-    recommended_models: [qwen3.5:14b, qwen3.5:27b]
+    recommended_models: [qwen3.5:14b, qwen3.5:27b, gemma3:12b, gemma3:27b]
     recommended_frameworks: [qwen-agent, llamaindex]
 
   - id: general_qa
     label: "일반 Q&A 챗봇"
     description: "ChatGPT 대체 로컬 대화 AI"
-    keywords: [챗봇, 질문, 대화, ChatGPT, 대체, 비서]
+    keywords: [챗봇, 질문, 대화, ChatGPT, 대체, 비서,
+               chat, question, answer, conversation, assistant, chatgpt, local]
     min_memory_gb: 8
     needs_always_on: false
-    recommended_models: [qwen3.5:9b, qwen3.5:14b]
+    recommended_models: [qwen3.5:9b, qwen3.5:14b, llama3.1:8b, gemma3:12b]
     recommended_frameworks: [open-webui]
 
   - id: multi_agent
     label: "멀티에이전트 파이프라인"
     description: "여러 Agent가 협업하는 워크플로우"
-    keywords: [멀티에이전트, CrewAI, 파이프라인, 오케스트레이션, 협업]
+    keywords: [멀티에이전트, CrewAI, 파이프라인, 오케스트레이션, 협업,
+               multi-agent, crew, pipeline, orchestration, collaboration, workflow]
     min_memory_gb: 32
     needs_always_on: false
-    recommended_models: [qwen3.5:27b, qwen3.5:35b-a3b]
+    recommended_models: [qwen3.5:27b, qwen3.5:35b-a3b, llama3.3:70b]
     recommended_frameworks: [crewai, langgraph]
 
   - id: agent_monitoring
     label: "에이전트 평가·모니터링"
     description: "LLM-as-Judge, trace 분석, 품질 평가"
-    keywords: [모니터링, 평가, judge, trace, 품질, 분석]
+    keywords: [모니터링, 평가, judge, trace, 품질, 분석,
+               monitoring, evaluation, judge, trace, quality, analysis, llm-as-judge]
     min_memory_gb: 32
     needs_always_on: false
-    recommended_models: [qwen3.5:27b, qwen3.5:35b-a3b]
+    recommended_models: [qwen3.5:27b, qwen3.5:35b-a3b, deepseek-r1:32b, llama3.3:70b]
     recommended_frameworks: [smolagents, langgraph]
 
   - id: fine_tuning
     label: "파인튜닝·LoRA"
     description: "로컬 모델 커스터마이징"
-    keywords: [파인튜닝, LoRA, QLoRA, 학습, 훈련, 파인튜닝]
+    keywords: [파인튜닝, LoRA, QLoRA, 학습, 훈련,
+               fine-tuning, lora, qlora, training, finetune, custom, adapter]
     min_memory_gb: 32
     requires_gpu: true
-    recommended_models: [qwen3.5:9b, qwen3.5:14b]
+    recommended_models: [qwen3.5:9b, qwen3.5:14b, llama3.1:8b, mistral:7b]
     recommended_frameworks: []
 
 # ──────────────────────────────────────────────────────────
@@ -334,6 +345,123 @@ models:
     tool_calling: true
     speed_note: "~12-15 t/s (Mac Studio M4 Max 128GB / DGX Spark)"
     note: "Highest quality open-weight model. Requires 64GB+ unified memory or 48GB VRAM."
+
+  # ── Meta Llama ─────────────────────────────────────────
+
+  - id: llama3.2:3b
+    label: "llama3.2:3b"
+    params_b: 3
+    type: dense
+    min_memory_gb: 4
+    quality: light
+    tool_calling: true
+    speed_note: "~30-50 t/s (M-series 8GB). Runs on any device."
+    note: "Meta's compact model. Good tool calling for its size. Best light-tier alternative to qwen3.5:4b."
+
+  - id: llama3.1:8b
+    label: "llama3.1:8b"
+    params_b: 8
+    type: dense
+    min_memory_gb: 8
+    quality: standard
+    tool_calling: true
+    speed_note: "~25-40 t/s (M-series 16GB)"
+    note: "Strong general-purpose 8B. Broad ecosystem support (LangChain, LlamaIndex, smolagents)."
+
+  - id: llama3.3:70b
+    label: "llama3.3:70b"
+    params_b: 70
+    type: dense
+    min_memory_gb: 64
+    quality: pro
+    tool_calling: true
+    speed_note: "~10-14 t/s (Mac Studio M4 Max 128GB / DGX Spark)"
+    note: "Meta's frontier open-weight model. Strong reasoning and instruction following."
+
+  # ── Google Gemma ────────────────────────────────────────
+
+  - id: gemma3:4b
+    label: "gemma3:4b"
+    params_b: 4
+    type: dense
+    min_memory_gb: 4
+    quality: light
+    tool_calling: false
+    speed_note: "~30-45 t/s (M-series 8GB)"
+    note: "Google's compact model. Strong for its size but no reliable tool calling — avoid for agent frameworks."
+
+  - id: gemma3:12b
+    label: "gemma3:12b"
+    params_b: 12
+    type: dense
+    min_memory_gb: 16
+    quality: standard-plus
+    tool_calling: false
+    speed_note: "~18-28 t/s (M-series 16GB)"
+    note: "Excellent quality for 12B. Best for chat/RAG/writing tasks. Not suitable for tool-calling agents."
+
+  - id: gemma3:27b
+    label: "gemma3:27b"
+    params_b: 27
+    type: dense
+    min_memory_gb: 32
+    quality: pro
+    tool_calling: false
+    speed_note: "~10-14 t/s (M4 base 32GB)"
+    note: "High-quality instruction following. No tool calling — use for RAG, writing, evaluation where function calls are not needed."
+
+  # ── Microsoft Phi ───────────────────────────────────────
+
+  - id: phi4:14b
+    label: "phi4:14b"
+    params_b: 14
+    type: dense
+    min_memory_gb: 16
+    quality: standard-plus
+    tool_calling: true
+    speed_note: "~15-22 t/s (M-series 16GB)"
+    sweet_spot: false
+    note: "Microsoft's Phi-4. Punches above its weight in reasoning and math. Good standard-plus option when Qwen is unavailable."
+
+  # ── Mistral AI ──────────────────────────────────────────
+
+  - id: mistral:7b
+    label: "mistral:7b"
+    params_b: 7
+    type: dense
+    min_memory_gb: 8
+    quality: standard
+    tool_calling: true
+    speed_note: "~25-38 t/s (M-series 16GB)"
+    note: "Mistral's flagship 7B. Reliable function calling. Popular with LangChain/LangGraph ecosystems."
+
+  # ── DeepSeek (Reasoning) ────────────────────────────────
+
+  - id: deepseek-r1:8b
+    label: "deepseek-r1:8b"
+    params_b: 8
+    type: reasoning
+    min_memory_gb: 8
+    quality: standard
+    tool_calling: false
+    speed_note: "~15-25 t/s (M-series 16GB). Reasoning tokens add latency."
+    note: >
+      Distilled reasoning model (8B). Uses chain-of-thought before answering.
+      Significantly better at multi-step math, logic, and code analysis vs dense 8B.
+      Not suitable for tool-calling frameworks — use for batch reasoning tasks.
+
+  - id: deepseek-r1:32b
+    label: "deepseek-r1:32b"
+    params_b: 32
+    type: reasoning
+    min_memory_gb: 32
+    quality: pro
+    tool_calling: false
+    speed_note: "~8-12 t/s (M4 base 32GB)"
+    note: >
+      Distilled 32B reasoning model. Strong code review, complex problem solving.
+      No tool calling — best for offline batch evaluation and LLM-as-Judge tasks
+      where structured output is not required.
 
 # ──────────────────────────────────────────────────────────
 # Frameworks
