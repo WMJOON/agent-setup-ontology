@@ -625,6 +625,100 @@ frameworks:
     best_for: [document_rag, deep_research]
     note: "Production-grade RAG. Best for large document collections."
 
+  # ── Additional Agent Frameworks ────────────────────────
+
+  - id: autogen
+    label: "AutoGen (Microsoft)"
+    kind: agent
+    complexity: medium
+    local_capable: true
+    runtime_support: [ollama, openai, anthropic, litellm, any]
+    multiagent: true
+    mcp_support: false
+    install: "pip install pyautogen"
+    best_for: [multi_agent, code_generation, code_review, agent_monitoring]
+    note: >
+      Microsoft's flagship multi-agent framework.
+      AssistantAgent + UserProxyAgent conversation pattern.
+      Supports Ollama via LiteLLM proxy (set api_base to localhost:11434/v1).
+      Best for: agent evaluation loops, code generation with human-in-the-loop.
+
+  - id: agno
+    label: "Agno (formerly Phidata)"
+    kind: agent
+    complexity: low
+    local_capable: true
+    runtime_support: [ollama, openai, anthropic, any]
+    multiagent: true
+    mcp_support: false
+    install: "pip install agno"
+    best_for: [web_research, web_automation, multi_agent, document_rag, deep_research]
+    note: >
+      Lightweight multi-modal agent framework with built-in tools
+      (DuckDuckGo, YFinance, newspaper, etc.).
+      Agent in <10 lines with tool use. Low barrier to entry, similar to smolagents.
+
+  - id: openhands
+    label: "OpenHands (OpenDevin)"
+    kind: automation
+    complexity: medium
+    local_capable: true
+    runtime_support: [ollama, openai, anthropic, any]
+    multiagent: false
+    mcp_support: false
+    install: |
+      docker run -it --pull=always \
+        -e SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.38-nikolaik \
+        -e LOG_ALL_EVENTS=true \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        -v ~/.openhands-state:/.openhands-state \
+        -p 3000:3000 \
+        docker.all-hands.dev/all-hands-ai/openhands:0.38
+    best_for: [code_generation, code_review, file_automation, web_automation]
+    note: >
+      Autonomous software development agent. Runs code, browses the web,
+      and edits files in a sandboxed Docker environment.
+      Requires pro-tier model (32B+) for reliable multi-step code execution.
+      Local use: point to Ollama via OLLAMA_BASE_URL in Docker env.
+
+  # ── Additional RAG Framework ───────────────────────────
+
+  - id: haystack
+    label: "Haystack (deepset)"
+    kind: rag
+    complexity: medium
+    local_capable: true
+    runtime_support: [ollama, openai, anthropic, huggingface, any]
+    multiagent: false
+    mcp_support: false
+    install: "pip install haystack-ai ollama-haystack"
+    best_for: [document_rag, web_research, deep_research]
+    note: >
+      Production-grade pipeline framework for RAG and NLP workloads.
+      Component-based (Retriever, Reader, Ranker) makes complex pipelines composable.
+      Alternative to LlamaIndex when pipeline configurability is important.
+
+  # ── Additional UI / Platform ───────────────────────────
+
+  - id: dify
+    label: "Dify"
+    kind: ui
+    complexity: low
+    local_capable: true
+    runtime_support: [ollama, openai, anthropic, any]
+    multiagent: false
+    mcp_support: false
+    install: |
+      git clone https://github.com/langgenius/dify
+      cd dify/docker && cp .env.example .env
+      docker compose up -d
+    best_for: [general_qa, document_rag, writing_assistant, web_research]
+    note: >
+      Visual LLM app builder (90K+ GitHub stars, most starred LLM platform).
+      Self-hosted via Docker. No-code chatbot, agent, and RAG workflow creation.
+      Connect to Ollama by setting provider to "Ollama" in model settings.
+      Best for non-technical users who want Dify's UI over raw API.
+
 # ──────────────────────────────────────────────────────────
 # API Services
 # Cloud LLM APIs as an alternative or starting point before
@@ -1240,6 +1334,106 @@ repos:
     ollama_compatible: true
     install: |
       pip install llama-index llama-index-llms-ollama
+
+  # ── Additional Framework Repos ─────────────────────────
+
+  - id: repo-autogen
+    label: "AutoGen (Microsoft)"
+    github: "microsoft/autogen"
+    framework_ref: autogen
+    category: agent
+    stars_approx: "40K+"
+    min_model_quality: standard-plus
+    min_memory_gb: 32
+    ollama_compatible: true
+    install: |
+      pip install pyautogen
+    quickstart: |
+      from autogen import AssistantAgent, UserProxyAgent
+      assistant = AssistantAgent("assistant",
+          llm_config={"config_list": [{"model": "qwen3.5:35b-a3b",
+                                       "base_url": "http://localhost:11434/v1",
+                                       "api_key": "ollama"}]})
+      user = UserProxyAgent("user", human_input_mode="NEVER")
+      user.initiate_chat(assistant, message="Write a Python hello world")
+    note: >
+      Supports Ollama via OpenAI-compatible endpoint.
+      Set base_url to http://localhost:11434/v1, api_key to "ollama".
+      Recommended model: qwen3.5:35b-a3b or qwen3.5:27b for multi-agent tasks.
+
+  - id: repo-agno
+    label: "Agno"
+    github: "agno-agi/agno"
+    framework_ref: agno
+    category: agent
+    stars_approx: "25K+"
+    min_model_quality: standard
+    min_memory_gb: 16
+    ollama_compatible: true
+    install: |
+      pip install agno
+    quickstart: |
+      from agno.agent import Agent
+      from agno.models.ollama import Ollama
+      from agno.tools.duckduckgo import DuckDuckGoTools
+      agent = Agent(model=Ollama(id="qwen3.5:9b"),
+                    tools=[DuckDuckGoTools()], markdown=True)
+      agent.print_response("Search for the latest AI news", stream=True)
+    note: "Built-in tool library (web, finance, news). Fastest to a working agent."
+
+  - id: repo-openhands
+    label: "OpenHands (OpenDevin)"
+    github: "All-Hands-AI/OpenHands"
+    framework_ref: openhands
+    category: automation
+    stars_approx: "50K+"
+    min_model_quality: pro
+    min_memory_gb: 32
+    ollama_compatible: true
+    install: |
+      docker run -it --pull=always \
+        -e SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.38-nikolaik \
+        -e LOG_ALL_EVENTS=true \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        -v ~/.openhands-state:/.openhands-state \
+        -p 3000:3000 \
+        docker.all-hands.dev/all-hands-ai/openhands:0.38
+    note: >
+      Set OLLAMA_BASE_URL=http://host.docker.internal:11434 in Docker env
+      to connect to local Ollama. Select model in the UI settings.
+      Reliable threshold: pro-tier model (qwen3.5:35b-a3b or larger).
+
+  - id: repo-haystack
+    label: "Haystack (deepset)"
+    github: "deepset-ai/haystack"
+    framework_ref: haystack
+    category: rag
+    stars_approx: "20K+"
+    min_model_quality: standard
+    min_memory_gb: 16
+    ollama_compatible: true
+    install: |
+      pip install haystack-ai ollama-haystack
+    note: "Component-based RAG pipelines. Alternative to LlamaIndex for complex retrieval workflows."
+
+  - id: repo-dify
+    label: "Dify"
+    github: "langgenius/dify"
+    framework_ref: dify
+    category: ui
+    stars_approx: "90K+"
+    min_model_quality: light
+    min_memory_gb: 8
+    ollama_compatible: true
+    install: |
+      git clone https://github.com/langgenius/dify
+      cd dify/docker && cp .env.example .env
+      docker compose up -d
+      # Then open http://localhost/install → Settings → Model Provider → Ollama
+    note: >
+      Most starred self-hosted LLM platform.
+      Visual workflow builder, RAG pipeline, and agent creation without code.
+      Connect Ollama: Model Provider → Ollama → http://host.docker.internal:11434.
 
 # ──────────────────────────────────────────────────────────
 # Setup Profiles

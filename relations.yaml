@@ -403,6 +403,98 @@ instances:
         - use_case: multi_agent
           reason: "Single-user chat interface. Not designed for agent orchestration."
 
+    autogen:
+      strong_fit:
+        - use_case: multi_agent
+          reason: "AssistantAgent + UserProxyAgent conversation pattern is the primary design target."
+        - use_case: code_generation
+          reason: "Code execution with human-in-the-loop verification is a core AutoGen pattern."
+        - use_case: code_review
+          reason: "Reviewer agent + Coder agent collaboration maps naturally to AutoGen roles."
+        - use_case: agent_monitoring
+          reason: "Multi-agent conversation logs provide structured trace data for evaluation."
+        - use_case: deep_research
+          reason: "Researcher + synthesizer + critic multi-agent loop handles complex research."
+      weak_fit:
+        - use_case: local_copilot
+          reason: "Not an IDE extension. Use Continue for inline autocomplete."
+        - use_case: web_automation
+          reason: "No built-in browser control. Pair with Playwright/Selenium tools for web tasks."
+        - use_case: schedule_task
+          reason: "Conversation overhead not needed for simple scheduled tasks."
+
+    agno:
+      strong_fit:
+        - use_case: web_research
+          reason: "Built-in DuckDuckGo, newspaper, and YFinance tools. Working agent in <10 lines."
+        - use_case: web_automation
+          reason: "Tool library includes browser and HTTP request tools."
+        - use_case: document_rag
+          reason: "Built-in PDF and document reader tools. Easy RAG agent setup."
+        - use_case: multi_agent
+          reason: "First-class Team abstraction for multi-agent collaboration."
+        - use_case: deep_research
+          reason: "Multi-agent team (researcher + analyst + writer) is a natural Agno pattern."
+        - use_case: general_qa
+          reason: "Lowest barrier to entry for a conversational agent with tool access."
+      weak_fit:
+        - use_case: fine_tuning
+          reason: "Inference framework only."
+        - use_case: local_copilot
+          reason: "Not an IDE extension."
+
+    openhands:
+      strong_fit:
+        - use_case: code_generation
+          reason: "Primary design target. Writes, runs, and debugs code in sandboxed environment."
+        - use_case: code_review
+          reason: "Can read full codebases, run tests, and suggest fixes autonomously."
+        - use_case: file_automation
+          reason: "Direct filesystem access in sandboxed environment. Strong at file manipulation."
+        - use_case: web_automation
+          reason: "Built-in browser control for web research and form automation."
+      weak_fit:
+        - use_case: local_copilot
+          reason: "Task-by-task autonomous agent. Not designed for real-time IDE autocomplete."
+        - use_case: multi_agent
+          reason: "Single-agent architecture. Not designed for multi-agent orchestration."
+        - use_case: schedule_task
+          reason: "Docker overhead makes it impractical for lightweight scheduled tasks."
+
+    haystack:
+      strong_fit:
+        - use_case: document_rag
+          reason: "Component-based Retriever → Reader → Ranker pipeline is production-tested."
+        - use_case: web_research
+          reason: "WebSearch and URLFetcher components compose into research pipelines."
+        - use_case: deep_research
+          reason: "Multi-hop retrieval pipelines handle complex multi-source research."
+      weak_fit:
+        - use_case: web_automation
+          reason: "Data pipeline framework. No browser or shell automation."
+        - use_case: local_copilot
+          reason: "Pipeline library, not an IDE extension."
+        - use_case: multi_agent
+          reason: "Not designed for agent orchestration. Use AutoGen or CrewAI instead."
+
+    dify:
+      strong_fit:
+        - use_case: general_qa
+          reason: "Zero-code chatbot creation. Easiest non-technical self-hosted option."
+        - use_case: document_rag
+          reason: "Built-in document ingestion, chunking, and retrieval — no coding required."
+        - use_case: writing_assistant
+          reason: "Workflow builder makes iterative writing pipelines accessible without code."
+        - use_case: web_research
+          reason: "Agentic workflows with web search tools available in visual builder."
+      weak_fit:
+        - use_case: code_generation
+          reason: "No IDE integration. Use Continue for inline code assistance."
+        - use_case: multi_agent
+          reason: "Visual single-workflow builder. Not designed for multi-agent orchestration."
+        - use_case: fine_tuning
+          reason: "Inference and app layer only. No training capability."
+
     anythingllm:
       strong_fit:
         - use_case: general_qa
@@ -635,6 +727,74 @@ instances:
       framework: llamaindex
       fit: strong
       reason: "Batch document analysis and Q&A pipelines benefit from chain-of-thought."
+
+    # New frameworks — model family fit
+
+    # AutoGen
+    - model_family: qwen
+      framework: autogen
+      fit: strong
+      reason: "Qwen's reliable tool calling enables clean AssistantAgent → UserProxyAgent loops."
+    - model_family: llama
+      framework: autogen
+      fit: strong
+      reason: "Llama 3.1/3.3 tool calling is well-tested in AutoGen via OpenAI-compat endpoint."
+    - model_family: gemma
+      framework: autogen
+      fit: none
+      reason: "Gemma has no tool calling. AutoGen agent patterns require function execution."
+
+    # Agno
+    - model_family: qwen
+      framework: agno
+      fit: strong
+      reason: "Qwen models integrate directly with Agno via Ollama. Native tool calling support."
+    - model_family: llama
+      framework: agno
+      fit: strong
+      reason: "Agno's Ollama integration works well with Llama 3.x tool calling."
+    - model_family: gemma
+      framework: agno
+      fit: weak
+      reason: "Agno tool-use agents rely on function calling. Gemma's lack of tool calling limits utility."
+
+    # OpenHands
+    - model_family: qwen
+      framework: openhands
+      fit: strong
+      reason: "qwen3.5:35b-a3b MoE provides the pro-tier reasoning needed for reliable code execution."
+    - model_family: llama
+      framework: openhands
+      fit: strong
+      reason: "Llama 3.3 70B handles multi-step coding tasks well. Requires 64GB+ device."
+    - model_family: deepseek-r1
+      framework: openhands
+      fit: standard
+      reason: "Reasoning helps with complex debugging but tool_calling=false limits direct function use."
+
+    # Haystack
+    - model_family: qwen
+      framework: haystack
+      fit: strong
+      reason: "Qwen models via Ollama integrate cleanly with Haystack's OllamaGenerator."
+    - model_family: gemma
+      framework: haystack
+      fit: strong
+      reason: "Gemma's strong language quality works well for Haystack RAG pipelines (no tool calling needed)."
+
+    # Dify
+    - model_family: qwen
+      framework: dify
+      fit: strong
+      reason: "Dify's Ollama provider works out-of-the-box with Qwen models."
+    - model_family: gemma
+      framework: dify
+      fit: strong
+      reason: "Gemma chat quality is excellent in Dify's no-code workflows."
+    - model_family: deepseek-r1
+      framework: dify
+      fit: standard
+      reason: "Thinking tokens visible in Dify chat. Useful for transparent reasoning workflows."
 
   # ── Device ↔ Model Fit (explicit) ───────────────────────
   # relation: device_runs_model (special cases)
