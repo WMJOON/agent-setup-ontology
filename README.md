@@ -23,8 +23,8 @@ concepts/               ← Semantic definitions (what field values mean)
   component.yaml
   repo.yaml
   setup_profile.yaml
-  cost_estimation.yaml
-  usage_input.yaml
+  cost_estimation.yaml  ← schema/formulas only; data values in instances/cost_estimation.yaml
+  usage_input.yaml      ← user input schema; inference_rules live in agent-setup-copilot SKILL.md
   relation.yaml         ← relation categories + type definitions
 
 instances/              ← Instance data (actual devices, models, frameworks, ...)
@@ -36,6 +36,7 @@ instances/              ← Instance data (actual devices, models, frameworks, .
   component.yaml
   repo.yaml
   setup_profile.yaml
+  cost_estimation.yaml  ← token usage profiles, break-even thresholds, electricity estimates
   relation.yaml         ← upgrade_paths, api_to_local_paths, framework_use_cases, ...
 
 docs/

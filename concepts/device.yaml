@@ -48,6 +48,10 @@ device:
         mac-mini: Stationary, fanless or quiet. Ideal always-on local AI server.
         mac-studio: High-performance stationary Apple Silicon. Highest bandwidth per dollar.
         pc: Windows or Linux desktop/laptop with discrete GPU. Best for fine-tuning (CUDA).
+        ai-supercomputer: >
+          Purpose-built AI inference appliance with unified high-bandwidth memory
+          (e.g. NVIDIA DGX Spark). Not a general-purpose PC. Designed for running
+          100B+ parameter models locally. Runs Ollama-compatible runtimes.
         other: Any other device (e.g. custom server, Raspberry Pi, mobile).
 
     max_model: >

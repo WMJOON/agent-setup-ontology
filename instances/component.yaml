@@ -140,6 +140,7 @@ components:
     component_type: memory
     capacity_gb: 16
     generation: DDR5
+    inference_tier: standard
     llm_use: "Minimum for 9B GPU inference + OS overhead."
     price_search_query: "16GB DDR5 RAM kit 2x8GB price"
 
@@ -148,6 +149,7 @@ components:
     component_type: memory
     capacity_gb: 32
     generation: DDR5
+    inference_tier: standard-plus
     llm_use: "Recommended alongside any GPU. Allows CPU fallback for layers."
     price_search_query: "32GB DDR5 RAM kit 2x16GB price"
 
@@ -156,6 +158,7 @@ components:
     component_type: memory
     capacity_gb: 64
     generation: DDR5
+    inference_tier: pro
     llm_use: "For CPU inference of large models or GPU with heavy CPU offload."
     price_search_query: "64GB DDR5 RAM kit 2x32GB price"
 
@@ -164,5 +167,6 @@ components:
     component_type: memory
     capacity_gb: 128
     generation: DDR5
+    inference_tier: pro
     llm_use: "CPU-only inference of 70B+ models. Extreme build only."
     price_search_query: "128GB DDR5 RAM kit 4x32GB price"

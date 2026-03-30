@@ -59,6 +59,8 @@ flowchart LR
 | `mac-mini` | Stationary, quiet. Ideal always-on server. |
 | `mac-studio` | Highest bandwidth Apple Silicon. |
 | `pc` | Discrete GPU available. Best for fine-tuning (CUDA). |
+| `ai-supercomputer` | Purpose-built AI inference appliance (e.g. NVIDIA DGX Spark). Unified high-bandwidth memory, runs 100B+ models locally. |
+| `other` | Any other form factor (custom server, Raspberry Pi, etc.). |
 
 ### `max_model`
 
@@ -248,6 +250,25 @@ and action verbs (`scrape`, `crawl`, `automate`).
 **Not** the minimum to technically run — the minimum to be **useful**.
 A 9B model running at 2 t/s due to swap is not useful for web_automation.
 The threshold is where the recommended model runs at ≥10 t/s interactive speed.
+
+---
+
+---
+
+## Cost Estimation Concepts
+
+`cost_estimation` is split across two files:
+
+| File | Contains |
+|------|----------|
+| `concepts/cost_estimation.yaml` | Formula definitions (`monthly_cost_formula`, `break_even_formula`), field schema for `token_usage_profiles` |
+| `instances/cost_estimation.yaml` | Actual token usage numbers per use case, break-even thresholds (`strong_case_months: 6`, `worth_considering_months: 18`), electricity cost estimates |
+
+This split follows the same concept/instance pattern as other entities:
+the concept describes *what* the fields mean, the instance provides *actual values* that can be updated without touching the schema.
+
+`usage_input` (how the copilot interprets user-provided data) remains concepts-only.
+Inference rules (how missing fields are filled in) live in the copilot's SKILL.md.
 
 ---
 

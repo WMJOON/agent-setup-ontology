@@ -11,7 +11,7 @@
 ```yaml
 - id: mac_studio_64gb          # 고유 ID (소문자+언더스코어)
   label: "Mac Studio M4 Max 64GB"
-  type: mac-studio              # macbook / mac-mini / mac-studio / pc / other
+  type: mac-studio              # macbook / mac-mini / mac-studio / pc / ai-supercomputer / other
   chip: M4 Max
   memory_gb: 64
   memory_bandwidth_gbs: 410
@@ -91,9 +91,9 @@
 - [ ] 출처(공식 스펙 페이지, 벤치마크 링크)를 PR 설명에 포함했는가
 - [ ] 스키마 검증 통과 (consumer governance validate 사용):
   ```bash
-  # agent-setup-copilot 레포를 로컬에 클론한 경우
+  # agent-setup-copilot 레포를 로컬에 클론한 경우 (per-entity 디렉토리 방식)
   python path/to/agent-setup-copilot/governance/scripts/validate.py \
-    --ontology ontology.yaml --strict
+    --instances-dir instances/ --strict
 
   # 또는 CI가 자동으로 실행 (PR 시 .github/workflows/validate.yml)
   ```

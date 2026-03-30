@@ -58,12 +58,19 @@ flowchart TB
 | Use case | Tokens / day (typical) | Tokens / day (heavy) |
 |----------|------------------------|----------------------|
 | `general_qa` | 20K | 100K |
+| `writing_assistant` | 30K | 150K |
+| `schedule_task` | 20K | 80K |
+| `local_copilot` | 50K | 200K |
 | `code_generation` | 80K | 300K |
-| `web_automation` | 150K | 500K |
+| `code_review` | 120K | 400K |
 | `document_rag` | 100K | 400K |
+| `web_automation` | 150K | 500K |
 | `web_research` | 200K | 600K |
+| `deep_research` | 300K | 800K |
 | `agent_monitoring` | 300K | 1M+ |
 | `multi_agent` | 500K | 2M+ |
+
+> Source of truth: `instances/cost_estimation.yaml` — update there when usage patterns shift.
 
 > Tokens = input + output. Agent tasks tend to be input-heavy (tool call context).
 > Assume ~60% input / 40% output for agent workloads.

@@ -1,5 +1,6 @@
 # agent-setup-ontology — Cost Estimation concept definitions
-# Semantic layer: formulas and profiles for API vs local cost analysis.
+# Semantic layer: field definitions and formulas for API vs local cost analysis.
+# Actual token usage data and break-even thresholds → instances/cost_estimation.yaml
 version: "0.1.0"
 
 cost_estimation:
@@ -13,17 +14,16 @@ cost_estimation:
       Approximate daily token consumption by use case.
       Actual usage varies significantly by workflow design and model verbosity.
       Agent tasks are typically input-heavy due to tool call context and history.
-    values:
-      general_qa:        { typical_k: 20,   heavy_k: 100  }
-      code_generation:   { typical_k: 80,   heavy_k: 300  }
-      local_copilot:     { typical_k: 50,   heavy_k: 200  }
-      web_automation:    { typical_k: 150,  heavy_k: 500  }
-      document_rag:      { typical_k: 100,  heavy_k: 400  }
-      web_research:      { typical_k: 200,  heavy_k: 600  }
-      code_review:       { typical_k: 120,  heavy_k: 400  }
-      deep_research:     { typical_k: 300,  heavy_k: 800  }
-      agent_monitoring:  { typical_k: 300,  heavy_k: 1000 }
-      multi_agent:       { typical_k: 500,  heavy_k: 2000 }
+    fields:
+      typical_k: >
+        Daily token consumption (thousands) for typical/moderate usage of this use case.
+        Use when the user reports average or general-purpose workloads.
+      heavy_k: >
+        Daily token consumption (thousands) for heavy/power-user usage.
+        Use when the user reports running agents continuously or processing large volumes.
+    note: >
+      Actual per-use-case values are in instances/cost_estimation.yaml.
+      Update there when usage patterns shift — do not hardcode here.
 
   monthly_cost_formula: >
     monthly_tokens = tokens_per_day × 30
@@ -31,16 +31,19 @@ cost_estimation:
     output_tokens  = monthly_tokens × 0.40
     monthly_cost   = (input_tokens / 1_000_000 × input_price)
                    + (output_tokens / 1_000_000 × output_price)
+    Note: 0.60/0.40 split is the default agent workload ratio.
+    Adjust if the user's workload is known to be output-heavy (e.g. long-form writing → 0.40/0.60).
 
   device_monthly_cost: >
-    Amortized over 24 months (2-year lifespan assumption).
-    device_monthly = device_price / 24
-    Add $2–5/month electricity for Mac Mini, $10–20/month for high-end PC.
+    Amortized device cost formula (2-year lifespan assumption):
+      device_monthly = device_price / 24
+    Add electricity:
+      Mac Mini / stationary low-power → +$2–5/month
+      High-end PC (GPU) → +$10–20/month
+    Source: actual electricity cost data is in instances/cost_estimation.yaml.
 
-  break_even_rule: >
-    When monthly_api_cost > device_monthly_cost, local hardware
-    starts paying for itself. Payback period in months:
-      payback = device_price / (monthly_api_cost - device_monthly_cost)
-    Payback < 6 months → strong case for local.
-    Payback 6–18 months → worth considering.
-    Payback > 18 months → stay on API unless privacy requires local.
+  break_even_formula: >
+    payback_months = device_price / (monthly_api_cost - device_monthly_cost)
+    When monthly_api_cost <= device_monthly_cost: local is never cheaper on cost alone
+    (privacy or performance requirements may still justify local).
+    Interpretation thresholds are in instances/cost_estimation.yaml.

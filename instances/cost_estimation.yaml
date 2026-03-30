@@ -1,0 +1,47 @@
+# agent-setup-ontology — Cost Estimation Instances
+# Actual token usage data and break-even thresholds.
+# Schema and formulas → concepts/cost_estimation.yaml
+#
+# Loader: loaded by loader.py as instances/cost_estimation (paired with concepts/cost_estimation).
+# Validator: NOT currently validated (not in _INSTANCE_FILE_TO_SECTION); data-only, no entity IDs.
+version: "0.1.0"
+
+# ──────────────────────────────────────────────────────────
+# Daily Token Usage Profiles (단위: 천 토큰/일, K tokens/day)
+# ──────────────────────────────────────────────────────────
+# Last reviewed: 2026-03-30
+# Source: internal usage benchmarks — update when patterns shift significantly
+
+token_usage_profiles:
+  general_qa:        { typical_k: 20,   heavy_k: 100  }
+  code_generation:   { typical_k: 80,   heavy_k: 300  }
+  local_copilot:     { typical_k: 50,   heavy_k: 200  }
+  web_automation:    { typical_k: 150,  heavy_k: 500  }
+  document_rag:      { typical_k: 100,  heavy_k: 400  }
+  web_research:      { typical_k: 200,  heavy_k: 600  }
+  code_review:       { typical_k: 120,  heavy_k: 400  }
+  deep_research:     { typical_k: 300,  heavy_k: 800  }
+  agent_monitoring:  { typical_k: 300,  heavy_k: 1000 }
+  multi_agent:       { typical_k: 500,  heavy_k: 2000 }
+  writing_assistant: { typical_k: 30,   heavy_k: 150  }
+  fine_tuning:       { typical_k: 0,    heavy_k: 0    }  # not API-billed workload
+  schedule_task:     { typical_k: 20,   heavy_k: 80   }
+
+# ──────────────────────────────────────────────────────────
+# Break-Even Interpretation Thresholds
+# ──────────────────────────────────────────────────────────
+
+break_even_thresholds:
+  strong_case_months: 6      # payback < 6 months → strong case for local
+  worth_considering_months: 18  # payback 6–18 months → worth considering
+  # payback > 18 months → stay on API unless privacy requires local
+
+# ──────────────────────────────────────────────────────────
+# Monthly Electricity Cost Estimates (USD)
+# ──────────────────────────────────────────────────────────
+
+electricity_monthly_usd:
+  mac_mini_low_power:   { min: 2, max: 5  }
+  high_end_pc_gpu:      { min: 10, max: 20 }
+  mac_studio:           { min: 5, max: 10 }
+  macbook_idle:         { min: 1, max: 3  }

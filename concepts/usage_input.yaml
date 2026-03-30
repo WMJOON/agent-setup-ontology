@@ -112,21 +112,5 @@ usage_input:
         - "I've started using it for work too" → estimate 15-20%/month
         - "Pretty stable, same tasks"          → 0-5%/month
 
-  inference_rules:
-    what: >
-      How the copilot fills in missing usage_input fields
-      when the user provides partial information.
-    rules:
-      - >
-        If monthly_cost_usd is given: use directly.
-      - >
-        If tokens_per_day is given: apply monthly_cost_formula from cost_estimation.
-      - >
-        If only use_cases + usage_intensity are given:
-        look up token_usage_profiles[use_case][intensity_k]
-        and sum across all use_cases.
-      - >
-        If nothing is given: ask clarifying questions in priority order:
-        1. "Which API are you using?"
-        2. "What's your monthly bill, roughly?"
-        3. "What do you use it for?"
+  # Inference rules for missing fields have been moved to SKILL.md (INTAKE section).
+  # See: skills/agent-setup-copilot/SKILL.md → "INTAKE 거부 fallback" and PROPOSE script call order.
