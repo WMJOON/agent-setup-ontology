@@ -215,3 +215,44 @@ frameworks:
       Self-hosted via Docker. No-code chatbot, agent, and RAG workflow creation.
       Connect to Ollama by setting provider to "Ollama" in model settings.
       Best for non-technical users who want Dify's UI over raw API.
+
+  - id: claude-code
+    label: "Claude Code"
+    kind: ide
+    complexity: low
+    local_capable: false
+    runtime_support: [anthropic]
+    multiagent: false
+    mcp_support: true
+    install: "https://docs.anthropic.com/en/docs/claude-code"
+    best_for: [code_generation, code_review, local_copilot, deep_research]
+    note: >
+      Best-in-class coding copilot and repo reasoning interface when Anthropic API is acceptable.
+      Not local-only, but often the reference UX users compare against.
+
+  - id: n8n
+    label: "n8n"
+    kind: automation
+    complexity: medium
+    local_capable: true
+    runtime_support: [ollama, openai, anthropic, any]
+    multiagent: false
+    mcp_support: false
+    install: "docker run -it --rm -p 5678:5678 -v ~/.n8n:/home/node/.n8n docker.n8n.io/n8nio/n8n"
+    best_for: [schedule_task, file_automation, personal_assistant, web_research]
+    note: >
+      Workflow automation platform rather than a pure agent framework.
+      Excellent for scheduled tasks, integrations, and trigger-based orchestration.
+
+  - id: faster-whisper-stack
+    label: "faster-whisper stack"
+    kind: automation
+    complexity: medium
+    local_capable: true
+    runtime_support: [ollama, any]
+    multiagent: false
+    mcp_support: false
+    install: "pip install faster-whisper"
+    best_for: [voice_transcription_workbench, meeting_summarizer]
+    note: >
+      Not a full agent framework by itself, but a practical local transcription layer often paired with assistant workflows.

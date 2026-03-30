@@ -143,11 +143,19 @@ instances:
         reason: Primary use case. Browser + file + shell + messaging integration.
       - use_case: file_automation
         reason: Shell execution + file system access built-in.
+      - use_case: personal_assistant
+        reason: Messaging integrations + tool execution make it a natural always-on personal assistant.
+      - use_case: obsidian_assistant
+        reason: Strong file operations and automation fit note-centric knowledge base workflows.
+      - use_case: browser_operator
+        reason: Interactive browser control is one of OpenClaw's strongest practical patterns.
       weak_fit:
       - use_case: document_rag
         reason: Not a RAG framework. Use qwen-agent or llamaindex.
       - use_case: multi_agent
         reason: Single-agent design. Not built for multi-agent orchestration.
+      - use_case: local_rag_server
+        reason: Can orchestrate around RAG but is not the best primary serving layer for document chat.
     continue:
       strong_fit:
       - use_case: local_copilot
@@ -288,6 +296,8 @@ instances:
         reason: Built-in document ingestion pipeline. No code required for RAG setup.
       - use_case: writing_assistant
         reason: Workspace-based organization suits iterative writing projects.
+      - use_case: local_rag_server
+        reason: Good private document-chat server for individuals and small teams.
       weak_fit:
       - use_case: web_automation
         reason: Desktop UI only. No programmatic browser or shell control.
@@ -295,6 +305,151 @@ instances:
         reason: Single-agent by design. Not suitable for orchestrated pipelines.
       - use_case: code_generation
         reason: No IDE integration. Use Continue for inline code assistance.
+    n8n:
+      strong_fit:
+      - use_case: schedule_task
+        reason: Native trigger/schedule model makes it ideal for cron-like automation.
+      - use_case: file_automation
+        reason: Integrations + workflow nodes handle routine file pipelines well.
+      - use_case: personal_assistant
+        reason: Good for event-driven assistant routines that stitch together apps and notifications.
+      - use_case: email_assistant
+        reason: Inbox-triggered workflows, drafts, and routing are a natural fit for n8n.
+      - use_case: calendar_assistant
+        reason: Calendar/event automations map well to trigger-and-action workflows.
+      - use_case: home_dashboard_agent
+        reason: Polling, alerts, and periodic summaries are exactly the kind of low-friction automation n8n handles well.
+      weak_fit:
+      - use_case: code_generation
+        reason: Workflow tool, not a coding copilot.
+      - use_case: multi_agent
+        reason: Can orchestrate services, but not a true multi-agent reasoning framework.
+      - use_case: browser_operator
+        reason: Not intended for rich interactive browser control like OpenClaw or OpenHands.
+    claude-code:
+      strong_fit:
+      - use_case: code_generation
+        reason: Best-in-class interactive coding experience with repo awareness.
+      - use_case: code_review
+        reason: Excellent long-context diff and repository review workflow.
+      - use_case: deep_research
+        reason: Strong for codebase and documentation synthesis.
+      weak_fit:
+      - use_case: personal_assistant
+        reason: IDE/terminal-centric tool, not an always-on messaging assistant.
+      - use_case: schedule_task
+        reason: Not intended as a background scheduler.
+      - use_case: browser_operator
+        reason: No native browser automation surface as a primary product focus.
+    faster-whisper-stack:
+      strong_fit:
+      - use_case: voice_transcription_workbench
+        reason: Fast local Whisper inference is the core primitive for transcription-heavy workflows.
+      - use_case: meeting_summarizer
+        reason: Reliable local transcripts make meeting summarization practical and private.
+      weak_fit:
+      - use_case: browser_operator
+        reason: Audio/transcription layer, not a browser control framework.
+      - use_case: schedule_task
+        reason: Can be wrapped in automation, but not the scheduler layer itself.
+  setup_profile_notes:
+  - profile: setup-mac-mini-personal-assistant
+    fit: strong
+    use_case: personal_assistant
+    reason: Always-on Mac Mini + OpenClaw is the cleanest private personal assistant shape in the current ontology.
+  - profile: setup-mac-mini-personal-assistant
+    fit: strong
+    use_case: obsidian_assistant
+    reason: Same box can operate as file-aware assistant for knowledge base maintenance.
+  - profile: setup-mac-mini-rag-server
+    fit: strong
+    use_case: local_rag_server
+    reason: Low-complexity always-on RAG server with good enough model quality at low operating cost.
+  - profile: setup-n8n-scheduler
+    fit: strong
+    use_case: schedule_task
+    reason: Trigger/schedule-first automation stack. Better than agent-first tools for repetitive jobs.
+  - profile: setup-macbook-portable-openclaw
+    fit: strong
+    use_case: browser_operator
+    reason: Best portable OpenClaw profile when an always-on server is not required.
+  - profile: setup-pc-browser-operator
+    fit: strong
+    use_case: browser_operator
+    reason: Good GPU-backed workstation for interactive browser control and repetitive dashboard work.
+  - profile: setup-private-support-bot
+    fit: strong
+    use_case: customer_support_bot
+    reason: Dify provides low-code support bot and document workflow UX that suits internal support stacks.
+  - profile: setup-obsidian-rag-desk
+    fit: strong
+    use_case: obsidian_rag
+    reason: Best fit when the primary corpus is an Obsidian vault and retrieval quality matters.
+  - profile: setup-research-pipeline-pro
+    fit: strong
+    use_case: research_pipeline
+    reason: Strong local research stack for repeated multi-step synthesis using a higher-end always-on box.
+  - profile: setup-email-calendar-hub
+    fit: strong
+    use_case: email_assistant
+    reason: n8n-based always-on hub is well suited for inbox triggers, drafts, and reminder workflows.
+  - profile: setup-email-calendar-hub
+    fit: strong
+    use_case: calendar_assistant
+    reason: Lightweight always-on automations fit schedule and reminder flows well.
+  - profile: setup-voice-meeting-desk
+    fit: strong
+    use_case: voice_transcription_workbench
+    reason: Transcription-first desk setup with a local summarization layer is the practical default shape.
+  - profile: setup-voice-meeting-desk
+    fit: strong
+    use_case: meeting_summarizer
+    reason: Meeting transcripts can be summarized and actionized efficiently on a single local desk setup.
+  - profile: setup-home-dashboard-mini
+    fit: strong
+    use_case: home_dashboard_agent
+    reason: Always-on low-power OpenClaw setup matches recurring dashboard checks and alerts.
+  - profile: setup-document-ingestion-lab
+    fit: strong
+    use_case: document_ingestion_pipeline
+    reason: GPU-backed workstation helps with repeated parsing, indexing, and retrieval iteration.
+  use_case_adjacency:
+  - from: web_automation
+    to: browser_operator
+    relation: specialization
+    reason: Browser operator is a narrower, more interactive form of web automation.
+  - from: document_rag
+    to: local_rag_server
+    relation: deployment_variant
+    reason: local_rag_server is the serving-oriented always-on deployment form of document RAG.
+  - from: obsidian_assistant
+    to: obsidian_rag
+    relation: capability_upgrade
+    reason: Obsidian RAG extends note editing/management into retrieval-grounded question answering.
+  - from: deep_research
+    to: research_pipeline
+    relation: operationalization
+    reason: research_pipeline is the repeatable workflow form of deep research.
+  - from: personal_assistant
+    to: email_assistant
+    relation: specialization
+    reason: Email assistant is a narrower assistant form focused on inbox workflows.
+  - from: personal_assistant
+    to: calendar_assistant
+    relation: specialization
+    reason: Calendar assistant focuses on event/reminder workflows within the broader assistant space.
+  - from: voice_assistant
+    to: voice_transcription_workbench
+    relation: supporting_pipeline
+    reason: Transcription workbench is the offline/audio-processing support layer for many voice assistant flows.
+  - from: document_rag
+    to: document_ingestion_pipeline
+    relation: upstream_pipeline
+    reason: Good document RAG quality depends on disciplined ingestion, parsing, and indexing.
+  - from: meeting_summarizer
+    to: voice_transcription_workbench
+    relation: prerequisite_pipeline
+    reason: Meeting summarization often depends on reliable transcript generation first.
   model_use_case_notes:
   - model: deepseek-r1:8b
     use_case: agent_monitoring

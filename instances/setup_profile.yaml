@@ -112,3 +112,207 @@ setup_profiles:
       - "# On Mac Mini:"
       - "ollama pull qwen3.5:9b   # local fallback"
       - "pip install smolagents[ollama]"
+
+  - id: setup-mac-mini-personal-assistant
+    label: "Personal Assistant Hub: Mac Mini M4 32GB + OpenClaw"
+    devices: [mac_mini_m4_32gb]
+    model: "qwen3.5:35b-a3b"
+    framework: openclaw
+    repo: repo-openclaw
+    use_cases: [personal_assistant, schedule_task, file_automation, obsidian_assistant]
+    complexity: medium
+    always_on: true
+    monthly_cost: "$0 (local only)"
+    note: >
+      Best single-box setup for a private always-on assistant that can message, read files,
+      automate browser tasks, and work on a personal knowledge base.
+    setup_steps:
+      - "ollama pull qwen3.5:35b-a3b"
+      - "git clone https://github.com/openclaw/openclaw && cd openclaw"
+      - "cp .env.example .env && set OLLAMA_HOST=http://localhost:11434"
+      - "npm install && npm start"
+
+  - id: setup-mac-mini-rag-server
+    label: "Local Knowledge Server: Mac Mini M4 24GB + Open WebUI"
+    devices: [mac_mini_m4_24gb]
+    model: "qwen3.5:14b"
+    framework: open-webui
+    repo: repo-open-webui
+    use_cases: [local_rag_server, general_qa, writing_assistant]
+    complexity: low
+    always_on: true
+    monthly_cost: "$0"
+    note: >
+      Good entry point for a private always-on knowledge server with document chat and lightweight RAG.
+    setup_steps:
+      - "ollama pull qwen3.5:14b"
+      - "docker run -d -p 3000:8080 -e OLLAMA_BASE_URL=http://host.docker.internal:11434 ghcr.io/open-webui/open-webui:main"
+      - "Open http://localhost:3000 and upload documents"
+
+  - id: setup-n8n-scheduler
+    label: "Automation Scheduler: Mac Mini 16GB + n8n + Ollama"
+    devices: [mac_mini_16gb]
+    model: "qwen3.5:9b"
+    framework: n8n
+    repo: repo-n8n
+    use_cases: [schedule_task, file_automation, personal_assistant]
+    complexity: medium
+    always_on: true
+    monthly_cost: "$0"
+    note: >
+      Best for recurring workflows, trigger-based automations, and lightweight assistant routines.
+      Less agentic than OpenClaw, but easier to reason about for scheduled pipelines.
+    setup_steps:
+      - "ollama pull qwen3.5:9b"
+      - "docker run -it --rm -p 5678:5678 -v ~/.n8n:/home/node/.n8n docker.n8n.io/n8nio/n8n"
+      - "Create Ollama-backed workflow in n8n UI"
+
+  - id: setup-macbook-portable-openclaw
+    label: "Portable Agent Rig: MacBook Pro 32GB + OpenClaw"
+    devices: [macbook_pro_32gb]
+    model: "qwen3.5:35b-a3b"
+    framework: openclaw
+    repo: repo-openclaw
+    use_cases: [browser_operator, web_automation, personal_assistant]
+    complexity: medium
+    always_on: false
+    note: >
+      Best portable option when you want strong browser automation and assistant workflows without a stationary server.
+    setup_steps:
+      - "ollama pull qwen3.5:35b-a3b"
+      - "git clone https://github.com/openclaw/openclaw && cd openclaw"
+      - "cp .env.example .env && set OLLAMA_HOST=http://localhost:11434"
+      - "npm install && npm start"
+
+  - id: setup-pc-browser-operator
+    label: "Browser Operator Workstation: PC RTX 4060 Ti 16GB + OpenClaw"
+    devices: [pc_rtx4060ti_16gb]
+    model: "qwen3.5:14b"
+    framework: openclaw
+    repo: repo-openclaw
+    use_cases: [browser_operator, web_automation, file_automation]
+    complexity: medium
+    always_on: true
+    note: >
+      Best value Windows/Linux workstation for interactive browser tasks, repetitive dashboard work, and file automation.
+    setup_steps:
+      - "ollama pull qwen3.5:14b"
+      - "git clone https://github.com/openclaw/openclaw && cd openclaw"
+      - "cp .env.example .env && set OLLAMA_HOST=http://localhost:11434"
+      - "npm install && npm start"
+
+  - id: setup-private-support-bot
+    label: "Private Support Bot: Mac Mini M4 24GB + Dify"
+    devices: [mac_mini_m4_24gb]
+    model: "qwen3.5:14b"
+    framework: dify
+    repo: repo-dify
+    use_cases: [customer_support_bot, local_rag_server, general_qa]
+    complexity: low
+    always_on: true
+    monthly_cost: "$0"
+    note: >
+      Good self-hosted support bot stack for internal docs, FAQ, and lightweight workflow routing without heavy coding.
+    setup_steps:
+      - "ollama pull qwen3.5:14b"
+      - "git clone https://github.com/langgenius/dify"
+      - "cd dify/docker && cp .env.example .env && docker compose up -d"
+      - "Open Dify UI and connect Ollama as the model provider"
+
+  - id: setup-obsidian-rag-desk
+    label: "Knowledge Desk: Mac Mini M4 32GB + Qwen-Agent"
+    devices: [mac_mini_m4_32gb]
+    model: "qwen3.5:35b-a3b"
+    framework: qwen-agent
+    repo: repo-qwen-agent
+    use_cases: [obsidian_rag, obsidian_assistant, document_rag]
+    complexity: medium
+    always_on: true
+    note: >
+      Best for Obsidian-heavy knowledge workers who want retrieval, note grounding, and agentic query workflows in one box.
+    setup_steps:
+      - "ollama pull qwen3.5:35b-a3b"
+      - "pip install qwen-agent"
+      - "Connect vault/document tools and configure retrieval workflow"
+
+  - id: setup-research-pipeline-pro
+    label: "Research Pipeline Pro: Mac Studio M4 Max 64GB + Agno"
+    devices: [mac_studio_m4_max_64gb]
+    model: "qwen3.5:72b"
+    framework: agno
+    repo: repo-agno
+    use_cases: [research_pipeline, deep_research, web_research]
+    complexity: medium
+    always_on: true
+    note: >
+      High-end local research workstation/server for repeated multi-step synthesis and long-form report generation.
+    setup_steps:
+      - "ollama pull qwen3.5:72b"
+      - "pip install agno"
+      - "Configure search and document tools for research workflows"
+
+  - id: setup-email-calendar-hub
+    label: "Inbox & Calendar Hub: Mac Mini 16GB + n8n"
+    devices: [mac_mini_16gb]
+    model: "qwen3.5:9b"
+    framework: n8n
+    repo: repo-n8n
+    use_cases: [email_assistant, calendar_assistant, schedule_task]
+    complexity: medium
+    always_on: true
+    monthly_cost: "$0"
+    note: >
+      Good always-on personal operations hub for inbox triage, reminders, and calendar-based automations.
+    setup_steps:
+      - "ollama pull qwen3.5:9b"
+      - "docker run -it --rm -p 5678:5678 -v ~/.n8n:/home/node/.n8n docker.n8n.io/n8nio/n8n"
+      - "Build email and calendar workflows in n8n"
+
+  - id: setup-voice-meeting-desk
+    label: "Voice & Meeting Desk: Mac Mini M4 24GB + faster-whisper + Open WebUI"
+    devices: [mac_mini_m4_24gb]
+    model: "qwen3.5:14b"
+    framework: faster-whisper-stack
+    repo: repo-faster-whisper
+    use_cases: [voice_transcription_workbench, meeting_summarizer]
+    complexity: medium
+    always_on: false
+    note: >
+      Practical desk setup for local transcription, meeting cleanup, and follow-up summary generation.
+    setup_steps:
+      - "pip install faster-whisper"
+      - "ollama pull qwen3.5:14b"
+      - "Run local transcription pipeline, then summarize in Open WebUI or assistant workflow"
+
+  - id: setup-home-dashboard-mini
+    label: "Home Dashboard Mini: Mac Mini 16GB + OpenClaw"
+    devices: [mac_mini_16gb]
+    model: "qwen3.5:9b"
+    framework: openclaw
+    repo: repo-openclaw
+    use_cases: [home_dashboard_agent, personal_assistant, schedule_task]
+    complexity: medium
+    always_on: true
+    note: >
+      Low-power always-on home or personal ops dashboard agent. Good for periodic checks, summaries, and alerts.
+    setup_steps:
+      - "ollama pull qwen3.5:9b"
+      - "git clone https://github.com/openclaw/openclaw && cd openclaw"
+      - "cp .env.example .env && set OLLAMA_HOST=http://localhost:11434"
+      - "npm install && npm start"
+
+  - id: setup-document-ingestion-lab
+    label: "Document Ingestion Lab: PC RTX 4060 Ti 16GB + LlamaIndex"
+    devices: [pc_rtx4060ti_16gb]
+    model: "qwen3.5:14b"
+    framework: llamaindex
+    repo: repo-llamaindex
+    use_cases: [document_ingestion_pipeline, document_rag, local_rag_server]
+    complexity: medium
+    always_on: false
+    note: >
+      Good workstation for indexing-heavy document pipelines and iterative retrieval experiments.
+    setup_steps:
+      - "ollama pull qwen3.5:14b"
+      - "pip install llama-index llama-index-llms-ollama"
+      - "Build ingestion/index pipeline and test retrieval quality"

@@ -152,3 +152,173 @@ use_cases:
     note: >
       Requires the device to be always-on (mac-mini, stationary PC preferred).
       Light models are sufficient for most scheduled tasks — speed matters less than availability.
+
+  - id: personal_assistant
+    label: "개인 비서·메시징 에이전트"
+    description: "텔레그램/슬랙/시그널 같은 채널에서 대화하고 개인 작업을 수행하는 에이전트"
+    keywords: [개인비서, 비서, 텔레그램, 슬랙, 시그널, 메시지, 메신저,
+               personal assistant, messaging agent, telegram, slack, signal, whatsapp, chat ops]
+    min_memory_gb: 16
+    needs_always_on: true
+    recommended_models: [qwen3.5:9b, qwen3.5:35b-a3b, llama3.1:8b]
+    recommended_frameworks: [openclaw, smolagents]
+    note: >
+      Best served by an always-on device with messaging integrations and safe tool execution.
+      OpenClaw-style assistants are the canonical fit.
+
+  - id: obsidian_assistant
+    label: "Obsidian 지식 베이스 보조"
+    description: "Obsidian vault 검색, 노트 생성/편집, 지식 베이스 정리"
+    keywords: [obsidian, 볼트, 노트, 지식베이스, 위키링크, 메모,
+               obsidian assistant, vault, notes, knowledge base, wikilink, markdown]
+    min_memory_gb: 16
+    needs_always_on: false
+    recommended_models: [qwen3.5:9b, qwen3.5:14b, gemma3:12b]
+    recommended_frameworks: [openclaw, qwen-agent, anythingllm]
+    note: >
+      Requires strong file handling and long-context summarization.
+      Good fit for personal knowledge management and note-centric workflows.
+
+  - id: local_rag_server
+    label: "로컬 RAG 서버"
+    description: "문서 업로드, 질의응답, 팀/개인용 지식 검색 서버"
+    keywords: [로컬 rag, rag 서버, 문서서버, 업로드, 검색,
+               local rag, rag server, knowledge server, document chat, retrieval server]
+    min_memory_gb: 16
+    needs_always_on: true
+    recommended_models: [qwen3.5:14b, qwen3.5:27b, gemma3:12b]
+    recommended_frameworks: [llamaindex, haystack, open-webui, dify, anythingllm]
+    note: >
+      Prioritizes stable serving, document ingestion, and retrieval quality over agentic autonomy.
+
+  - id: browser_operator
+    label: "브라우저 오퍼레이터"
+    description: "로그인 이후 반복 클릭, 폼 작성, 페이지 탐색 같은 실사용 브라우저 작업"
+    keywords: [브라우저 오퍼레이터, 페이지 조작, 클릭, 폼작성, 로그인 자동화,
+               browser operator, browser control, page interaction, click, form filling, navigate]
+    min_memory_gb: 16
+    needs_always_on: false
+    recommended_models: [qwen3.5:9b, qwen3.5:35b-a3b, mistral:7b]
+    recommended_frameworks: [openclaw, openhands, smolagents]
+    note: >
+      Similar to web_automation but centered on interactive browser control rather than scraping alone.
+
+  - id: voice_assistant
+    label: "음성 비서"
+    description: "음성 입력, 명령 실행, 짧은 응답 중심의 개인 음성 에이전트"
+    keywords: [음성비서, 음성에이전트, tts, stt, 음성명령, 스피커,
+               voice assistant, speech agent, tts, stt, voice command, speaker]
+    min_memory_gb: 16
+    needs_always_on: true
+    recommended_models: [qwen3.5:9b, llama3.1:8b, qwen3.5:14b]
+    recommended_frameworks: [openclaw, smolagents]
+    note: >
+      Requires low-latency response and often benefits from always-on deployment plus audio I/O tooling.
+
+  - id: meeting_summarizer
+    label: "회의 요약·정리"
+    description: "회의 녹취 요약, 액션 아이템 추출, 후속 정리 문서 생성"
+    keywords: [회의요약, 미팅정리, 녹취, 액션아이템, 회의록,
+               meeting summary, transcript, action items, minutes, call notes]
+    min_memory_gb: 16
+    needs_always_on: false
+    recommended_models: [qwen3.5:14b, gemma3:12b, qwen3.5:27b]
+    recommended_frameworks: [open-webui, anythingllm, qwen-agent]
+    note: >
+      Works well with transcript ingestion and long-context summarization. Tool calling is helpful but not mandatory.
+
+  - id: customer_support_bot
+    label: "고객지원 봇"
+    description: "FAQ 응답, 문서 검색, 티켓 초안 작성 같은 지원 자동화"
+    keywords: [고객지원, cs, support bot, 헬프데스크, faq, 티켓,
+               customer support, helpdesk, support bot, faq, ticket, support assistant]
+    min_memory_gb: 16
+    needs_always_on: true
+    recommended_models: [qwen3.5:9b, qwen3.5:14b, qwen3.5:35b-a3b]
+    recommended_frameworks: [dify, open-webui, llamaindex, anythingllm]
+    note: >
+      Prioritizes reliability, retrieval quality, and operational simplicity over complex multi-agent reasoning.
+
+  - id: research_pipeline
+    label: "리서치 파이프라인"
+    description: "검색, 읽기, 정리, 비교, 초안 작성이 이어지는 반복형 조사 워크플로우"
+    keywords: [리서치파이프라인, 조사파이프라인, 검색정리, 보고서초안,
+               research pipeline, search summarize compare synthesize, report pipeline]
+    min_memory_gb: 32
+    needs_always_on: false
+    recommended_models: [qwen3.5:35b-a3b, qwen3.5:27b, deepseek-r1:32b]
+    recommended_frameworks: [smolagents, crewai, agno, llamaindex]
+    note: >
+      Distinct from one-shot deep research: optimized for repeatable, semi-structured research workflows.
+
+  - id: obsidian_rag
+    label: "Obsidian RAG"
+    description: "Obsidian vault를 검색·연결·요약하는 지식 베이스 질의응답"
+    keywords: [obsidian rag, vault rag, 옵시디언 검색, 위키링크 검색,
+               obsidian rag, vault search, wikilink knowledge base, note retrieval]
+    min_memory_gb: 16
+    needs_always_on: false
+
+  - id: email_assistant
+    label: "이메일 비서"
+    description: "이메일 분류, 초안 작성, 요약, 후속 액션 정리"
+    keywords: [이메일, 메일비서, 받은편지함, 답장초안, 메일요약,
+               email assistant, inbox triage, draft reply, mail summary, inbox]
+    min_memory_gb: 16
+    needs_always_on: true
+    recommended_models: [qwen3.5:9b, qwen3.5:14b, phi4:14b]
+    recommended_frameworks: [openclaw, n8n, open-webui]
+    note: >
+      Best for inbox triage, summary, and draft generation. Event-driven automation is often enough.
+
+  - id: calendar_assistant
+    label: "캘린더 비서"
+    description: "일정 요약, 리마인더, 이벤트 정리, 일정 기반 개인 알림"
+    keywords: [캘린더, 일정, 리마인더, 이벤트, 스케줄정리,
+               calendar assistant, reminders, events, scheduling, calendar summary]
+    min_memory_gb: 8
+    needs_always_on: true
+    recommended_models: [qwen3.5:4b, qwen3.5:9b, llama3.2:3b]
+    recommended_frameworks: [openclaw, n8n]
+    note: >
+      Usually lightweight but benefits from always-on deployment and messaging integration.
+
+  - id: home_dashboard_agent
+    label: "홈 대시보드 에이전트"
+    description: "대시보드 조회, 상태 요약, 정기 체크, 간단한 홈/개인 운영 자동화"
+    keywords: [홈대시보드, 상태체크, 홈오토메이션, 대시보드요약,
+               home dashboard, status check, home automation, dashboard summary]
+    min_memory_gb: 8
+    needs_always_on: true
+    recommended_models: [qwen3.5:4b, qwen3.5:9b, llama3.2:3b]
+    recommended_frameworks: [openclaw, n8n, smolagents]
+    note: >
+      Favors always-on low-power setups and lightweight models over high-end reasoning.
+
+  - id: document_ingestion_pipeline
+    label: "문서 적재 파이프라인"
+    description: "PDF/문서 수집, 파싱, 청킹, 임베딩, 인덱싱 자동화"
+    keywords: [문서적재, 청킹, 임베딩, 인덱싱, ingestion,
+               document ingestion, chunking, embedding, indexing, pipeline]
+    min_memory_gb: 16
+    needs_always_on: false
+    recommended_models: [qwen3.5:14b, gemma3:12b, qwen3.5:27b]
+    recommended_frameworks: [llamaindex, haystack, qwen-agent, dify]
+    note: >
+      More pipeline-oriented than chat-oriented RAG. Retrieval quality depends heavily on ingestion discipline.
+
+  - id: voice_transcription_workbench
+    label: "음성 전사 워크벤치"
+    description: "녹음/회의 음성 파일 전사, 정리, 후처리"
+    keywords: [음성전사, 전사, whisper, stt, 오디오정리,
+               transcription, whisper, speech to text, audio notes, transcript]
+    min_memory_gb: 16
+    needs_always_on: false
+    recommended_models: [qwen3.5:9b, qwen3.5:14b, gemma3:12b]
+    recommended_frameworks: [openclaw, qwen-agent, open-webui]
+    note: >
+      The transcription stack itself may be separate, but the assistant layer helps with organization, summarization, and actions.
+    recommended_models: [qwen3.5:14b, qwen3.5:27b, gemma3:12b]
+    recommended_frameworks: [qwen-agent, llamaindex, anythingllm, openclaw]
+    note: >
+      Combines document retrieval with note-graph navigation. Best fit when a personal vault is the primary corpus.
