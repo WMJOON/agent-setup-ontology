@@ -190,3 +190,131 @@ models:
       Distilled 32B reasoning model. Strong code review, complex problem solving.
       No tool calling — best for offline batch evaluation and LLM-as-Judge tasks
       where structured output is not required.
+
+  # ── IBM Granite / Coding / Enterprise ─────────────────
+
+  - id: granite3.1-dense:8b
+    label: "granite3.1-dense:8b"
+    params_b: 8
+    type: dense
+    min_memory_gb: 8
+    quality: standard
+    tool_calling: true
+    speed_note: "~22-35 t/s (M-series 16GB)"
+    note: "Enterprise-oriented 8B model family. Good structured outputs and stable instruction following."
+
+  - id: granite3.1-moe:3b
+    label: "granite3.1-moe:3b"
+    params_b: 3
+    type: MoE
+    min_memory_gb: 8
+    quality: light
+    tool_calling: true
+    speed_note: "~25-40 t/s (M-series 8GB+)"
+    note: "Lightweight MoE option for low-cost local assistants and always-on workflows."
+
+  # ── Code-specialized local models ─────────────────────
+
+  - id: codestral:22b
+    label: "codestral:22b"
+    params_b: 22
+    type: dense
+    min_memory_gb: 24
+    quality: pro
+    tool_calling: true
+    speed_note: "~9-14 t/s (M4 Pro 48GB / 32GB with reduced headroom)"
+    note: "Strong code generation model. Better coding focus than general-purpose chat models in many repo tasks."
+
+  - id: qwen2.5-coder:14b
+    label: "qwen2.5-coder:14b"
+    params_b: 14
+    type: dense
+    min_memory_gb: 16
+    quality: standard-plus
+    tool_calling: true
+    speed_note: "~14-22 t/s (M-series 16GB+)"
+    note: "Code-specialized Qwen variant. Good alternative when coding is the dominant workload."
+
+  # ── Additional small / practical locals ───────────────
+
+  - id: tinyllama:1.1b
+    label: "tinyllama:1.1b"
+    params_b: 1.1
+    type: dense
+    min_memory_gb: 4
+    quality: light
+    tool_calling: false
+    speed_note: "~40-80 t/s on almost any local machine"
+    note: "Ultra-light local model for trivial tasks, routing stubs, and very low-resource environments."
+
+  - id: dolphin-phi:2.7b
+    label: "dolphin-phi:2.7b"
+    params_b: 2.7
+    type: dense
+    min_memory_gb: 4
+    quality: light
+    tool_calling: false
+    speed_note: "~30-60 t/s (8GB-class devices)"
+    note: "Small uncensored/general chat model. Fine for lightweight chat but not ideal for tool-use automation."
+
+  # ── Tier-1 taxonomy expansion candidates ──────────────
+
+  - id: starcoder2:3b
+    label: "starcoder2:3b"
+    params_b: 3
+    type: dense
+    min_memory_gb: 4
+    quality: light
+    tool_calling: false
+    speed_note: "~30-50 t/s (8GB-class devices)"
+    note: "Compact code-specialized model for lightweight local coding and autocomplete experiments."
+
+  - id: starcoder2:7b
+    label: "starcoder2:7b"
+    params_b: 7
+    type: dense
+    min_memory_gb: 8
+    quality: standard
+    tool_calling: false
+    speed_note: "~22-35 t/s (M-series 16GB)"
+    note: "Balanced code model for local coding assistance when a specialized coder is preferred over a general model."
+
+  - id: starcoder2:15b
+    label: "starcoder2:15b"
+    params_b: 15
+    type: dense
+    min_memory_gb: 16
+    quality: standard-plus
+    tool_calling: false
+    speed_note: "~12-18 t/s (M-series 16GB+, best on 32GB)"
+    note: "Larger StarCoder2 variant for code-heavy workflows and repository reasoning."
+
+  - id: mistral-small
+    label: "mistral-small"
+    params_b: 24
+    type: dense
+    min_memory_gb: 24
+    quality: pro
+    tool_calling: true
+    speed_note: "~9-15 t/s (M4 Pro 48GB / 32GB with tighter headroom)"
+    note: "Mid-sized high-capability general model. Strong alternative to Qwen/Llama in general assistant and RAG workflows."
+
+  - id: qwen3-embedding:8b
+    label: "qwen3-embedding:8b"
+    params_b: 8
+    type: dense
+    min_memory_gb: 8
+    quality: standard
+    tool_calling: false
+    speed_note: "Embedding workload — retrieval backend, not direct chat"
+    note: "Embedding model for multilingual retrieval, semantic search, and RAG indexing. Not a primary text generator."
+
+  - id: embeddinggemma
+    label: "embeddinggemma"
+    params_b: 0.3
+    type: dense
+    min_memory_gb: 4
+    quality: light
+    tool_calling: false
+    speed_note: "Embedding workload — lightweight vector backend"
+    note: "Compact embedding model for semantic search and retrieval tasks. Good low-cost local embedding backend."

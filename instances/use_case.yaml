@@ -31,7 +31,7 @@ use_cases:
                code, development, programming, function, class, coding, boilerplate, test]
     min_memory_gb: 16
     needs_always_on: false
-    recommended_models: [qwen3.5:14b, qwen3.5:35b-a3b, phi4:14b, llama3.1:8b]
+    recommended_models: [qwen2.5-coder:14b, codestral:22b, qwen3.5:35b-a3b, phi4:14b, starcoder2:15b]
     recommended_frameworks: [smolagents, qwen-agent, continue]
 
   - id: code_review
@@ -41,7 +41,7 @@ use_cases:
                review, refactoring, bug, improvement, pull request, diff]
     min_memory_gb: 32
     needs_always_on: false
-    recommended_models: [qwen3.5:27b, qwen3.5:35b-a3b, deepseek-r1:32b]
+    recommended_models: [codestral:22b, qwen3.5:27b, qwen3.5:35b-a3b, deepseek-r1:32b, starcoder2:15b]
     recommended_frameworks: [smolagents, qwen-agent]
 
   - id: local_copilot
@@ -51,7 +51,7 @@ use_cases:
                copilot, autocomplete, inline, suggestion, editor, jetbrains]
     min_memory_gb: 8
     needs_always_on: true
-    recommended_models: [qwen3.5:4b, qwen3.5:9b, llama3.2:3b, phi4:14b]
+    recommended_models: [starcoder2:3b, starcoder2:7b, qwen2.5-coder:14b, qwen3.5:9b, phi4:14b]
     recommended_frameworks: [continue]
 
   - id: web_research
@@ -71,7 +71,7 @@ use_cases:
                document, rag, retrieval, augmented, generation, qa, pdf, embed]
     min_memory_gb: 16
     needs_always_on: false
-    recommended_models: [qwen3.5:14b, qwen3.5:27b, gemma3:12b, gemma3:27b]
+    recommended_models: [qwen3.5:14b, mistral-small, qwen3-embedding:8b, gemma3:12b, gemma3:27b]
     recommended_frameworks: [qwen-agent, llamaindex]
 
   - id: general_qa
@@ -81,7 +81,7 @@ use_cases:
                chat, question, answer, conversation, assistant, chatgpt, local]
     min_memory_gb: 8
     needs_always_on: false
-    recommended_models: [qwen3.5:9b, qwen3.5:14b, llama3.1:8b, gemma3:12b]
+    recommended_models: [qwen3.5:9b, llama3.1:8b, mistral-small, gemma3:12b, granite3.1-dense:8b]
     recommended_frameworks: [open-webui]
 
   - id: multi_agent
@@ -160,7 +160,7 @@ use_cases:
                personal assistant, messaging agent, telegram, slack, signal, whatsapp, chat ops]
     min_memory_gb: 16
     needs_always_on: true
-    recommended_models: [qwen3.5:9b, qwen3.5:35b-a3b, llama3.1:8b]
+    recommended_models: [qwen3.5:9b, qwen3.5:35b-a3b, granite3.1-dense:8b, llama3.1:8b]
     recommended_frameworks: [openclaw, smolagents]
     note: >
       Best served by an always-on device with messaging integrations and safe tool execution.
@@ -186,7 +186,7 @@ use_cases:
                local rag, rag server, knowledge server, document chat, retrieval server]
     min_memory_gb: 16
     needs_always_on: true
-    recommended_models: [qwen3.5:14b, qwen3.5:27b, gemma3:12b]
+    recommended_models: [qwen3.5:14b, mistral-small, qwen3-embedding:8b, embeddinggemma, gemma3:12b]
     recommended_frameworks: [llamaindex, haystack, open-webui, dify, anythingllm]
     note: >
       Prioritizes stable serving, document ingestion, and retrieval quality over agentic autonomy.
@@ -258,6 +258,10 @@ use_cases:
                obsidian rag, vault search, wikilink knowledge base, note retrieval]
     min_memory_gb: 16
     needs_always_on: false
+    recommended_models: [qwen3.5:14b, qwen3-embedding:8b, embeddinggemma, gemma3:12b, mistral-small]
+    recommended_frameworks: [qwen-agent, llamaindex, anythingllm, openclaw]
+    note: >
+      Combines document retrieval with note-graph navigation. Best fit when a personal vault is the primary corpus.
 
   - id: email_assistant
     label: "이메일 비서"
@@ -266,7 +270,7 @@ use_cases:
                email assistant, inbox triage, draft reply, mail summary, inbox]
     min_memory_gb: 16
     needs_always_on: true
-    recommended_models: [qwen3.5:9b, qwen3.5:14b, phi4:14b]
+    recommended_models: [granite3.1-dense:8b, qwen3.5:9b, qwen3.5:14b, phi4:14b]
     recommended_frameworks: [openclaw, n8n, open-webui]
     note: >
       Best for inbox triage, summary, and draft generation. Event-driven automation is often enough.

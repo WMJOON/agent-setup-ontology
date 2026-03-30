@@ -70,3 +70,68 @@ model:
       Marks the model as the best quality-to-resource ratio in its tier.
       The copilot prioritizes sweet_spot models when making recommendations
       unless the user has specific quality or speed requirements.
+
+  taxonomy_extension:
+
+    note: >
+      The current governance schema does not yet require richer taxonomy fields,
+      but model coverage is expanding beyond general chat LLMs.
+      Therefore the ontology should conceptually track a second-layer taxonomy
+      even before it becomes a formal required field set.
+
+    primary_capability_class:
+      what: >
+        High-level functional role of the model.
+        Unlike quality/type, this answers: "What is this model mainly for?"
+      values:
+        general: >
+          General-purpose local LLM for chat, assistant, summarization,
+          and everyday tool-using agents.
+        coding: >
+          Model optimized for code generation, refactoring, review,
+          and IDE/copilot use cases.
+        reasoning: >
+          Model specialized for multi-step reasoning, evaluation,
+          judge tasks, and analysis-heavy workloads.
+        embedding: >
+          Vectorization model used for retrieval, search, clustering,
+          and semantic matching. Not a text generation default.
+        multimodal: >
+          Model that accepts text plus image/vision input.
+          Useful for browser/UI analysis and visual reasoning.
+        speech: >
+          Audio/speech-oriented model stack (e.g. transcription, speech understanding).
+          Often adjacent to LLM workflows rather than a direct chat model.
+
+    interaction_profile:
+      what: >
+        Operational interaction style in an agent system.
+      values:
+        tool_agentic: >
+          Suitable for real-time tool-calling loops and agent frameworks.
+        chat_only: >
+          Best for interactive chat, writing, and text-in/text-out flows.
+        batch_reasoner: >
+          Best for offline reasoning, judging, review, and analytical batch jobs.
+        retrieval_backend: >
+          Used as a retrieval/vector backend rather than a direct generator.
+        vision_agentic: >
+          Suitable for multimodal UI/browser/visual-agent workloads.
+        speech_pipeline: >
+          Used in audio transcription or voice processing pipelines.
+
+    modality_flags:
+      what: >
+        A future optional flag layer for input/output capability.
+      candidate_fields:
+        - text_in
+        - text_out
+        - vision_in
+        - audio_in
+        - embedding_out
+
+    migration_strategy: >
+      Recommended adoption path:
+      (1) define taxonomy conceptually here,
+      (2) add instance metadata as optional fields later,
+      (3) promote to governance only after copilot actually uses them.

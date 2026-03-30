@@ -554,6 +554,82 @@ instances:
     use_case: schedule_task
     fit: strong
     reason: Light tier. Reliable tool calling for simple scheduled actions.
+  - model: granite3.1-dense:8b
+    use_case: personal_assistant
+    fit: standard
+    reason: Stable instruction following and structured outputs make it a good enterprise-style assistant option.
+  - model: granite3.1-dense:8b
+    use_case: email_assistant
+    fit: strong
+    reason: Good for extraction, classification, and structured response drafting.
+  - model: granite3.1-moe:3b
+    use_case: schedule_task
+    fit: strong
+    reason: Lightweight MoE profile suits always-on low-cost background tasks.
+  - model: codestral:22b
+    use_case: code_generation
+    fit: strong
+    reason: Code-specialized model with strong repo-level generation capability.
+  - model: codestral:22b
+    use_case: code_review
+    fit: strong
+    reason: Strong coding bias helps with review, refactor, and patch drafting.
+  - model: qwen2.5-coder:14b
+    use_case: code_generation
+    fit: strong
+    reason: Good coding quality at a lower memory requirement than larger code-focused models.
+  - model: qwen2.5-coder:14b
+    use_case: local_copilot
+    fit: strong
+    reason: Practical balance of latency and coding quality for local editor workflows.
+  - model: tinyllama:1.1b
+    use_case: schedule_task
+    fit: weak
+    reason: Very fast and cheap, but quality is low. Use only for trivial boilerplate automations.
+  - model: dolphin-phi:2.7b
+    use_case: general_qa
+    fit: standard
+    reason: Fine as a lightweight local chat model, but not a preferred automation model.
+  - model: starcoder2:3b
+    use_case: local_copilot
+    fit: standard
+    reason: Lightweight code-specialized option for low-resource editor assistance.
+  - model: starcoder2:7b
+    use_case: local_copilot
+    fit: strong
+    reason: Good coding specialization with practical local latency.
+  - model: starcoder2:15b
+    use_case: code_generation
+    fit: strong
+    reason: Strong code-oriented local model for generation and repository tasks.
+  - model: starcoder2:15b
+    use_case: code_review
+    fit: standard
+    reason: Strong code bias helps for review, though not always as strong as larger reasoning-heavy models.
+  - model: mistral-small
+    use_case: general_qa
+    fit: strong
+    reason: Mid-sized general model with strong instruction following for assistant-style workloads.
+  - model: mistral-small
+    use_case: document_rag
+    fit: strong
+    reason: Good balance of generation quality and practical local deployability for RAG answering.
+  - model: mistral-small
+    use_case: research_pipeline
+    fit: standard
+    reason: Strong general capability makes it useful for repeated synthesis workflows.
+  - model: qwen3-embedding:8b
+    use_case: document_rag
+    fit: strong
+    reason: Embedding backbone improves retrieval quality, though it should be paired with a generation model.
+  - model: qwen3-embedding:8b
+    use_case: obsidian_rag
+    fit: strong
+    reason: Strong multilingual semantic retrieval fit for note-based knowledge bases.
+  - model: embeddinggemma
+    use_case: document_rag
+    fit: standard
+    reason: Good compact local embedding option for small-to-mid retrieval corpora.
   model_framework_fit:
   - model_family: qwen
     framework: qwen-agent
@@ -704,6 +780,70 @@ instances:
     fit: standard
     reason: Thinking tokens visible in Dify chat. Useful for transparent reasoning
       workflows.
+  - model_family: granite
+    framework: open-webui
+    fit: strong
+    reason: Granite works well in structured chat and assistant-style workflows where stable outputs matter.
+  - model_family: granite
+    framework: n8n
+    fit: strong
+    reason: Good structured responses and classification make Granite practical for workflow automation.
+  - model_family: codestral
+    framework: continue
+    fit: strong
+    reason: Code-specialized generation is a natural fit for IDE workflows.
+  - model_family: codestral
+    framework: openhands
+    fit: strong
+    reason: Strong code bias helps autonomous software-task execution.
+  - model_family: qwen2.5-coder
+    framework: continue
+    fit: strong
+    reason: Good local coding model for inline completion and code transformation.
+  - model_family: qwen2.5-coder
+    framework: smolagents
+    fit: strong
+    reason: Reliable coding-focused tool use makes it practical in code-execution agents.
+  - model_family: tinyllama
+    framework: n8n
+    fit: weak
+    reason: Useful only for trivial classification/routing. Quality is too low for rich agent tasks.
+  - model_family: dolphin-phi
+    framework: open-webui
+    fit: standard
+    reason: Lightweight local chat option where strict safety/tooling is not the primary concern.
+  - model_family: starcoder2
+    framework: continue
+    fit: strong
+    reason: Code-specialized local model family for IDE completion and coding assistance.
+  - model_family: starcoder2
+    framework: open-webui
+    fit: weak
+    reason: Can chat, but its value is mostly in code tasks rather than general assistant UX.
+  - model_family: mistral-small
+    framework: open-webui
+    fit: strong
+    reason: Strong local general-purpose chat model for high-quality assistant experiences.
+  - model_family: mistral-small
+    framework: llamaindex
+    fit: strong
+    reason: Good local generation model for RAG answer synthesis.
+  - model_family: qwen3-embedding
+    framework: llamaindex
+    fit: strong
+    reason: Excellent retrieval backbone for indexing and semantic search layers.
+  - model_family: qwen3-embedding
+    framework: haystack
+    fit: strong
+    reason: Embedding-oriented fit for retrieval-first RAG pipelines.
+  - model_family: embeddinggemma
+    framework: llamaindex
+    fit: strong
+    reason: Compact embedding backend for lightweight local retrieval stacks.
+  - model_family: embeddinggemma
+    framework: anythingllm
+    fit: standard
+    reason: Useful as a small local embedding backend for document search.
   device_model_fit:
   - device: macbook_air_8gb
     model: llama3.2:3b
