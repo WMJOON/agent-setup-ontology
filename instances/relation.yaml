@@ -1,7 +1,4 @@
-# agent-setup-ontology — Relation instances
-# Relation type definitions → concepts/relation.yaml
-version: "0.1.0"
-
+version: 0.1.0
 instances:
   upgrade_paths:
     macbook:
@@ -144,18 +141,22 @@ instances:
       - use_case: file_automation
         reason: Shell execution + file system access built-in.
       - use_case: personal_assistant
-        reason: Messaging integrations + tool execution make it a natural always-on personal assistant.
+        reason: Messaging integrations + tool execution make it a natural always-on
+          personal assistant.
       - use_case: obsidian_assistant
-        reason: Strong file operations and automation fit note-centric knowledge base workflows.
+        reason: Strong file operations and automation fit note-centric knowledge base
+          workflows.
       - use_case: browser_operator
-        reason: Interactive browser control is one of OpenClaw's strongest practical patterns.
+        reason: Interactive browser control is one of OpenClaw's strongest practical
+          patterns.
       weak_fit:
       - use_case: document_rag
         reason: Not a RAG framework. Use qwen-agent or llamaindex.
       - use_case: multi_agent
         reason: Single-agent design. Not built for multi-agent orchestration.
       - use_case: local_rag_server
-        reason: Can orchestrate around RAG but is not the best primary serving layer for document chat.
+        reason: Can orchestrate around RAG but is not the best primary serving layer
+          for document chat.
     continue:
       strong_fit:
       - use_case: local_copilot
@@ -312,20 +313,24 @@ instances:
       - use_case: file_automation
         reason: Integrations + workflow nodes handle routine file pipelines well.
       - use_case: personal_assistant
-        reason: Good for event-driven assistant routines that stitch together apps and notifications.
+        reason: Good for event-driven assistant routines that stitch together apps
+          and notifications.
       - use_case: email_assistant
-        reason: Inbox-triggered workflows, drafts, and routing are a natural fit for n8n.
+        reason: Inbox-triggered workflows, drafts, and routing are a natural fit for
+          n8n.
       - use_case: calendar_assistant
         reason: Calendar/event automations map well to trigger-and-action workflows.
       - use_case: home_dashboard_agent
-        reason: Polling, alerts, and periodic summaries are exactly the kind of low-friction automation n8n handles well.
+        reason: Polling, alerts, and periodic summaries are exactly the kind of low-friction
+          automation n8n handles well.
       weak_fit:
       - use_case: code_generation
         reason: Workflow tool, not a coding copilot.
       - use_case: multi_agent
         reason: Can orchestrate services, but not a true multi-agent reasoning framework.
       - use_case: browser_operator
-        reason: Not intended for rich interactive browser control like OpenClaw or OpenHands.
+        reason: Not intended for rich interactive browser control like OpenClaw or
+          OpenHands.
     claude-code:
       strong_fit:
       - use_case: code_generation
@@ -344,9 +349,11 @@ instances:
     faster-whisper-stack:
       strong_fit:
       - use_case: voice_transcription_workbench
-        reason: Fast local Whisper inference is the core primitive for transcription-heavy workflows.
+        reason: Fast local Whisper inference is the core primitive for transcription-heavy
+          workflows.
       - use_case: meeting_summarizer
-        reason: Reliable local transcripts make meeting summarization practical and private.
+        reason: Reliable local transcripts make meeting summarization practical and
+          private.
       weak_fit:
       - use_case: browser_operator
         reason: Audio/transcription layer, not a browser control framework.
@@ -356,7 +363,8 @@ instances:
   - profile: setup-mac-mini-personal-assistant
     fit: strong
     use_case: personal_assistant
-    reason: Always-on Mac Mini + OpenClaw is the cleanest private personal assistant shape in the current ontology.
+    reason: Always-on Mac Mini + OpenClaw is the cleanest private personal assistant
+      shape in the current ontology.
   - profile: setup-mac-mini-personal-assistant
     fit: strong
     use_case: obsidian_assistant
@@ -364,11 +372,13 @@ instances:
   - profile: setup-mac-mini-rag-server
     fit: strong
     use_case: local_rag_server
-    reason: Low-complexity always-on RAG server with good enough model quality at low operating cost.
+    reason: Low-complexity always-on RAG server with good enough model quality at
+      low operating cost.
   - profile: setup-n8n-scheduler
     fit: strong
     use_case: schedule_task
-    reason: Trigger/schedule-first automation stack. Better than agent-first tools for repetitive jobs.
+    reason: Trigger/schedule-first automation stack. Better than agent-first tools
+      for repetitive jobs.
   - profile: setup-macbook-portable-openclaw
     fit: strong
     use_case: browser_operator
@@ -376,23 +386,28 @@ instances:
   - profile: setup-pc-browser-operator
     fit: strong
     use_case: browser_operator
-    reason: Good GPU-backed workstation for interactive browser control and repetitive dashboard work.
+    reason: Good GPU-backed workstation for interactive browser control and repetitive
+      dashboard work.
   - profile: setup-private-support-bot
     fit: strong
     use_case: customer_support_bot
-    reason: Dify provides low-code support bot and document workflow UX that suits internal support stacks.
+    reason: Dify provides low-code support bot and document workflow UX that suits
+      internal support stacks.
   - profile: setup-obsidian-rag-desk
     fit: strong
     use_case: obsidian_rag
-    reason: Best fit when the primary corpus is an Obsidian vault and retrieval quality matters.
+    reason: Best fit when the primary corpus is an Obsidian vault and retrieval quality
+      matters.
   - profile: setup-research-pipeline-pro
     fit: strong
     use_case: research_pipeline
-    reason: Strong local research stack for repeated multi-step synthesis using a higher-end always-on box.
+    reason: Strong local research stack for repeated multi-step synthesis using a
+      higher-end always-on box.
   - profile: setup-email-calendar-hub
     fit: strong
     use_case: email_assistant
-    reason: n8n-based always-on hub is well suited for inbox triggers, drafts, and reminder workflows.
+    reason: n8n-based always-on hub is well suited for inbox triggers, drafts, and
+      reminder workflows.
   - profile: setup-email-calendar-hub
     fit: strong
     use_case: calendar_assistant
@@ -400,19 +415,23 @@ instances:
   - profile: setup-voice-meeting-desk
     fit: strong
     use_case: voice_transcription_workbench
-    reason: Transcription-first desk setup with a local summarization layer is the practical default shape.
+    reason: Transcription-first desk setup with a local summarization layer is the
+      practical default shape.
   - profile: setup-voice-meeting-desk
     fit: strong
     use_case: meeting_summarizer
-    reason: Meeting transcripts can be summarized and actionized efficiently on a single local desk setup.
+    reason: Meeting transcripts can be summarized and actionized efficiently on a
+      single local desk setup.
   - profile: setup-home-dashboard-mini
     fit: strong
     use_case: home_dashboard_agent
-    reason: Always-on low-power OpenClaw setup matches recurring dashboard checks and alerts.
+    reason: Always-on low-power OpenClaw setup matches recurring dashboard checks
+      and alerts.
   - profile: setup-document-ingestion-lab
     fit: strong
     use_case: document_ingestion_pipeline
-    reason: GPU-backed workstation helps with repeated parsing, indexing, and retrieval iteration.
+    reason: GPU-backed workstation helps with repeated parsing, indexing, and retrieval
+      iteration.
   use_case_adjacency:
   - from: web_automation
     to: browser_operator
@@ -421,11 +440,13 @@ instances:
   - from: document_rag
     to: local_rag_server
     relation: deployment_variant
-    reason: local_rag_server is the serving-oriented always-on deployment form of document RAG.
+    reason: local_rag_server is the serving-oriented always-on deployment form of
+      document RAG.
   - from: obsidian_assistant
     to: obsidian_rag
     relation: capability_upgrade
-    reason: Obsidian RAG extends note editing/management into retrieval-grounded question answering.
+    reason: Obsidian RAG extends note editing/management into retrieval-grounded question
+      answering.
   - from: deep_research
     to: research_pipeline
     relation: operationalization
@@ -437,19 +458,23 @@ instances:
   - from: personal_assistant
     to: calendar_assistant
     relation: specialization
-    reason: Calendar assistant focuses on event/reminder workflows within the broader assistant space.
+    reason: Calendar assistant focuses on event/reminder workflows within the broader
+      assistant space.
   - from: voice_assistant
     to: voice_transcription_workbench
     relation: supporting_pipeline
-    reason: Transcription workbench is the offline/audio-processing support layer for many voice assistant flows.
+    reason: Transcription workbench is the offline/audio-processing support layer
+      for many voice assistant flows.
   - from: document_rag
     to: document_ingestion_pipeline
     relation: upstream_pipeline
-    reason: Good document RAG quality depends on disciplined ingestion, parsing, and indexing.
+    reason: Good document RAG quality depends on disciplined ingestion, parsing, and
+      indexing.
   - from: meeting_summarizer
     to: voice_transcription_workbench
     relation: prerequisite_pipeline
-    reason: Meeting summarization often depends on reliable transcript generation first.
+    reason: Meeting summarization often depends on reliable transcript generation
+      first.
   model_use_case_notes:
   - model: deepseek-r1:8b
     use_case: agent_monitoring
@@ -557,7 +582,8 @@ instances:
   - model: granite3.1-dense:8b
     use_case: personal_assistant
     fit: standard
-    reason: Stable instruction following and structured outputs make it a good enterprise-style assistant option.
+    reason: Stable instruction following and structured outputs make it a good enterprise-style
+      assistant option.
   - model: granite3.1-dense:8b
     use_case: email_assistant
     fit: strong
@@ -577,7 +603,8 @@ instances:
   - model: qwen2.5-coder:14b
     use_case: code_generation
     fit: strong
-    reason: Good coding quality at a lower memory requirement than larger code-focused models.
+    reason: Good coding quality at a lower memory requirement than larger code-focused
+      models.
   - model: qwen2.5-coder:14b
     use_case: local_copilot
     fit: strong
@@ -585,11 +612,13 @@ instances:
   - model: tinyllama:1.1b
     use_case: schedule_task
     fit: weak
-    reason: Very fast and cheap, but quality is low. Use only for trivial boilerplate automations.
+    reason: Very fast and cheap, but quality is low. Use only for trivial boilerplate
+      automations.
   - model: dolphin-phi:2.7b
     use_case: general_qa
     fit: standard
-    reason: Fine as a lightweight local chat model, but not a preferred automation model.
+    reason: Fine as a lightweight local chat model, but not a preferred automation
+      model.
   - model: starcoder2:3b
     use_case: local_copilot
     fit: standard
@@ -605,15 +634,18 @@ instances:
   - model: starcoder2:15b
     use_case: code_review
     fit: standard
-    reason: Strong code bias helps for review, though not always as strong as larger reasoning-heavy models.
+    reason: Strong code bias helps for review, though not always as strong as larger
+      reasoning-heavy models.
   - model: mistral-small
     use_case: general_qa
     fit: strong
-    reason: Mid-sized general model with strong instruction following for assistant-style workloads.
+    reason: Mid-sized general model with strong instruction following for assistant-style
+      workloads.
   - model: mistral-small
     use_case: document_rag
     fit: strong
-    reason: Good balance of generation quality and practical local deployability for RAG answering.
+    reason: Good balance of generation quality and practical local deployability for
+      RAG answering.
   - model: mistral-small
     use_case: research_pipeline
     fit: standard
@@ -621,7 +653,8 @@ instances:
   - model: qwen3-embedding:8b
     use_case: document_rag
     fit: strong
-    reason: Embedding backbone improves retrieval quality, though it should be paired with a generation model.
+    reason: Embedding backbone improves retrieval quality, though it should be paired
+      with a generation model.
   - model: qwen3-embedding:8b
     use_case: obsidian_rag
     fit: strong
@@ -783,11 +816,13 @@ instances:
   - model_family: granite
     framework: open-webui
     fit: strong
-    reason: Granite works well in structured chat and assistant-style workflows where stable outputs matter.
+    reason: Granite works well in structured chat and assistant-style workflows where
+      stable outputs matter.
   - model_family: granite
     framework: n8n
     fit: strong
-    reason: Good structured responses and classification make Granite practical for workflow automation.
+    reason: Good structured responses and classification make Granite practical for
+      workflow automation.
   - model_family: codestral
     framework: continue
     fit: strong
@@ -803,15 +838,18 @@ instances:
   - model_family: qwen2.5-coder
     framework: smolagents
     fit: strong
-    reason: Reliable coding-focused tool use makes it practical in code-execution agents.
+    reason: Reliable coding-focused tool use makes it practical in code-execution
+      agents.
   - model_family: tinyllama
     framework: n8n
     fit: weak
-    reason: Useful only for trivial classification/routing. Quality is too low for rich agent tasks.
+    reason: Useful only for trivial classification/routing. Quality is too low for
+      rich agent tasks.
   - model_family: dolphin-phi
     framework: open-webui
     fit: standard
-    reason: Lightweight local chat option where strict safety/tooling is not the primary concern.
+    reason: Lightweight local chat option where strict safety/tooling is not the primary
+      concern.
   - model_family: starcoder2
     framework: continue
     fit: strong
@@ -819,7 +857,8 @@ instances:
   - model_family: starcoder2
     framework: open-webui
     fit: weak
-    reason: Can chat, but its value is mostly in code tasks rather than general assistant UX.
+    reason: Can chat, but its value is mostly in code tasks rather than general assistant
+      UX.
   - model_family: mistral-small
     framework: open-webui
     fit: strong
@@ -962,3 +1001,74 @@ instances:
       wanting Mistral-family continuity can use mistral:7b but accept quality downgrade.
 
       '
+  provider_surface_compatibility:
+    claude_code:
+      entity_type: product_surface
+      provider: anthropic
+      surface_type: cli_agent
+      openclaw_support_level: supported
+      auth_modes:
+      - local_login
+      - browser_session
+      headless_automation_fit: medium
+      notes: Known practical fit for OpenClaw ACP-style coding workflows.
+    codex_cli:
+      entity_type: product_surface
+      provider: openai
+      surface_type: cli_agent
+      openclaw_support_level: supported
+      auth_modes:
+      - local_login
+      - browser_session
+      headless_automation_fit: medium
+      notes: Known practical fit for OpenClaw ACP-style coding workflows.
+    gemini_cli:
+      entity_type: product_surface
+      provider: google
+      surface_type: cli_agent
+      openclaw_support_level: possible
+      auth_modes:
+      - api_key
+      - oauth
+      headless_automation_fit: unknown
+      notes: CLI surface exists, but OAuth/headless fit for OpenClaw orchestration
+        should be verified.
+    cursor:
+      entity_type: product_surface
+      provider: cursor
+      surface_type: ide_agent_platform
+      openclaw_support_level: unknown
+      auth_modes:
+      - oauth
+      - browser_session
+      headless_automation_fit: low
+      notes: Treat as IDE product surface, not a confirmed OpenClaw execution worker.
+    grok_api:
+      entity_type: api_surface
+      provider: xai
+      surface_type: api
+      openclaw_support_level: possible
+      auth_modes:
+      - api_key
+      headless_automation_fit: high
+      notes: API surface is straightforward; OpenClaw integration depends on routing/tooling
+        layer.
+    groq_api:
+      entity_type: api_surface
+      provider: groq
+      surface_type: api
+      openclaw_support_level: possible
+      auth_modes:
+      - api_key
+      headless_automation_fit: high
+      notes: API surface is straightforward; inference-speed oriented hosted OSS access.
+    openrouter_api:
+      entity_type: api_surface
+      provider: openrouter
+      surface_type: api_router
+      openclaw_support_level: possible
+      auth_modes:
+      - api_key
+      headless_automation_fit: high
+      notes: Useful as a routing/meta-provider layer. Final behavior depends on routed
+        model.

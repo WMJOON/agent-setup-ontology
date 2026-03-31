@@ -1,125 +1,176 @@
-# agent-setup-ontology — API Service Instances
-# All api_service entries extracted from ontology.yaml.
-version: "0.1.0"
-
+version: 0.1.0
 api_services:
-
-  # ── Anthropic ──────────────────────────────────────────
-
-  - id: claude-haiku-4-5
-    label: "Claude Haiku 4.5"
-    provider: anthropic
-    quality: standard
-    tool_calling: true
-    context_window_k: 200
-    pricing:
-      input_per_1m: 0.80
-      output_per_1m: 4.00
-      currency: USD
-      source: "https://www.anthropic.com/pricing"
-    local_alternative: "qwen3.5:9b"
-    note: "Fastest Anthropic model. Best cost-per-task for simple agents."
-
-  - id: claude-sonnet-4-6
-    label: "Claude Sonnet 4.6"
-    provider: anthropic
-    quality: pro
-    tool_calling: true
-    context_window_k: 200
-    pricing:
-      input_per_1m: 3.00
-      output_per_1m: 15.00
-      currency: USD
-      source: "https://www.anthropic.com/pricing"
-    local_alternative: "qwen3.5:27b"
-    note: "High-quality reasoning. Good for complex agent tasks and code review."
-
-  # ── OpenAI ─────────────────────────────────────────────
-
-  - id: gpt-4o-mini
-    label: "GPT-4o mini"
-    provider: openai
-    quality: standard
-    tool_calling: true
-    context_window_k: 128
-    pricing:
-      input_per_1m: 0.15
-      output_per_1m: 0.60
-      currency: USD
-      source: "https://openai.com/pricing"
-    local_alternative: "qwen3.5:9b"
-    note: "Cheapest capable OpenAI model. Good entry point for API-first workflows."
-
-  - id: gpt-4o
-    label: "GPT-4o"
-    provider: openai
-    quality: pro
-    tool_calling: true
-    context_window_k: 128
-    pricing:
-      input_per_1m: 2.50
-      output_per_1m: 10.00
-      currency: USD
-      source: "https://openai.com/pricing"
-    local_alternative: "qwen3.5:27b"
-    note: "Strong all-rounder. High cost at scale."
-
-  # ── Google ─────────────────────────────────────────────
-
-  - id: gemini-2-flash
-    label: "Gemini 2.0 Flash"
-    provider: google
-    quality: standard
-    tool_calling: true
-    context_window_k: 1000
-    pricing:
-      input_per_1m: 0.10
-      output_per_1m: 0.40
-      currency: USD
-      source: "https://ai.google.dev/pricing"
-    local_alternative: "qwen3.5:9b"
-    note: "Cheapest capable model with 1M context. Good for long-document tasks."
-
-  - id: gemini-2-pro
-    label: "Gemini 2.0 Pro"
-    provider: google
-    quality: pro
-    tool_calling: true
-    context_window_k: 1000
-    pricing:
-      input_per_1m: 1.25
-      output_per_1m: 5.00
-      currency: USD
-      source: "https://ai.google.dev/pricing"
-    local_alternative: "qwen3.5:27b"
-    note: "High quality with massive context window."
-
-  # ── Mistral AI ─────────────────────────────────────────
-
-  - id: mistral-small
-    label: "Mistral Small"
-    provider: mistral
-    quality: standard
-    tool_calling: true
-    context_window_k: 128
-    pricing:
-      input_per_1m: 0.10
-      output_per_1m: 0.30
-      currency: USD
-      source: "https://mistral.ai/technology/#pricing"
-    local_alternative: "mistral:7b"
-    note: "Cheapest Mistral API. Well-suited for LangChain/LangGraph tool-calling pipelines."
-
-  - id: mistral-large
-    label: "Mistral Large"
-    provider: mistral
-    quality: pro
-    tool_calling: true
-    context_window_k: 128
-    pricing:
-      input_per_1m: 2.00
-      output_per_1m: 6.00
-      currency: USD
-      source: "https://mistral.ai/technology/#pricing"
-    local_alternative: "qwen3.5:27b"
-    note: "Flagship Mistral model. Strong function calling and instruction following."
+- id: claude-haiku-4-5
+  label: Claude Haiku 4.5
+  provider: anthropic
+  quality: standard
+  tool_calling: true
+  context_window_k: 200
+  pricing:
+    input_per_1m: 0.8
+    output_per_1m: 4.0
+    currency: USD
+    source: https://www.anthropic.com/pricing
+  local_alternative: qwen3.5:9b
+  note: Fastest Anthropic model. Best cost-per-task for simple agents.
+- id: claude-sonnet-4-6
+  label: Claude Sonnet 4.6
+  provider: anthropic
+  quality: pro
+  tool_calling: true
+  context_window_k: 200
+  pricing:
+    input_per_1m: 3.0
+    output_per_1m: 15.0
+    currency: USD
+    source: https://www.anthropic.com/pricing
+  local_alternative: qwen3.5:27b
+  note: High-quality reasoning. Good for complex agent tasks and code review.
+- id: gpt-4o-mini
+  label: GPT-4o mini
+  provider: openai
+  quality: standard
+  tool_calling: true
+  context_window_k: 128
+  pricing:
+    input_per_1m: 0.15
+    output_per_1m: 0.6
+    currency: USD
+    source: https://openai.com/pricing
+  local_alternative: qwen3.5:9b
+  note: Cheapest capable OpenAI model. Good entry point for API-first workflows.
+- id: gpt-4o
+  label: GPT-4o
+  provider: openai
+  quality: pro
+  tool_calling: true
+  context_window_k: 128
+  pricing:
+    input_per_1m: 2.5
+    output_per_1m: 10.0
+    currency: USD
+    source: https://openai.com/pricing
+  local_alternative: qwen3.5:27b
+  note: Strong all-rounder. High cost at scale.
+- id: gemini-2-flash
+  label: Gemini 2.0 Flash
+  provider: google
+  quality: standard
+  tool_calling: true
+  context_window_k: 1000
+  pricing:
+    input_per_1m: 0.1
+    output_per_1m: 0.4
+    currency: USD
+    source: https://ai.google.dev/pricing
+  local_alternative: qwen3.5:9b
+  note: Cheapest capable model with 1M context. Good for long-document tasks.
+- id: gemini-2-pro
+  label: Gemini 2.0 Pro
+  provider: google
+  quality: pro
+  tool_calling: true
+  context_window_k: 1000
+  pricing:
+    input_per_1m: 1.25
+    output_per_1m: 5.0
+    currency: USD
+    source: https://ai.google.dev/pricing
+  local_alternative: qwen3.5:27b
+  note: High quality with massive context window.
+- id: mistral-small
+  label: Mistral Small
+  provider: mistral
+  quality: standard
+  tool_calling: true
+  context_window_k: 128
+  pricing:
+    input_per_1m: 0.1
+    output_per_1m: 0.3
+    currency: USD
+    source: https://mistral.ai/technology/#pricing
+  local_alternative: mistral:7b
+  note: Cheapest Mistral API. Well-suited for LangChain/LangGraph tool-calling pipelines.
+- id: mistral-large
+  label: Mistral Large
+  provider: mistral
+  quality: pro
+  tool_calling: true
+  context_window_k: 128
+  pricing:
+    input_per_1m: 2.0
+    output_per_1m: 6.0
+    currency: USD
+    source: https://mistral.ai/technology/#pricing
+  local_alternative: qwen3.5:27b
+  note: Flagship Mistral model. Strong function calling and instruction following.
+- id: gemini-3-flash
+  label: Gemini 3 Flash
+  provider: google
+  quality: standard-plus
+  tool_calling: true
+  context_window_k: 1000
+  pricing:
+    input_per_1m: 0.5
+    output_per_1m: 3.0
+    currency: USD
+    source: https://ai.google.dev/gemini-api/docs/pricing
+  local_alternative: qwen3.5:14b
+  note: Fast general-purpose Gemini API tier with strong long-context economics. Good
+    API baseline before local upgrade.
+- id: grok-3-mini
+  label: Grok 3 Mini
+  provider: xai
+  quality: standard-plus
+  tool_calling: true
+  context_window_k: 128
+  pricing:
+    input_per_1m: 0.3
+    output_per_1m: 0.5
+    currency: USD
+    source: https://x.ai/api
+  local_alternative: qwen3.5:14b
+  note: xAI API entry for lightweight reasoning/coding comparisons. Pricing should
+    be re-verified before budgeting.
+- id: grok-3
+  label: Grok 3
+  provider: xai
+  quality: pro
+  tool_calling: true
+  context_window_k: 128
+  pricing:
+    input_per_1m: 3.0
+    output_per_1m: 15.0
+    currency: USD
+    source: https://x.ai/api
+  local_alternative: qwen3.5:35b-a3b
+  note: Flagship xAI API tier for stronger reasoning. Pricing should be re-verified
+    before budgeting.
+- id: openrouter-aggregated
+  label: OpenRouter (aggregated API surface)
+  provider: openrouter
+  quality: standard
+  tool_calling: true
+  context_window_k: 200
+  pricing:
+    input_per_1m: 0.0
+    output_per_1m: 0.0
+    currency: USD
+    source: https://openrouter.ai/models
+  local_alternative: qwen3.5:9b
+  note: Router surface, not a single model/provider. Final cost depends on routed
+    model; use for access-flexibility, not baseline pricing.
+- id: groq-llama-fast-api
+  label: Groq API (fast inference surface)
+  provider: groq
+  quality: standard
+  tool_calling: true
+  context_window_k: 128
+  pricing:
+    input_per_1m: 0.0
+    output_per_1m: 0.0
+    currency: USD
+    source: https://console.groq.com/docs/models
+  local_alternative: llama3.1:8b
+  note: Inference platform entry for high-speed hosted OSS model access. Cost depends
+    on selected served model; re-verify before budgeting.
