@@ -319,3 +319,37 @@ devices:
       After CES 2026 update: 2.5x faster via TensorRT-LLM + speculative decoding.
       Ollama-compatible. Pairs well with Mac Mini as control plane.
     supported_use_cases: all
+
+  - id: macbook_pro_m5_max_128gb
+    label: "MacBook Pro M5 Max 128GB"
+    type: macbook
+    chip: M5 Max
+    memory_gb: 128
+    memory_bandwidth_gbs: 460
+    gpu_vram_gb: 0
+    portability: portable
+    always_on: false
+    tier: pro-plus
+    max_model: "qwen3.5:72b"
+    ai_accelerator_type: integrated_gpu_accelerator
+    ttft_multiplier: 3.6
+    price_search_query: "MacBook Pro M5 Max 128GB price"
+    note: "M5 Max with 460-614 GB/s bandwidth. Supreme portable AI workstation."
+    supported_use_cases: all
+
+  - id: macbook_pro_m5_pro_48gb
+    label: "MacBook Pro M5 Pro 48GB"
+    type: macbook
+    chip: M5 Pro
+    memory_gb: 48
+    memory_bandwidth_gbs: 307
+    gpu_vram_gb: 0
+    portability: portable
+    always_on: false
+    tier: pro-plus
+    max_model: "qwen3.5:35b-a3b"
+    ai_accelerator_type: integrated_gpu_accelerator
+    ttft_multiplier: 3.6
+    price_search_query: "MacBook Pro M5 Pro 48GB price"
+    note: "M5 Pro 'super cores' with 307 GB/s bandwidth. Excellent mobile performance."
+    supported_use_cases: all

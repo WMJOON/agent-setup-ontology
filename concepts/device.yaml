@@ -40,6 +40,11 @@ device:
           Runs 27B+ dense models or 72B MoE models.
           Suitable for: multi-agent pipelines, LLM-as-Judge evaluation,
           LoRA fine-tuning, and team-shared AI servers.
+        pro-plus: >
+          48 GB+ with M5 Pro/Max (≥307 GB/s) or Blackwell workstation CPUs.
+          Utilizes integrated GPU Neural Accelerators (3.6x TTFT).
+          Ultimate local performance. Instant responses on 35B models.
+          Optimized for large-scale multi-agent simulation and deep research.
 
     type:
       what: Device form factor and platform.
@@ -62,4 +67,20 @@ device:
     memory_bandwidth_gbs: >
       Peak memory bandwidth in GB/s. Critical for large model inference speed —
       higher bandwidth means faster token generation for the same model.
-      Apple M4 base: 120 GB/s, M4 Pro: 273 GB/s, RTX 4090: ~1000 GB/s.
+      Apple M4 base: 120 GB/s, M4 Pro: 273 GB/s, M5 Pro: 307 GB/s, RTX 4090: ~1000 GB/s.
+
+    ai_accelerator_type:
+      what: >
+        The underlying HW architecture for AI acceleration.
+        Affects TTFT (Time To First Token) more than streaming speed.
+      values:
+        dedicated_npu: Separate Neural Engine (e.g. M1-M4, NPU 40 TOPS).
+        integrated_gpu_accelerator: >
+          Accelerators integrated into EVERY GPU core (e.g. M5). 
+          Achieves significantly lower latency (up to 3.6x) for initial response.
+
+    ttft_multiplier:
+      what: >
+        Inference efficiency multiplier compared to a baseline M4 chip.
+        Values > 1.0 indicate faster initial model response (prefill speed).
+        M4: 1.0, M5: 3.6.
