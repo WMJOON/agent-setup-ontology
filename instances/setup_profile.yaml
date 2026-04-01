@@ -1,6 +1,6 @@
 # agent-setup-ontology — Setup Profile Instances
 # All setup_profile entries extracted from ontology.yaml.
-version: "0.1.0"
+version: "0.0.5"
 
 setup_profiles:
 
@@ -316,3 +316,22 @@ setup_profiles:
       - "ollama pull qwen3.5:14b"
       - "pip install llama-index llama-index-llms-ollama"
       - "Build ingestion/index pipeline and test retrieval quality"
+
+  - id: setup-minipc-oculink-rtx3090
+    label: "SFF eGPU Workstation: Mini PC + RTX 3090 24GB (OCuLink)"
+    devices: [minipc_oculink_rtx3090_24gb]
+    model: "qwen3.5:32b"
+    framework: qwen-agent
+    repo: repo-qwen-agent
+    use_cases: all
+    complexity: high
+    always_on: true
+    note: >
+      Provides DGX-like VRAM capacity in a small form factor at half the cost.
+      PCIe 4.0 x4 direct link ensures minimal performance loss compared to Thunderbolt.
+      Ideal for large-scale data processing and complex research requiring 24GB VRAM.
+    setup_steps:
+      - "Connect RTX 3090 to Mini PC via OCuLink dock (e.g., DEG1)"
+      - "Install Ubuntu 24.04 and NVIDIA Drivers"
+      - "ollama pull qwen3.5:32b"
+      - "pip install qwen-agent"

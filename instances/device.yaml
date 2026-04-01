@@ -1,6 +1,6 @@
 # agent-setup-ontology — Device Instances
 # All device entries extracted from ontology.yaml.
-version: "0.1.0"
+version: "0.0.5"
 
 devices:
 
@@ -352,4 +352,38 @@ devices:
     ttft_multiplier: 3.6
     price_search_query: "MacBook Pro M5 Pro 48GB price"
     note: "M5 Pro 'super cores' with 307 GB/s bandwidth. Excellent mobile performance."
+    supported_use_cases: all
+
+  - id: minipc_oculink_rtx3090_24gb
+    label: "SFF PC — Minisforum + RTX 3090 24GB eGPU"
+    type: pc-sff
+    chip: Ryzen 7 (Minisforum)
+    memory_gb: 64
+    memory_bandwidth_gbs: 50
+    gpu_vram_gb: 24
+    portability: stationary
+    always_on: true
+    tier: pro
+    max_model: "qwen3.5:32b"
+    gpu_component: rtx-3090
+    ram_component: ram-64gb-ddr5
+    price_search_query: "Minisforum OCuLink mini PC + RTX 3090 24GB eGPU setup price"
+    note: "Best cost-efficiency for 24GB VRAM. DGX-like VRAM capacity in a small form factor without Thunderbolt bottlenecks. Optimized for mass research pipelines and deep inference."
+    supported_use_cases: all
+
+  - id: minipc_oculink_rtx4090_24gb
+    label: "SFF PC — Minisforum + RTX 4090 24GB eGPU"
+    type: pc-sff
+    chip: Ryzen 9 (Minisforum)
+    memory_gb: 64
+    memory_bandwidth_gbs: 50
+    gpu_vram_gb: 24
+    portability: stationary
+    always_on: true
+    tier: pro-plus
+    max_model: "qwen3.5:32b"
+    gpu_component: rtx-4090
+    ram_component: ram-64gb-ddr5
+    price_search_query: "Minisforum OCuLink mini PC + RTX 4090 24GB eGPU setup price"
+    note: "Top-tier consumer VRAM with tiny footprint and maximum performance. Ideal for large-scale data processing and complex research."
     supported_use_cases: all
