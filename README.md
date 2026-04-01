@@ -14,20 +14,31 @@ as structured YAML — the Source of Truth for local AI agent recommendations.
 ## Files
 
 ```
-concepts/               ← Semantic definitions (what field values mean)
+rubrics/                ← Rubric definitions for normalized Fact classes
+                           (noise-class, power-efficiency-class, maintenance-burden-class, …)
+
+concepts/               ← Layer-stratified concept definitions
+  fact/                 ← Fact layer: measurable / source-backed schemas
+    devices/
+    models/
+    setups/
+  semantic/             ← Semantic layer: reusable interpretations derived from Fact
+    devices/
+    models/
+    setups/
+  decision/             ← Decision layer: context-conditional patterns (prefer/avoid/trade-off)
+    devices/
+    models/
+    setups/
   use_case.yaml
-  device.yaml
-  model.yaml
-  framework.yaml
-  api_service.yaml
-  component.yaml
-  repo.yaml
-  setup_profile.yaml
   cost_estimation.yaml  ← schema/formulas only; data values in instances/cost_estimation.yaml
   usage_input.yaml      ← user input schema; inference_rules live in agent-setup-copilot SKILL.md
   relation.yaml         ← relation categories + type definitions
 
 instances/              ← Instance data (actual devices, models, frameworks, ...)
+  fact/                 ← Fact instances: raw_facts + normalized_facts + evidence_refs
+  semantic/             ← Semantic instances: derived_from + interprets + meaning
+  decision/             ← Decision instances: incorporates + applies_when + outcome
   use_case.yaml
   device.yaml
   model.yaml
@@ -39,8 +50,12 @@ instances/              ← Instance data (actual devices, models, frameworks, .
   cost_estimation.yaml  ← token usage profiles, break-even thresholds, electricity estimates
   relation.yaml         ← upgrade_paths, api_to_local_paths, framework_use_cases, ...
 
+rollups/                ← Materialized view cache (편의 계층, canonical source 아님)
+  semantic/             ← 자주 쓰는 semantic 묶음 캐시
+  decision/             ← 자주 쓰는 decision shortlist 캐시
+
 docs/
-  schema.md             ← Full field reference with examples
+  schema.md             ← Full field reference with examples (including layer schemas)
   concepts.md           ← Human-readable concept guide
   cost-guide.md         ← API vs local cost analysis and break-even calculator
   relations.md          ← Relation taxonomy and path diagrams
@@ -82,6 +97,9 @@ to specific schema versions without coupling to a single consumer's validation l
 - **Derivation over duplication** — relationships that can be computed from existing fields
   are documented as derivation rules in `relations.yaml`, not hard-coded as data.
   Explicit instances are reserved for cases where derivation is insufficient.
+- **Fact / Semantic / Decision separation** — layer purity is enforced by linting.
+  See [docs/schema.md § Ontology Layer Structure](docs/schema.md#ontology-layer-structure)
+  for field definitions, YAML schemas, and validation rules.
 
 ---
 

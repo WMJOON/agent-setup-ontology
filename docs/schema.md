@@ -318,6 +318,153 @@ See [`cost-guide.md`](./cost-guide.md) for break-even calculation.
 
 ---
 
+## Ontology Layer Structure
+
+Ontology nodes are stratified into three layers. The dependency direction is always
+`Fact → Semantic → Decision`.
+
+### Layer: `fact`
+
+Objective, verifiable properties. Qualitative classes require a `rubric_ref`.
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `layer` | ✅ | Must be `fact` |
+| `domain` | ✅ | e.g. `device`, `model`, `setup` |
+| `entity_id` | ✅ | Matches the instance id in `instances/` |
+| `raw_facts` | — | Directly measured numeric values |
+| `normalized_facts` | — | Rubric-bound class values (each must carry `rubric_ref`) |
+| `evidence_refs` | ✅ | ≥1 source reference (wikilink or URL) |
+
+**Must not contain:** recommendation language, persona fit judgements.
+
+```yaml
+# concepts/fact/devices/mac-mini.md
+---
+layer: fact
+domain: device
+entity_id: mac-mini
+raw_facts:
+  max_noise_level_db: 32        # integer, dB
+  idle_power_w: 15              # integer, watts
+  gpu_expandability_slots: 0    # integer, count
+normalized_facts:
+  noise_class:
+    value: low
+    rubric_ref: "[[rubrics/noise-class]]"
+  power_efficiency_class:
+    value: high
+    rubric_ref: "[[rubrics/power-efficiency-class]]"
+evidence_refs:
+  - "[[sources/mac-mini-spec]]"
+---
+```
+
+---
+
+### Layer: `semantic`
+
+Reusable interpretations derived from one or more Fact nodes.
+Must not reference user goals or constraints directly.
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `layer` | ✅ | Must be `semantic` |
+| `domain` | ✅ | e.g. `device`, `model`, `setup` |
+| `semantic_id` | ✅ | Snake-case concept name (e.g. `quiet_always_on_friendly`) |
+| `derived_from` | ✅ | ≥1 wikilink to Fact nodes |
+| `interprets` | — | Which Fact fields this concept interprets |
+| `criteria` | — | Threshold conditions on normalized Fact classes |
+| `meaning` | ✅ | One-line human-readable interpretation |
+
+**Must not contain:** direct recommendation sentences, user-condition branching.
+
+```yaml
+# concepts/semantic/devices/quiet-always-on-friendly.md
+---
+layer: semantic
+domain: device
+semantic_id: quiet_always_on_friendly
+derived_from:
+  - "[[concepts/fact/devices/mac-mini]]"
+interprets:
+  - noise_class
+  - power_efficiency_class
+criteria:
+  noise_class: low
+  power_efficiency_class: high
+meaning: 낮은 소음과 전력 부담으로 상시 구동에 유리함
+---
+```
+
+---
+
+### Layer: `decision`
+
+Context-conditional judgements applied on top of Semantic concepts.
+Every decision node must have `applies_when` and at least one `incorporates` reference.
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `layer` | ✅ | Must be `decision` |
+| `domain` | ✅ | e.g. `device`, `model`, `setup` |
+| `decision_id` | ✅ | Snake-case pattern name |
+| `incorporates` | ✅ | ≥1 wikilink to Semantic nodes |
+| `applies_when` | ✅ | Structured user context (`goals`, `constraints`, `preferences`) |
+| `outcome` | ✅ | `prefer` / `avoid` / `trade_off` with target reference |
+| `rationale_template` | ✅ | One-line rationale (no free-form recommendation) |
+
+**Must not contain:** source-free factual claims, Semantic-free conclusions.
+
+```yaml
+# concepts/decision/devices/prefer-for-low-maintenance-research.md
+---
+layer: decision
+domain: device
+decision_id: prefer_for_low_maintenance_research
+incorporates:
+  - "[[concepts/semantic/devices/quiet-always-on-friendly]]"
+  - "[[concepts/semantic/devices/low-operational-friction]]"
+applies_when:
+  goals:
+    - ontology_heavy_research
+  constraints:
+    maintenance_tolerance: low
+    noise_sensitivity: medium_or_higher
+outcome:
+  prefer: "[[instances/fact/devices/mac-mini]]"
+rationale_template: 낮은 운영 마찰과 상시 구동 적합성이 중요할 때 우선 후보
+---
+```
+
+---
+
+### Linking Mechanics
+
+Canonical links flow downward only. Reverse links are derived by rollup pipelines.
+
+```
+Semantic.derived_from    → Fact node
+Semantic.interprets      → Fact field or Fact node
+Decision.incorporates    → Semantic node
+Decision.applies_when    → User Context schema
+Decision.outcome         → Target entity / setup / option
+```
+
+### Validation Rules
+
+| Check | Severity |
+|-------|----------|
+| Fact node missing `evidence_refs` | error |
+| Fact node contains recommendation language | error |
+| Semantic node missing `derived_from` | error |
+| Semantic node contains user-condition branching | warning |
+| Decision node missing `incorporates` | error |
+| Decision node missing `applies_when` | error |
+| Decision node has no `rationale_template` | error |
+
+---
+
 ## Cross-Reference Diagram
 
 ```mermaid
