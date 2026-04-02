@@ -64,23 +64,14 @@ device:
       (≥10 t/s for interactive use, ≥5 t/s for batch) on this device,
       using Q4_K_M quantization. Must reference a valid models[*].id.
 
-    memory_bandwidth_gbs: >
-      Peak memory bandwidth in GB/s. Critical for large model inference speed —
-      higher bandwidth means faster token generation for the same model.
-      Apple M4 base: 120 GB/s, M4 Pro: 273 GB/s, M5 Pro: 307 GB/s, RTX 4090: ~1000 GB/s.
+    memory_components: >
+      List of memory component IDs equipped on this device.
+      References instances in component.yaml.
 
-    ai_accelerator_type:
-      what: >
-        The underlying HW architecture for AI acceleration.
-        Affects TTFT (Time To First Token) more than streaming speed.
-      values:
-        dedicated_npu: Separate Neural Engine (e.g. M1-M4, NPU 40 TOPS).
-        integrated_gpu_accelerator: >
-          Accelerators integrated into EVERY GPU core (e.g. M5). 
-          Achieves significantly lower latency (up to 3.6x) for initial response.
+    gpu_components: >
+      List of GPU component IDs equipped on this device.
+      References instances in component.yaml.
 
-    ttft_multiplier:
-      what: >
-        Inference efficiency multiplier compared to a baseline M4 chip.
-        Values > 1.0 indicate faster initial model response (prefill speed).
-        M4: 1.0, M5: 3.6.
+    os_platform: >
+      The OS platform ID this device runs on.
+      References an os_platform in component.yaml.
