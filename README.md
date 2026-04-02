@@ -50,9 +50,9 @@ instances/              ← Instance data (actual devices, models, frameworks, .
   cost_estimation.yaml  ← token usage profiles, break-even thresholds, electricity estimates
   relation.yaml         ← upgrade_paths, api_to_local_paths, framework_use_cases, ...
 
-rollups/                ← Materialized view cache (편의 계층, canonical source 아님)
-  semantic/             ← 자주 쓰는 semantic 묶음 캐시
-  decision/             ← 자주 쓰는 decision shortlist 캐시
+rollups/                ← Materialized view cache (convenience layer, not canonical source)
+  semantic/             ← frequently-used semantic bundle cache
+  decision/             ← frequently-used decision shortlist cache
 
 docs/
   schema.md             ← Full field reference with examples (including layer schemas)
