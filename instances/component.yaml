@@ -98,6 +98,20 @@ components:
     price_search_query: "NVIDIA RTX 5090 32GB GPU price"
     note: "Fastest consumer GPU for LLM inference as of 2025."
 
+  # ── NVIDIA GPUs (Ampere — RTX 30 series) ──────────────────
+
+  - id: rtx-3090
+    label: "NVIDIA GeForce RTX 3090"
+    component_type: gpu
+    vram_gb: 24
+    memory_bandwidth_gbs: 936
+    tdp_w: 350
+    architecture: ampere
+    inference_tier: pro
+    llm_perf_note: "~30-40 t/s for 27B Q4. Best cost-efficiency 24GB option."
+    price_search_query: "NVIDIA RTX 3090 24GB GPU price"
+    note: "Cost-effective 24GB VRAM for OCuLink mini PC builds."
+
   # ── AMD GPUs ────────────────────────────────────────────
 
   - id: amd-rx-7800-xt

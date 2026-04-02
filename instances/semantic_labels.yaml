@@ -1,0 +1,128 @@
+# agent-setup-ontology — Semantic Label Definitions
+# Formal declaration of semantic labels derived from the Fact layer.
+# Used by agent-setup-copilot SKILL.md (GATE: Categorical Semantic Tracing Rule)
+# and deo_resolver.py (dynamic label application to device nodes).
+version: "0.0.6"
+
+semantic_labels:
+
+  # ── Device-level labels ─────────────────────────────────────────────────────
+
+  - id: Always_On_Friendly
+    description: >
+      Device can run continuously without thermal throttling, user interruption,
+      or significant power overhead. Safe to use as an always-on local AI server.
+    derivation:
+      from_fact:
+        - field: always_on
+          value: true
+        - field: portability
+          value: stationary
+    applies_to_types: [mac-mini, mac-studio, pc, pc-sff, ai-supercomputer]
+    excludes_types: [macbook]
+    deo_tag: always_on_friendly
+
+  - id: Team_Scale_Bottleneck
+    description: >
+      Device lacks the memory capacity or always-on capability required to
+      serve multiple concurrent users or run large-context workloads reliably.
+    derivation:
+      from_fact:
+        - field: memory_gb
+          condition: "< 32"
+        - field: always_on
+          value: false
+          operator: or
+    applies_to_types: [macbook]
+    note: "Laptops in general hit this label due to thermal and always-on constraints."
+    deo_tag: team_scale_bottleneck
+    deo_layer: negative   # added to neg[], not pos[]
+
+  - id: High_Security_Compliance
+    description: >
+      Data never leaves the local machine. No cloud dependency, no prompt logging,
+      no third-party inference. Satisfies strict data residency and privacy requirements.
+    derivation:
+      from_fact:
+        - field: deployment_class
+          value: local          # all local devices qualify by definition
+    applies_to_types: [macbook, mac-mini, mac-studio, pc, pc-sff, ai-supercomputer]
+    deo_tag: high_security_compliance
+
+  - id: Maintenance_Free
+    description: >
+      Device runs on a managed OS (macOS) with automatic driver updates, no manual
+      CUDA/ROCm driver management, and stable Ollama support out of the box.
+    derivation:
+      from_fact:
+        - field: type
+          values: [macbook, mac-mini, mac-studio]
+    applies_to_types: [macbook, mac-mini, mac-studio]
+    deo_tag: maintenance_free
+
+  - id: Cost_Effective
+    description: >
+      Device delivers a standard-tier or above inference capability at under $1,000 USD.
+    derivation:
+      from_fact:
+        - field: price_usd
+          condition: "< 1000"
+        - field: tier
+          values: [standard, standard-plus, pro, pro-plus]
+    deo_tag: cost_effective
+
+  - id: GPU_Native
+    description: >
+      Device has a discrete GPU (VRAM > 0) enabling CUDA/ROCm-accelerated inference.
+      Required for fine-tuning and GPU-specific frameworks.
+    derivation:
+      from_fact:
+        - field: gpu_vram_gb
+          condition: "> 0"
+        - field: gpu_component
+          condition: "not null"
+          operator: or
+    applies_to_types: [pc, pc-sff]
+    deo_tag: gpu
+    excludes_types: [macbook, mac-mini, mac-studio]  # unified memory ≠ discrete GPU
+
+  # ── Deployment-level labels (cloud) ────────────────────────────────────────
+
+  - id: Data_Isolation_Compliant
+    description: >
+      Deployment path guarantees data isolation (dedicated hardware or private endpoint).
+      Required for enterprise/financial/government use cases.
+    derivation:
+      from_fact:
+        - deployment_target: aws
+          path_type: ec2_dedicated
+        - deployment_target: runpod
+          path_type: secure_cloud
+        - deployment_target: azure
+          config: private_endpoint
+    deo_tag: data_isolation
+
+# ── Label → Use Case Mapping ──────────────────────────────────────────────────
+# Defines which semantic labels are REQUIRED or AVOIDED per use case scale/context.
+
+use_case_label_requirements:
+
+  - context: team_scale          # 3+ concurrent users
+    required: [Always_On_Friendly, High_Security_Compliance]
+    avoid: [Team_Scale_Bottleneck]
+
+  - context: enterprise_rag      # document RAG with data residency
+    required: [Always_On_Friendly, High_Security_Compliance, Data_Isolation_Compliant]
+    avoid: [Team_Scale_Bottleneck]
+
+  - context: fine_tuning
+    required: [GPU_Native]
+    avoid: [Maintenance_Free]    # fine-tuning on macOS has framework limitations
+
+  - context: personal_copilot    # single user, exploratory
+    required: []
+    avoid: []                    # no hard requirements
+
+  - context: always_on_server
+    required: [Always_On_Friendly]
+    avoid: [Team_Scale_Bottleneck]
