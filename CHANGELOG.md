@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.0.7] - 2026-04-02
+### Added
+- `instances/semantic_labels.yaml`: formal semantic label definitions (Always_On_Friendly, Team_Scale_Bottleneck, High_Security_Compliance, Maintenance_Free, Cost_Effective, GPU_Native, Data_Isolation_Compliant) with `use_case_label_requirements` mapping.
+- `instances/component.yaml`: added `rtx-3090` (24GB Ampere, 936 GB/s) entry to fix broken reference from `minipc_oculink_rtx3090_24gb`.
+- `scripts/migrate_device_components.py`: migration script with dry-run, apply, and --check modes; ruamel.yaml preferred with PyYAML fallback.
+
+### Changed
+- `instances/device.yaml` (v0.0.6): completed component-reference migration.
+  - Apple Silicon + DGX Spark devices: `memory_gb` → `unified_memory_gb`; removed `gpu_vram_gb`.
+  - PC/SFF devices: flat `memory_gb`/`gpu_vram_gb` fields replaced with `ram_component` / `gpu_component` references.
+
 ## [0.0.6] - 2026-04-02
 ### Added
 - `docs/schema.md`: new "Ontology Layer Structure" section — per-layer required/optional field tables, YAML examples (Fact/Semantic/Decision), linking mechanics, and validation rules.
