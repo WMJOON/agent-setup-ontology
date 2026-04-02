@@ -1,0 +1,44 @@
+# agent-setup-ontology — User Context Concept Definitions
+# Semantic definitions for user constraint and preference fields.
+version: "0.2.0"
+
+user_context:
+  what: >
+    The operational context of the user requesting an AI stack recommendation.
+    Drives Semantic Label derivation in the 3-layer architecture.
+    Collected at the start of a copilot session.
+
+  fields:
+
+    scale:
+      what: Number of users the stack must serve.
+      values:
+        solo: Single user. No concurrent access requirement.
+        small_team: 2–10 users. Shared inference endpoint required.
+        org: 10+ users. Always-on server with load tolerance required.
+
+    budget_usd:
+      what: >
+        Total hardware budget in USD. Used to gate option viability.
+        Boundary cases (e.g., near tier thresholds) trigger the Uncertainty Gate.
+
+    privacy_requirement:
+      what: Sensitivity level of data processed by the AI stack.
+      values:
+        standard: No special data handling requirements.
+        sensitive: PII or confidential business data. Local-only inference preferred.
+        regulated: Legal or compliance constraints (HIPAA, GDPR, etc.). Air-gapped or on-premise required.
+
+    technical_skill:
+      what: User's ability to set up and maintain a local AI stack.
+      values:
+        beginner: No prior experience with Ollama, Docker, or CLI tools.
+        intermediate: Comfortable with CLI and basic configuration. Some prior experience.
+        advanced: Experienced with containerization, GPU setup, and agent frameworks.
+
+    maintenance_tolerance:
+      what: Willingness to manage ongoing system maintenance.
+      values:
+        low: Prefers zero-maintenance or managed solutions.
+        medium: Willing to handle occasional updates and basic troubleshooting.
+        high: Comfortable with full system administration responsibilities.

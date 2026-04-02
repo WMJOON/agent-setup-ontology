@@ -11,6 +11,10 @@ model:
 
   fields:
 
+    min_memory_gb: "Minimum system/unified memory (GB) required to load this model."
+    quantization_level: "Quantization format: Q4, Q5, Q8, FP16."
+    context_length_k: "Maximum context window in thousands of tokens (e.g., 32 = 32k tokens)."
+
     quality:
       what: >
         Output capability bracket, calibrated to agent use cases

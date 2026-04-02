@@ -33,3 +33,10 @@ rag_engine:
   subtype_of: framework_base
   fields:
     pipeline_type: "Component-based or monolithic."
+
+runtime_engine:
+  what: Local LLM inference backend that executes model files.
+  fields:
+    engine_id: "ollama, llama.cpp, vllm"
+    supported_formats: "List of model file formats supported (e.g., GGUF, safetensors)."
+    openai_compat: "True if the engine exposes an OpenAI-compatible API endpoint."

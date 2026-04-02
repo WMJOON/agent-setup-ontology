@@ -1,6 +1,6 @@
 # agent-setup-ontology — Device Concept Definitions
 # Semantic definitions for device fields, tiers, and types.
-version: "0.1.0"
+version: "0.2.0"
 
 device:
 

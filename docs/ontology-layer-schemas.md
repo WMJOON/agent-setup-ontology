@@ -23,13 +23,14 @@ erDiagram
     MEMORY_COMPONENT {
         string id PK
         int capacity_gb
-        int bandwidth_gbs
+        float bandwidth_gbs
     }
     GPU_COMPONENT {
         string id PK
         string accelerator_type "integrated, dedicated_npu, discrete"
         int vram_gb
         float ttft_multiplier
+        int tdp_w
     }
     OS_PLATFORM {
         string id PK

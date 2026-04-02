@@ -11,20 +11,20 @@ memory_component:
   what: System Memory (RAM) specification.
   fields:
     capacity_gb: "Size of memory in gigabytes."
-    bandwidth_gbs: "Peak memory bandwidth (GB/s). Critical for LLM inference speed."
+    bandwidth_gbs: "Peak memory bandwidth in GB/s (float). Critical for LLM inference speed."
+    price_search_query: "Web search query string for current market price lookup."
 
 gpu_component:
   what: Graphics Processing Unit / Neural Accelerator.
   fields:
-    accelerator_type: "integrated, dedicated_npu, dedicated_gpu"
-    vram_gb: "Dedicated VRAM size. For integrated, this is 0 (uses system memory)."
-    ttft_multiplier: "Time-to-first-token inference efficiency multiplier."
+    accelerator_type: "integrated, dedicated_npu, discrete"
+    vram_gb: "Dedicated VRAM size. 0 for integrated (uses system memory)."
+    ttft_multiplier: "Time-to-first-token inference efficiency multiplier relative to M4 baseline."
     tdp_w: "Thermal Design Power in watts."
+    price_search_query: "Web search query string for current market price lookup."
 
-component:
-  what: Generic PC building block (legacy definition, merging into dedicated component schemas).
+network_component:
+  what: Network connectivity profile of the device.
   fields:
-    component_type:
-      values: gpu, cpu, memory
-    inference_tier: "The model quality tier this component enables."
-    price_search_query: "A web search query string for finding current market prices."
+    connectivity: "always_on, intermittent, air_gapped"
+    upload_mbps: "Peak upload bandwidth in Mbps."
