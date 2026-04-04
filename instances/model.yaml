@@ -318,3 +318,48 @@ models:
     tool_calling: false
     speed_note: "Embedding workload — lightweight vector backend"
     note: "Compact embedding model for semantic search and retrieval tasks. Good low-cost local embedding backend."
+
+  # ── Google Gemma 4 (candidate positioning) ─────────────────
+
+  - id: gemma4:e2b
+    label: "gemma4:e2b"
+    params_b: 5.1
+    active_params_b: 2.3
+    type: dense
+    min_memory_gb: 6
+    quality: light
+    tool_calling: false
+    speed_note: "~4-8 GB class local deployment. Edge/on-device oriented. 128K context."
+    note: "Gemma 4 lightweight multimodal candidate. Strong fit for on-device semantic filtering, speech/vision-adjacent tasks, and smart-tool micro-workflows. Tool-calling reliability in local stacks requires separate validation."
+
+  - id: gemma4:e4b
+    label: "gemma4:e4b"
+    params_b: 7.9
+    active_params_b: 4.5
+    type: dense
+    min_memory_gb: 8
+    quality: standard
+    tool_calling: false
+    speed_note: "~6-12 GB class local deployment. Laptop-friendly multimodal candidate. 128K context."
+    note: "Gemma 4 small multimodal local model. Good candidate for lightweight semantic passes, evidence labeling, and agent-adjacent smart tools. Tool-calling reliability in local stacks requires separate validation."
+
+  - id: gemma4:26b-a4b
+    label: "gemma4:26b-a4b"
+    params_b: 26
+    active_params_b: 3.8
+    type: MoE
+    min_memory_gb: 18
+    quality: pro
+    tool_calling: false
+    speed_note: "~18-30 GB class local deployment. 256K context. MoE workstation sweet-spot candidate."
+    note: "Gemma 4 MoE model balancing speed and quality. Strong candidate for local workstation inference when higher quality than small models is needed without jumping straight to the heaviest dense option."
+
+  - id: gemma4:31b
+    label: "gemma4:31b"
+    params_b: 31
+    type: dense
+    min_memory_gb: 20
+    quality: pro
+    tool_calling: false
+    speed_note: "~20-38 GB class local deployment depending on quantization. 256K context."
+    note: "Highest-capability Gemma 4 local option. Better suited for high-quality multimodal reasoning and larger local deployments than lightweight always-on workflows."
