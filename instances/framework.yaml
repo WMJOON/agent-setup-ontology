@@ -370,3 +370,24 @@ frameworks:
     note: >
       Rule + deep learning pipeline for scientific knowledge graph construction from CS papers.
       Not LLM-based. Last updated 2022 — consider as reference architecture, not active tooling.
+
+  # ── Code Graph / IDE Skills ────────────────────────────
+
+  - id: graphify
+    label: "Graphify"
+    kind: ide
+    complexity: low
+    local_capable: true
+    runtime_support: [any]
+    multiagent: false
+    mcp_support: false
+    install: "uv tool install graphifyy && graphify install"
+    best_for: [code_review, local_copilot, deep_research, code_generation]
+    stars_approx: "~43,700"
+    last_updated: "2026"
+    note: >
+      Codebase-to-knowledge-graph skill for AI coding assistants (Claude Code, Cursor, Codex, Gemini CLI, OpenClaw, etc.).
+      Invoke with /graphify . — tree-sitter + Leiden algorithm parses code, SQL, docs, PDFs, images, video
+      into graph.html (interactive viz), GRAPH_REPORT.md, and graph.json (queryable context).
+      No LLM needed for graph construction itself; the coding assistant reads graph.json as project context.
+      Actively maintained (2026, 43K+ stars in first month).

@@ -375,3 +375,23 @@ repos:
     note: >
       Rule + deep learning pipeline for scientific KG construction from CS papers.
       Not LLM-based. Last updated 2022 — consider as reference architecture only.
+
+  # ── Code Graph / IDE Skills ───────────────────────────
+
+  - id: repo-graphify
+    label: "Graphify"
+    github: "safishamsi/graphify"
+    framework_ref: graphify
+    category: ide
+    stars_approx: "~43,700"
+    min_model_quality: light
+    min_memory_gb: 8
+    ollama_compatible: true
+    install: |
+      uv tool install graphifyy && graphify install
+      # then in any AI coding assistant: /graphify .
+    note: >
+      Single-command codebase-to-KG skill. Works with Claude Code, Cursor, Codex, Gemini CLI, OpenClaw, etc.
+      Graph construction uses tree-sitter + Leiden (no LLM). Outputs interactive HTML, Markdown report, JSON graph.
+      Ollama-compatible: the coding assistant that reads the graph can be any local model.
+      43K+ stars within first month of release (April 2026). Actively maintained.
