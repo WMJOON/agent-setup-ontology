@@ -15,6 +15,7 @@ devices:
     max_model: qwen3.5:4b
     note: "팬리스. 장시간 추론 시 throttling 가능"
     supported_use_cases: [file_automation, local_copilot, general_qa]
+    memory_gb: 8
     unified_memory_gb: 8
 
   - id: macbook_16gb
@@ -36,6 +37,7 @@ devices:
       - document_rag
       - general_qa
 
+    memory_gb: 16
     unified_memory_gb: 16
   - id: macbook_pro_32gb
     label: "MacBook Pro 32GB+ (M3/M4 Pro/Max)"
@@ -48,6 +50,7 @@ devices:
     max_model: qwen3.5:35b-a3b
     supported_use_cases: all
 
+    memory_gb: 32
     unified_memory_gb: 32
   - id: mac_mini_16gb
     label: "Mac Mini 16GB (M2/M4)"
@@ -68,6 +71,7 @@ devices:
       - document_rag
       - general_qa
 
+    memory_gb: 16
     unified_memory_gb: 16
   - id: mac_mini_m4_32gb
     label: "Mac Mini M4 32GB"
@@ -82,6 +86,7 @@ devices:
     note: "가성비 최고 상시 AI 서버. 35b-a3b MoE가 쾌적하게 동작"
     supported_use_cases: all
     unsupported_use_cases: [fine_tuning]
+    memory_gb: 32
     unified_memory_gb: 32
 
   - id: mac_mini_pro_48gb
@@ -96,6 +101,7 @@ devices:
     note: "팀 공유 AI 서버 / 72B 모델 가능"
     supported_use_cases: all
 
+    memory_gb: 48
     unified_memory_gb: 48
   - id: pc_no_gpu
     label: "PC (CPU Only / iGPU)"
@@ -109,6 +115,7 @@ devices:
     max_model: qwen3.5:4b
     note: "CPU 추론은 Apple Silicon 대비 5-10배 느림"
     supported_use_cases: [file_automation, local_copilot, general_qa]
+    memory_gb: 32
     ram_component: ram-32gb-ddr5
 
   - id: pc_rtx4060
@@ -130,6 +137,7 @@ devices:
       - document_rag
       - general_qa
 
+    memory_gb: 32
     ram_component: ram-32gb-ddr5
     gpu_component: rtx-4060
   - id: pc_rtx4090
@@ -137,6 +145,7 @@ devices:
     type: pc
     memory_bandwidth_gbs: 50
     gpu_component: rtx-4090
+    memory_gb: 64
     ram_component: ram-64gb-ddr5
     portability: stationary
     always_on: true
@@ -159,6 +168,7 @@ devices:
     note: "Base M4 with 24GB. Fits 14B comfortably. Good entry server."
     supported_use_cases: all
     unsupported_use_cases: [fine_tuning]
+    memory_gb: 24
     unified_memory_gb: 24
 
   - id: mac_studio_m4_max_64gb
@@ -174,6 +184,7 @@ devices:
     note: "410 GB/s bandwidth. Runs 72B models at practical speed (~15 t/s)."
     supported_use_cases: all
 
+    memory_gb: 64
     unified_memory_gb: 64
   - id: mac_studio_m4_max_128gb
     label: "Mac Studio M4 Max 128GB"
@@ -188,6 +199,7 @@ devices:
     note: "128GB unified memory. Runs multiple large models simultaneously."
     supported_use_cases: all
 
+    memory_gb: 128
     unified_memory_gb: 128
   - id: macbook_pro_m4_max_48gb
     label: "MacBook Pro M4 Max 48GB"
@@ -202,6 +214,7 @@ devices:
     note: "Portable pro-tier. 300 GB/s bandwidth, 48GB fits 35B-a3b + system."
     supported_use_cases: all
 
+    memory_gb: 48
     unified_memory_gb: 48
   - id: pc_rtx4060ti_16gb
     label: "PC — RTX 4060 Ti 16GB + 32GB RAM"
@@ -213,6 +226,7 @@ devices:
     tier: standard-plus
     max_model: "qwen3.5:14b"
     gpu_component: rtx-4060-ti-16gb
+    memory_gb: 32
     ram_component: ram-32gb-ddr5
     price_search_query: "RTX 4060 Ti 16GB + 32GB DDR5 RAM price"
     note: "Best value 16GB VRAM build. Runs 14B in full VRAM. Low power (~165W GPU)."
@@ -237,6 +251,7 @@ devices:
     tier: standard-plus
     max_model: "qwen3.5:14b"
     gpu_component: rtx-4070-ti-super
+    memory_gb: 64
     ram_component: ram-64gb-ddr5
     price_search_query: "RTX 4070 Ti Super 16GB GPU + 64GB DDR5 RAM price"
     note: "Fast 16GB build with high bandwidth (672 GB/s). ~40 t/s for 14B."
@@ -262,6 +277,7 @@ devices:
     tier: pro
     max_model: "qwen3.5:32b"
     gpu_component: rtx-5090
+    memory_gb: 64
     ram_component: ram-64gb-ddr5
     price_search_query: "RTX 5090 32GB GPU + 64GB DDR5 RAM build price"
     note: "Highest performance consumer build. 32GB VRAM fits 32B dense. ~80 t/s for
@@ -277,6 +293,7 @@ devices:
     tier: pro
     max_model: "qwen3.5:27b"
     gpu_component: amd-rx-7900-xtx
+    memory_gb: 64
     ram_component: ram-64gb-ddr5
     price_search_query: "AMD RX 7900 XTX 24GB GPU price + 64GB DDR5 RAM"
     note: "Best AMD alternative to RTX 4090. Good ROCm/Ollama support."
@@ -301,6 +318,7 @@ devices:
       Ollama-compatible. Pairs well with Mac Mini as control plane.
     supported_use_cases: all
 
+    memory_gb: 128
     unified_memory_gb: 128
   - id: macbook_pro_m5_max_128gb
     label: "MacBook Pro M5 Max 128GB"
@@ -317,6 +335,7 @@ devices:
     note: "M5 Max with 460-614 GB/s bandwidth. Supreme portable AI workstation."
     supported_use_cases: all
 
+    memory_gb: 128
     unified_memory_gb: 128
   - id: macbook_pro_m5_pro_48gb
     label: "MacBook Pro M5 Pro 48GB"
@@ -333,6 +352,7 @@ devices:
     note: "M5 Pro 'super cores' with 307 GB/s bandwidth. Excellent mobile performance."
     supported_use_cases: all
 
+    memory_gb: 48
     unified_memory_gb: 48
   - id: minipc_oculink_rtx3090_24gb
     label: "SFF PC — Minisforum + RTX 3090 24GB eGPU"
@@ -344,6 +364,7 @@ devices:
     tier: pro
     max_model: "qwen3.5:32b"
     gpu_component: rtx-3090
+    memory_gb: 64
     ram_component: ram-64gb-ddr5
     price_search_query: "Minisforum OCuLink mini PC + RTX 3090 24GB eGPU setup price"
     note: "Best cost-efficiency for 24GB VRAM. DGX-like VRAM capacity in a small form
@@ -361,6 +382,7 @@ devices:
     tier: pro-plus
     max_model: "qwen3.5:32b"
     gpu_component: rtx-4090
+    memory_gb: 64
     ram_component: ram-64gb-ddr5
     price_search_query: "Minisforum OCuLink mini PC + RTX 4090 24GB eGPU setup price"
     note: "Top-tier consumer VRAM with tiny footprint and maximum performance. Ideal
