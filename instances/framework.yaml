@@ -256,3 +256,117 @@ frameworks:
     best_for: [voice_transcription_workbench, meeting_summarizer]
     note: >
       Not a full agent framework by itself, but a practical local transcription layer often paired with assistant workflows.
+
+  # ── Knowledge Graph Construction ────────────────────────
+
+  - id: neo4j-llm-graph-builder
+    label: "Neo4j LLM Graph Builder"
+    kind: rag
+    complexity: medium
+    local_capable: true
+    runtime_support: [openai, anthropic, any]
+    multiagent: false
+    mcp_support: false
+    install: "docker compose up --build"
+    best_for: [document_rag, deep_research, research_pipeline]
+    stars_approx: "~2,800"
+    last_updated: "2025"
+    note: >
+      LLM-powered knowledge graph construction from unstructured text.
+      Supports OpenAI, Claude, Llama. Neo4j-native — best for graph RAG pipelines.
+
+  - id: deepke
+    label: "DeepKE"
+    kind: rag
+    complexity: high
+    local_capable: true
+    runtime_support: [huggingface, openai, any]
+    multiagent: false
+    mcp_support: false
+    install: "pip install deepke"
+    best_for: [deep_research, research_pipeline, document_rag]
+    stars_approx: "~3,500"
+    last_updated: "2024"
+    note: >
+      ML + LLM hybrid knowledge extraction framework (NER, RE, EE).
+      Multilingual support including Chinese. Research-grade — requires ML background.
+
+  - id: rebel
+    label: "REBEL (Relation Extraction)"
+    kind: rag
+    complexity: high
+    local_capable: true
+    runtime_support: [huggingface]
+    multiagent: false
+    mcp_support: false
+    install: "pip install transformers && # load Babelscape/rebel-large from HuggingFace"
+    best_for: [document_rag, deep_research]
+    stars_approx: "~1,200"
+    last_updated: "2023"
+    note: >
+      seq2seq relation extraction via fine-tuned BART. Extracts (subject, relation, object) triples.
+      No LLM needed — runs on CPU. Best as a preprocessing layer for KG construction pipelines.
+
+  - id: knowledge-graph-llm
+    label: "knowledge_graph (LLM → GraphRAG)"
+    kind: rag
+    complexity: low
+    local_capable: true
+    runtime_support: [openai, any]
+    multiagent: false
+    mcp_support: false
+    install: "pip install langchain openai networkx pyvis"
+    best_for: [document_rag, deep_research, local_rag_server]
+    stars_approx: "~1,000"
+    last_updated: "2024"
+    note: >
+      Lightweight LLM-driven KG builder. Converts text to NetworkX graph via GPT prompts.
+      Low setup barrier — good reference implementation for custom GraphRAG experiments.
+
+  - id: text2triple-agent
+    label: "Text2Triple LLM Agent"
+    kind: agent
+    complexity: high
+    local_capable: false
+    runtime_support: [openai, any]
+    multiagent: false
+    mcp_support: false
+    install: "# See repo README — requires REBEL model + LLM API"
+    best_for: [deep_research, research_pipeline]
+    stars_approx: "~150"
+    last_updated: "2024"
+    note: >
+      ESWC 2024 paper implementation. LLM agent orchestrating REBEL for triple extraction.
+      Low star count — research prototype, not production-ready.
+
+  - id: ndex-llm-kg
+    label: "NDEx LLM Text-to-Knowledge-Graph"
+    kind: rag
+    complexity: medium
+    local_capable: false
+    runtime_support: [openai, anthropic]
+    multiagent: false
+    mcp_support: false
+    install: "pip install ndex2 openai"
+    best_for: [deep_research, research_pipeline, document_rag]
+    stars_approx: "~200"
+    last_updated: "2025"
+    note: >
+      PDF-to-KG pipeline specialized for scientific papers. Integrates with NDEx network database.
+      Actively maintained (2025). Best for life science / academic paper RAG workflows.
+
+  - id: skg-pipeline
+    label: "SKG Pipeline (CS Paper KG)"
+    kind: rag
+    complexity: high
+    local_capable: true
+    runtime_support: [huggingface]
+    multiagent: false
+    mcp_support: false
+    install: "# See repo README — rule-based + deep learning pipeline"
+    best_for: [deep_research, research_pipeline]
+    stars_approx: "~80"
+    last_updated: "2022"
+    note: >
+      Rule + deep learning pipeline for scientific knowledge graph construction from CS papers.
+      Not LLM-based. Last updated 2022 — consider as reference architecture, not active tooling.

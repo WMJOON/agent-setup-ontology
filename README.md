@@ -2,7 +2,7 @@
 
 **Local AI Agent Setup Ontology — Community SOT**
 
-[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![MIT License|78](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 The knowledge base for [agent-setup-copilot](https://github.com/WMJOON/agent-setup-copilot).

@@ -261,3 +261,117 @@ repos:
     note: >
       Fast local Whisper inference for transcription workloads.
       Usually paired with a second summarization/assistant layer rather than used alone.
+
+  # ── Knowledge Graph Construction ────────────────────────
+
+  - id: repo-neo4j-llm-graph-builder
+    label: "Neo4j LLM Graph Builder"
+    github: "neo4j-labs/llm-graph-builder"
+    framework_ref: neo4j-llm-graph-builder
+    category: rag
+    stars_approx: "~2,800"
+    min_model_quality: standard
+    min_memory_gb: 16
+    ollama_compatible: true
+    install: |
+      docker compose up --build
+      # Requires OpenAI / Claude API key or local LLM endpoint
+    note: >
+      LLM-powered knowledge graph construction from unstructured documents.
+      Extracts entities and relations into Neo4j. Supports OpenAI, Claude, Llama.
+      Best entry point for graph RAG pipelines; actively maintained (2025).
+
+  - id: repo-deepke
+    label: "DeepKE"
+    github: "zjunlp/DeepKE"
+    framework_ref: deepke
+    category: rag
+    stars_approx: "~3,500"
+    min_model_quality: standard
+    min_memory_gb: 16
+    ollama_compatible: false
+    install: |
+      pip install deepke
+    note: >
+      ML + LLM hybrid knowledge extraction framework (NER, RE, EE).
+      Multilingual (including Chinese). Research-grade — requires ML background.
+      Last updated 2024; suitable for academic KG construction pipelines.
+
+  - id: repo-rebel
+    label: "REBEL (Relation Extraction by End-to-end Language generation)"
+    github: "Babelscape/rebel"
+    framework_ref: rebel
+    category: rag
+    stars_approx: "~1,200"
+    min_model_quality: light
+    min_memory_gb: 8
+    ollama_compatible: false
+    install: |
+      pip install transformers
+      # Load Babelscape/rebel-large from HuggingFace Hub
+    note: >
+      seq2seq relation extraction via fine-tuned BART. No LLM needed — runs on CPU.
+      Extracts (subject, relation, object) triples from raw text.
+      Best as a preprocessing layer for KG construction pipelines. Last updated 2023.
+
+  - id: repo-knowledge-graph-llm
+    label: "knowledge_graph (LLM → GraphRAG)"
+    github: "rahulnyk/knowledge_graph"
+    framework_ref: knowledge-graph-llm
+    category: rag
+    stars_approx: "~1,000"
+    min_model_quality: standard
+    min_memory_gb: 8
+    ollama_compatible: true
+    install: |
+      pip install langchain openai networkx pyvis
+    note: >
+      Lightweight LLM-driven KG builder. Converts text to NetworkX graph via GPT prompts.
+      Low setup barrier — good reference implementation for custom GraphRAG experiments.
+      Last updated 2024.
+
+  - id: repo-text2triple-agent
+    label: "Text2Triple LLM Agent"
+    github: "semantic-systems/text2triple"
+    framework_ref: text2triple-agent
+    category: rag
+    stars_approx: "~150"
+    min_model_quality: standard
+    min_memory_gb: 8
+    ollama_compatible: false
+    install: |
+      # See repo README — requires REBEL model + LLM API key
+    note: >
+      ESWC 2024 paper implementation. LLM agent orchestrating REBEL for triple extraction.
+      Research prototype — low star count, not production-ready. Last updated 2024.
+
+  - id: repo-ndex-llm-kg
+    label: "NDEx LLM Text-to-Knowledge-Graph"
+    github: "ndexbio/llm-kg"
+    framework_ref: ndex-llm-kg
+    category: rag
+    stars_approx: "~200"
+    min_model_quality: standard
+    min_memory_gb: 8
+    ollama_compatible: false
+    install: |
+      pip install ndex2 openai
+    note: >
+      PDF-to-KG pipeline specialized for scientific papers (life sciences).
+      Integrates with NDEx network database. Actively maintained (2025).
+      Best for academic / life science paper RAG workflows.
+
+  - id: repo-skg-pipeline
+    label: "SKG Pipeline (CS Paper KG)"
+    github: "jackyin68/SKG"
+    framework_ref: skg-pipeline
+    category: rag
+    stars_approx: "~80"
+    min_model_quality: light
+    min_memory_gb: 8
+    ollama_compatible: false
+    install: |
+      # See repo README — rule-based + deep learning pipeline
+    note: >
+      Rule + deep learning pipeline for scientific KG construction from CS papers.
+      Not LLM-based. Last updated 2022 — consider as reference architecture only.
