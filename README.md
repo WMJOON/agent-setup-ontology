@@ -73,10 +73,23 @@ Add a device, model, or framework by editing the relevant file in `instances/` �
 
 ## Schema contract
 
-Structural rules (required fields, types, enums) are currently owned by the consumer repo:
+Structural rules (required fields, types, enums) are owned by the consumer repo:
 [agent-setup-copilot/governance/](https://github.com/WMJOON/agent-setup-copilot/tree/main/governance)
 
-PRs to this repo are validated by CI using the consumer's `validate.py`.
+PRs to this repo are validated in two stages:
+
+| Stage | Script | Owner | Checks |
+|-------|--------|-------|--------|
+| **Verification** (Phase F) | `skills/ontology-harness/scripts/local_validate.py` | This repo (harness) | ID 중복, 스키마 형태, 명명 규칙, 교차 참조 존재성 |
+| **Validation** (Phase E) | `agent-setup-copilot/governance/scripts/validate.py` | consumer repo | 필드 계약, enum 값, 교차 참조 계약 |
+
+```bash
+# Verification (structural — harness self-check)
+python3 skills/ontology-harness/scripts/local_validate.py
+
+# Validation (contract — consumer governance)
+python governance/scripts/validate.py --instances-dir instances/ --strict
+```
 
 **Versioning direction:** As this ontology matures and additional consumers emerge,
 the schema contract will be versioned here (`schema_version` in each YAML file)
