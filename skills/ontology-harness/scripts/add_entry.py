@@ -2,10 +2,14 @@
 """
 ontology-harness: 가이드 기여 도구
 
+기여 플로우:
+  1. 필드 수집
+  2. [Phase F] local_validate.py — Verification (harness 소유, 구조적 정합성)
+  3. ontology에 삽입
+  4. [Phase E] consumer validate.py — Validation (consumer 계약 준수)
+
 governance(스키마 계약)는 소비자 레포가 소유한다:
   agent-setup-copilot/governance/
-
-이 스크립트는 항목을 추가하고 최종 검증을 consumer validate.py에 위임한다.
 
 사용:
   python3 scripts/add_entry.py --type device
@@ -26,8 +30,13 @@ from pathlib import Path
 import httpx
 import yaml
 
-ROOT = Path(__file__).parent.parent.parent  # local-agent-ontology/
+# Phase F: local Verification
+sys.path.insert(0, str(Path(__file__).parent))
+from local_validate import verify_entry as _local_verify, load_instances_dir
+
+ROOT = Path(__file__).parent.parent.parent  # agent-setup-ontology/
 ONTOLOGY_PATH = ROOT / "ontology.yaml"
+INSTANCES_DIR = ROOT / "instances"
 
 # consumer governance 위치
 CONSUMER_VALIDATE_URL = (
@@ -142,9 +151,38 @@ def run_consumer_validate(strict: bool = False) -> bool:
 
 # ── 헬퍼 ──────────────────────────────────────────────────
 
+def run_local_verification(entry_type: str, entry: dict) -> bool:
+    """Phase F: Verification — harness 자체 소유. consumer validate 이전에 실행."""
+    print("\n🔍 [Phase F] 로컬 Verification (구조적 정합성)...")
+
+    # instances/ 디렉토리가 있으면 사용, 없으면 ontology.yaml 기반
+    if INSTANCES_DIR.exists():
+        all_data = load_instances_dir(INSTANCES_DIR)
+    else:
+        all_data = load_ontology() if ONTOLOGY_PATH.exists() else {}
+
+    errors, warnings = _local_verify(entry_type, entry, all_data=all_data)
+
+    if warnings:
+        for w in warnings:
+            print(f"   ⚠  {w}")
+
+    if errors:
+        print(f"\n   ✗ Verification FAILED:")
+        for e in errors:
+            print(f"     {e}")
+        print("   → 항목을 수정한 후 다시 시도하세요.")
+        return False
+
+    print("   ✅ Verification PASSED")
+    return True
+
+
 def load_ontology() -> dict:
+    if not ONTOLOGY_PATH.exists():
+        return {}
     with open(ONTOLOGY_PATH, encoding="utf-8") as f:
-        return yaml.safe_load(f)
+        return yaml.safe_load(f) or {}
 
 
 def save_ontology(data: dict) -> None:
@@ -246,6 +284,10 @@ def main():
                 break
 
     entry = collect_entry(entry_type, ontology)
+
+    # ── Phase F: Verification (harness 자체 소유) ──────────────
+    if not run_local_verification(entry_type, entry):
+        sys.exit(1)
 
     # 미리보기
     print("\n── 생성될 YAML ──────────────────────────────────")

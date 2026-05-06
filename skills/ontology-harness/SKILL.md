@@ -3,7 +3,7 @@ name: ontology-harness
 description: >
   Contribution harness for agent-setup-ontology.
   Guides adding devices, models, frameworks, use cases, and other entries to the ontology YAML files.
-  Delegates schema validation to the consumer repo (agent-setup-copilot/governance/).
+  Runs local Verification (Phase F) before delegating Validation to the consumer repo (agent-setup-copilot/governance/).
   Triggers: "validate ontology", "add a device", "add a model", "add a framework",
   "add a use case", "pre-PR validation", "cross-reference check",
   "check ontology contract", "ontology contribution", "remove an entry".
@@ -12,20 +12,29 @@ description: >
 # ontology-harness
 
 `agent-setup-ontology` contribution harness.
-**The schema contract is owned by the consumer repo.** This skill delegates to that contract.
+**The schema contract is owned by the consumer repo**, but this harness self-owns structural Verification.
 
 ```
-Governance owner:
+Verification (Phase F — harness owned):
+  scripts/local_validate.py
+  ├── ID 중복 체크
+  ├── 스키마 형태 체크 (최소 필드)
+  ├── 명명 규칙 체크 (snake_case)
+  └── 교차 참조 존재성 체크
+
+Validation (Phase E — consumer owned):
   agent-setup-copilot/governance/
   ├── GOVERNANCE.md     ← Contract document (policy)
   ├── schema.json       ← Formal schema (Source of Truth)
   └── scripts/
       └── validate.py   ← Official validator
 
-This skill's role:
-  1. Contributor adds entry to ontology.yaml via add_entry.py
-  2. Validation is delegated to consumer validate.py (fetch or local)
-  3. CI calls consumer validate.py directly
+기여 플로우:
+  1. add_entry.py — 항목 수집
+  2. local_validate.py — Verification (harness self-check)
+  3. ontology에 삽입
+  4. consumer validate.py — Validation (계약 준수)
+  5. CI에서도 동일 순서
 ```
 
 ---
@@ -76,10 +85,11 @@ Do not modify the contract directly in this repo.
 
 ```
 scripts/
-└── add_entry.py     ← Guided contribution (add entry + delegate to consumer validate)
+├── add_entry.py       ← Guided contribution (Guide: feedforward)
+│                        Phase F Verification → insert → Phase E Validation
+└── local_validate.py  ← Verification (Sensor: feedback, harness-owned)
+                         4 checks: ID dup, schema shape, naming, cross-ref existence
 ```
-
-> `validate.py` is not in this repo. Validation is delegated to consumer governance.
 
 ---
 
@@ -110,7 +120,20 @@ Addition flow:
 
 ---
 
-## Workflow B — Validation delegation
+## Workflow B — Local Verification only (Phase F)
+
+```bash
+# instances/ 디렉토리 전체 검증
+python3 scripts/local_validate.py --instances-dir instances/
+
+# 단일 파일 검증
+python3 scripts/local_validate.py --ontology ontology.yaml
+
+# strict 모드 (warning도 오류 처리)
+python3 scripts/local_validate.py --instances-dir instances/ --strict
+```
+
+## Workflow C — Validation delegation (Phase E)
 
 Run consumer validate.py directly.
 
