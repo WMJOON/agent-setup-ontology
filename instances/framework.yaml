@@ -382,12 +382,14 @@ frameworks:
     multiagent: false
     mcp_support: false
     install: "uv tool install graphifyy && graphify install"
-    best_for: [code_review, local_copilot, deep_research, code_generation]
+    best_for: [code_review, local_copilot, deep_research, code_generation, document_rag]
     stars_approx: "~43,700"
     last_updated: "2026"
     note: >
-      Codebase-to-knowledge-graph skill for AI coding assistants (Claude Code, Cursor, Codex, Gemini CLI, OpenClaw, etc.).
-      Invoke with /graphify . — tree-sitter + Leiden algorithm parses code, SQL, docs, PDFs, images, video
-      into graph.html (interactive viz), GRAPH_REPORT.md, and graph.json (queryable context).
-      No LLM needed for graph construction itself; the coding assistant reads graph.json as project context.
+      Project-to-knowledge-graph skill for AI coding assistants (Claude Code, Cursor, Codex, Gemini CLI, OpenClaw, etc.).
+      Invoke with /graphify . — outputs graph.html (interactive viz), GRAPH_REPORT.md, and graph.json (queryable context).
+      Input range: code (28 languages via tree-sitter, no API), docs/PDFs/images (via assistant API),
+      video/audio/YouTube (graphifyy[video] extra), ArXiv papers (/graphify add <url>),
+      Office files (.docx/.xlsx, graphifyy[office] extra).
+      Code extraction is fully local (tree-sitter + Leiden); non-code types use the connected AI assistant's model.
       Actively maintained (2026, 43K+ stars in first month).

@@ -390,8 +390,10 @@ repos:
     install: |
       uv tool install graphifyy && graphify install
       # then in any AI coding assistant: /graphify .
+      # Optional extras: pip install graphifyy[office] / graphifyy[video]
     note: >
-      Single-command codebase-to-KG skill. Works with Claude Code, Cursor, Codex, Gemini CLI, OpenClaw, etc.
-      Graph construction uses tree-sitter + Leiden (no LLM). Outputs interactive HTML, Markdown report, JSON graph.
-      Ollama-compatible: the coding assistant that reads the graph can be any local model.
+      Single-command project-to-KG skill. Handles code (28 langs, local tree-sitter — no API cost),
+      docs/PDFs/images (assistant API), video/YouTube/ArXiv (optional extras).
+      Works with Claude Code, Cursor, Codex, Gemini CLI, OpenClaw, etc.
+      Ollama-compatible: any local model serving as the coding assistant can read the generated graph.
       43K+ stars within first month of release (April 2026). Actively maintained.
