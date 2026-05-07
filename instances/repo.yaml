@@ -397,3 +397,131 @@ repos:
       Works with Claude Code, Cursor, Codex, Gemini CLI, OpenClaw, etc.
       Ollama-compatible: any local model serving as the coding assistant can read the generated graph.
       43K+ stars within first month of release (April 2026). Actively maintained.
+
+  # ── Vision Frameworks ─────────────────────────────────────
+
+  - id: repo-siglip2
+    label: "SigLIP 2"
+    github: "google/siglip"
+    framework_ref: siglip2
+    category: vision
+    stars_approx: "N/A (HuggingFace model weights)"
+    min_model_quality: light
+    min_memory_gb: 8
+    ollama_compatible: false
+    install: |
+      pip install transformers torch
+      # from transformers import pipeline
+      # pipe = pipeline("zero-shot-image-classification", model="google/siglip2-base-patch16-224")
+    note: >
+      Google DeepMind zero-shot 이미지 분류. ViT-B/16 기준 Top-1 78.2%.
+      추가 학습 없이 임의 카테고리 분류 가능. HuggingFace Hub에서 직접 로드.
+
+  - id: repo-yolo
+    label: "Ultralytics YOLO"
+    github: "ultralytics/ultralytics"
+    framework_ref: yolo
+    category: vision
+    stars_approx: "~40K+"
+    min_model_quality: light
+    min_memory_gb: 8
+    ollama_compatible: false
+    install: |
+      pip install ultralytics
+      # yolo predict model=yolo11n.pt source=image.jpg
+    note: >
+      실시간 객체 탐지 표준. YOLO11(2024)/YOLO12(2025) 포함.
+      CPU에서도 동작. TensorRT 내보내기로 엣지 배포 가능.
+
+  - id: repo-grounding-dino
+    label: "Grounding DINO"
+    github: "IDEA-Research/GroundingDINO"
+    framework_ref: grounding-dino
+    category: vision
+    stars_approx: "~8K+"
+    min_model_quality: standard
+    min_memory_gb: 8
+    ollama_compatible: false
+    install: |
+      pip install transformers torch
+      # HuggingFace: IDEA-Research/grounding-dino-base
+    note: >
+      텍스트 쿼리 기반 open-vocabulary 객체 탐지. ECCV 2024.
+      HuggingFace transformers로 즉시 사용 가능.
+
+  - id: repo-florence-2
+    label: "Florence-2 (Microsoft)"
+    github: "microsoft/Florence-2"
+    framework_ref: florence-2
+    category: vision
+    stars_approx: "~3K+"
+    min_model_quality: light
+    min_memory_gb: 8
+    ollama_compatible: false
+    install: |
+      pip install transformers torch
+      # HuggingFace: microsoft/Florence-2-base or Florence-2-large
+    note: >
+      단일 0.77B 모델로 분류·탐지·캡셔닝·Grounding·OCR 멀티태스크 처리. MIT 라이선스.
+      프롬프트 태그로 task 전환. transformers 외 추가 의존성 없음.
+
+  - id: repo-qwen2.5-vl
+    label: "Qwen2.5-VL"
+    github: "QwenLM/Qwen2.5-VL"
+    framework_ref: qwen2.5-vl
+    category: vision
+    stars_approx: "~20K+"
+    min_model_quality: standard
+    min_memory_gb: 8
+    ollama_compatible: true
+    install: |
+      ollama pull qwen2.5-vl:7b
+      # or: pip install transformers torch
+    note: >
+      DocVQA ANLS 0.964 (72B, 오픈소스 1위). Ollama로 즉시 실행.
+      GUI 에이전트 내장, 한국어 OCR 지원. 3B~72B 사이즈.
+
+  - id: repo-smolvlm2
+    label: "SmolVLM2 (HuggingFace)"
+    github: "huggingface/smollm"
+    framework_ref: smolvlm2
+    category: vision
+    stars_approx: "~5K+"
+    min_model_quality: light
+    min_memory_gb: 4
+    ollama_compatible: false
+    install: |
+      pip install transformers torch
+      # HuggingFace: HuggingFaceSM/SmolVLM2-Instruct
+    note: >
+      256M/500M/2.2B 초소형 VLM. 엣지/온디바이스 실행 전용. CPU 동작 가능.
+
+  - id: repo-internvl3
+    label: "InternVL3"
+    github: "OpenGVLab/InternVL"
+    framework_ref: internvl3
+    category: vision
+    stars_approx: "~8K+"
+    min_model_quality: standard
+    min_memory_gb: 16
+    ollama_compatible: false
+    install: |
+      pip install transformers torch
+      # HuggingFace: OpenGVLab/InternVL3-8B (or 1B~78B)
+    note: >
+      MMMU 72.2점 오픈소스 SOTA (CVPR 2024 Oral). Apache 2.0 라이선스. 1B~78B 사이즈.
+
+  - id: repo-paddleocr
+    label: "PaddleOCR"
+    github: "PaddlePaddle/PaddleOCR"
+    framework_ref: paddleocr
+    category: vision
+    stars_approx: "~45K+"
+    min_model_quality: light
+    min_memory_gb: 4
+    ollama_compatible: false
+    install: |
+      pip install paddlepaddle paddleocr
+    note: >
+      109개 언어 OCR (한국어 포함). PP-OCRv5 3단계 파이프라인. CPU 동작.
+      PaddleOCR-VL: VLM 기반 문서 이해 확장판.

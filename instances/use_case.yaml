@@ -326,3 +326,85 @@ use_cases:
     recommended_frameworks: [qwen-agent, llamaindex, anythingllm, openclaw]
     note: >
       Combines document retrieval with note-graph navigation. Best fit when a personal vault is the primary corpus.
+
+  # ── Vision Tasks ───────────────────────────────────────
+
+  - id: image_classification
+    label: "이미지 분류"
+    description: "이미지 전체에 카테고리 레이블을 부여 (불량 검출, 제품 분류, 의료 이미지 등)"
+    keywords: [이미지분류, 분류, 카테고리, 레이블, 비전,
+               image classification, visual classification, category label, vision, defect detection]
+    min_memory_gb: 8
+    needs_always_on: false
+    recommended_models: [qwen2.5-vl:7b, moondream:1.8b, minicpm-v:8b]
+    recommended_frameworks: [siglip2, florence-2, yolo]
+    note: >
+      CLIP/SigLIP zero-shot으로 추가 학습 없이 임의 카테고리 분류 가능.
+      도메인 특화가 필요하면 ViT 또는 ConvNeXt 파인튜닝 권장.
+      NLP의 텍스트 분류와 개념적으로 대응.
+
+  - id: object_detection
+    label: "객체 탐지"
+    description: "이미지 내 객체 위치(bbox)와 클래스를 동시에 출력 (CCTV, 제조 불량, 의료 병변 등)"
+    keywords: [객체탐지, 탐지, bbox, 바운딩박스, yolo, 비전,
+               object detection, bounding box, yolo, detection, localization, coco]
+    min_memory_gb: 8
+    needs_always_on: false
+    recommended_models: [qwen2.5-vl:7b]
+    recommended_frameworks: [yolo, grounding-dino, florence-2]
+    note: >
+      실시간(30fps+) 요구 시 YOLO11/12. 텍스트 쿼리로 임의 객체 탐지 시 Grounding DINO.
+      NLP의 NER(span 추출)과 개념적으로 대응 — 위치(bbox) + 타입(클래스)을 동시에 출력.
+
+  - id: document_ocr
+    label: "문서 OCR / 구조 추출"
+    description: "스캔 문서·PDF·이미지에서 텍스트·표·레이아웃을 구조화 출력 (송장, 폼, 계약서 등)"
+    keywords: [ocr, 문서인식, 문자인식, 텍스트추출, 표추출, 레이아웃, 송장, 스캔,
+               document ocr, text extraction, table extraction, invoice, scan, pdf parse, layout]
+    min_memory_gb: 8
+    needs_always_on: false
+    recommended_models: [qwen2.5-vl:7b, qwen2.5-vl:72b, minicpm-v:8b]
+    recommended_frameworks: [qwen2.5-vl, paddleocr, florence-2]
+    note: >
+      상용 Vision API 대비 자체 호스팅 시 ~16배 비용 절감(A100 기준).
+      한국어 지원: PaddleOCR-VL(109개 언어), Qwen2.5-VL.
+      NLP의 정보 추출(IE)과 개념적으로 대응.
+
+  - id: visual_qa
+    label: "이미지 Q&A / 캡셔닝"
+    description: "이미지에 대한 자연어 질의응답 및 자동 설명 생성 (제품 설명, alt-text 자동화 등)"
+    keywords: [vqa, 이미지qa, 시각질의, 캡셔닝, 이미지설명, 멀티모달,
+               visual qa, image qa, vqa, captioning, image description, multimodal, vision language]
+    min_memory_gb: 8
+    needs_always_on: false
+    recommended_models: [qwen2.5-vl:7b, minicpm-v:8b, moondream:1.8b]
+    recommended_frameworks: [qwen2.5-vl, smolvlm2, internvl3]
+    note: >
+      Ollama에서 이미지를 base64로 인코딩해 직접 입력 가능.
+      SmolVLM2(2.2B)는 온디바이스(엣지) 실행 가능. NLP의 요약/QA와 개념적으로 대응.
+
+  - id: visual_grounding
+    label: "시각적 근거 탐색"
+    description: "텍스트 설명에 해당하는 이미지 내 영역(bbox/mask)을 찾는 작업. GUI 에이전트 기반"
+    keywords: [visual grounding, 시각근거, 영역탐지, 참조표현, 화면조작,
+               visual grounding, referring expression, region localization, gui grounding, screen]
+    min_memory_gb: 16
+    needs_always_on: false
+    recommended_models: [qwen2.5-vl:7b, qwen2.5-vl:72b]
+    recommended_frameworks: [grounding-dino, florence-2, qwen2.5-vl]
+    note: >
+      GUI 에이전트(화면 요소 자동 클릭)의 핵심 기술. ScreenSpot-Pro 최고 18.9%로 아직 어려운 task.
+      NLP의 NLI/근거 추출과 개념적으로 대응.
+
+  - id: gui_agent
+    label: "GUI 에이전트 (화면 조작)"
+    description: "PC/모바일 화면을 이해하고 클릭·타이핑 등 UI 조작을 자동화하는 비전 에이전트"
+    keywords: [gui에이전트, 화면조작, 컴퓨터사용, 스크린, ui자동화, 데스크탑에이전트,
+               gui agent, computer use, screen automation, ui automation, desktop agent, click]
+    min_memory_gb: 16
+    needs_always_on: false
+    recommended_models: [qwen2.5-vl:7b, qwen2.5-vl:72b]
+    recommended_frameworks: [qwen2.5-vl, grounding-dino]
+    note: >
+      visual_grounding의 응용. UI-TARS 1.5 OSWorld 42.5% SOTA(2025).
+      정확한 좌표 생성이 핵심 병목. 복잡한 GUI일수록 Pro 모델 권장.

@@ -393,3 +393,140 @@ frameworks:
       Office files (.docx/.xlsx, graphifyy[office] extra).
       Code extraction is fully local (tree-sitter + Leiden); non-code types use the connected AI assistant's model.
       Actively maintained (2026, 43K+ stars in first month).
+
+  # ── Vision Frameworks ─────────────────────────────────────
+
+  - id: siglip2
+    label: "SigLIP 2 (Zero-shot Image Classification)"
+    kind: vision
+    complexity: low
+    local_capable: true
+    runtime_support: [huggingface, any]
+    multiagent: false
+    mcp_support: false
+    install: "pip install transformers torch"
+    best_for: [image_classification]
+    stars_approx: "N/A (Google DeepMind — HuggingFace weights)"
+    last_updated: "2025"
+    note: >
+      Google DeepMind의 zero-shot 이미지 분류 모델.
+      추가 학습 없이 임의 클래스 분류 가능 (ViT-B/16 기준 Top-1 78.2%, CLIP 68.3% 대비 +10%p).
+      HuggingFace `pipeline("zero-shot-image-classification")` 으로 즉시 사용.
+
+  - id: yolo
+    label: "Ultralytics YOLO (v11 / v12)"
+    kind: vision
+    complexity: low
+    local_capable: true
+    runtime_support: [any]
+    multiagent: false
+    mcp_support: false
+    install: "pip install ultralytics"
+    best_for: [object_detection]
+    stars_approx: "~40K+"
+    last_updated: "2026"
+    note: >
+      실시간 객체 탐지의 사실상 표준. YOLO11n(2.6M params, COCO 39.5 mAP) ~ YOLO11x(54.7 mAP).
+      YOLO12(2025, attention-centric): 55.2 mAP SOTA. TensorRT로 T4 650fps+ 가능.
+      `pip install ultralytics` 한 줄로 추론·학습·내보내기 통합.
+
+  - id: grounding-dino
+    label: "Grounding DINO"
+    kind: vision
+    complexity: medium
+    local_capable: true
+    runtime_support: [huggingface, any]
+    multiagent: false
+    mcp_support: false
+    install: "pip install transformers torch"
+    best_for: [object_detection, visual_grounding]
+    stars_approx: "~8K+"
+    last_updated: "2025"
+    note: >
+      텍스트 쿼리로 학습에 없던 임의 객체를 탐지하는 open-vocabulary detection (ECCV 2024).
+      Grounding DINO 1.5 Pro COCO 54.3 AP / 1.6 Pro 55.4 AP (zero-shot SOTA).
+      "빨간 사과가 든 바구니"처럼 자연어 입력으로 bbox 출력.
+
+  - id: florence-2
+    label: "Florence-2 (Microsoft)"
+    kind: vision
+    complexity: low
+    local_capable: true
+    runtime_support: [huggingface, any]
+    multiagent: false
+    mcp_support: false
+    install: "pip install transformers torch"
+    best_for: [image_classification, object_detection, visual_grounding, visual_qa, document_ocr]
+    stars_approx: "N/A (Microsoft — HuggingFace weights, MIT license)"
+    last_updated: "2024"
+    note: >
+      단일 0.77B 모델로 분류·탐지·캡셔닝·Grounding·OCR 모두 처리 (MIT 라이선스).
+      프롬프트 태그(<CAPTION>, <OD>, <CAPTION_TO_PHRASE_GROUNDING> 등)로 task 전환.
+      30줄 미만 코드로 로컬 실행. transformers 외 추가 의존성 없음.
+
+  - id: qwen2.5-vl
+    label: "Qwen2.5-VL"
+    kind: vision
+    complexity: medium
+    local_capable: true
+    runtime_support: [ollama, huggingface, any]
+    multiagent: false
+    mcp_support: false
+    install: "ollama pull qwen2.5-vl:7b"
+    best_for: [visual_qa, document_ocr, visual_grounding, gui_agent, image_classification]
+    stars_approx: "~20K+"
+    last_updated: "2025"
+    note: >
+      DocVQA ANLS 0.964 (72B, 오픈소스 1위). Ollama 지원으로 로컬 즉시 실행.
+      GUI 에이전트 내장 — 화면 좌표를 절대값 JSON으로 출력.
+      한국어 OCR 지원. 3B~72B 사이즈로 GPU 요건 선택 가능.
+
+  - id: smolvlm2
+    label: "SmolVLM2 (HuggingFace)"
+    kind: vision
+    complexity: low
+    local_capable: true
+    runtime_support: [huggingface, any]
+    multiagent: false
+    mcp_support: false
+    install: "pip install transformers torch"
+    best_for: [visual_qa, image_classification]
+    stars_approx: "N/A (HuggingFace model)"
+    last_updated: "2025"
+    note: >
+      256M/500M/2.2B 초소형 VLM. 엣지/온디바이스 실행 전용.
+      SigLIP-SO400M 비전 인코더 사용. CPU만으로 캡셔닝·VQA 실행 가능.
+      배포 용량이 제약된 환경(Raspberry Pi, 모바일)의 기준 선택지.
+
+  - id: internvl3
+    label: "InternVL3"
+    kind: vision
+    complexity: medium
+    local_capable: true
+    runtime_support: [huggingface, any]
+    multiagent: false
+    mcp_support: false
+    install: "pip install transformers torch"
+    best_for: [visual_qa, document_ocr, image_classification]
+    stars_approx: "~8K+"
+    last_updated: "2025"
+    note: >
+      InternViT-6B + Qwen2.5-72B 조합. MMMU 72.2점 오픈소스 SOTA (CVPR 2024 Oral).
+      Apache 2.0 라이선스. 1B~78B 사이즈. OpenGVLab(상하이AI연구원) 개발.
+
+  - id: paddleocr
+    label: "PaddleOCR / PaddleOCR-VL"
+    kind: vision
+    complexity: low
+    local_capable: true
+    runtime_support: [any]
+    multiagent: false
+    mcp_support: false
+    install: "pip install paddlepaddle paddleocr"
+    best_for: [document_ocr]
+    stars_approx: "~45K+"
+    last_updated: "2026"
+    note: >
+      Baidu의 오픈소스 OCR 파이프라인. 109개 언어 지원 (한국어 포함).
+      PP-OCRv5: 탐지→방향분류→인식 3단계 파이프라인. CPU에서도 동작.
+      PaddleOCR-VL: VLM 기반 문서 이해 확장판 (표·레이아웃 구조화 추출).

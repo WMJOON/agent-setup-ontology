@@ -363,3 +363,60 @@ models:
     tool_calling: false
     speed_note: "~20-38 GB class local deployment depending on quantization. 256K context."
     note: "Highest-capability Gemma 4 local option. Better suited for high-quality multimodal reasoning and larger local deployments than lightweight always-on workflows."
+
+  # ── Vision Models (Ollama-compatible VLM) ────────────────
+
+  - id: qwen2.5-vl:7b
+    label: "qwen2.5-vl:7b"
+    params_b: 7
+    type: dense
+    modality: vision-language
+    min_memory_gb: 8
+    quality: standard
+    tool_calling: true
+    ollama_id: "qwen2.5-vl:7b"
+    speed_note: "~8-16 GB VRAM. Ollama 지원."
+    note: >
+      Qwen2.5-VL 7B. 이미지+텍스트 입력. DocVQA ANLS ~0.91 (7B 기준).
+      GUI 에이전트 좌표 출력, OCR, VQA 모두 지원.
+
+  - id: qwen2.5-vl:72b
+    label: "qwen2.5-vl:72b"
+    params_b: 72
+    type: dense
+    modality: vision-language
+    min_memory_gb: 48
+    quality: pro
+    tool_calling: true
+    ollama_id: "qwen2.5-vl:72b"
+    speed_note: "~48GB VRAM (Q4). 다중 GPU 또는 Apple Silicon 96GB 권장."
+    note: >
+      DocVQA ANLS 0.964 (오픈소스 1위). 최고 품질 OCR·VQA·Grounding.
+
+  - id: minicpm-v:8b
+    label: "minicpm-v:8b"
+    params_b: 8
+    type: dense
+    modality: vision-language
+    min_memory_gb: 8
+    quality: standard
+    tool_calling: false
+    ollama_id: "minicpm-v:8b"
+    speed_note: "~8-12 GB VRAM. Ollama 지원."
+    note: >
+      MiniCPM-V (Tsinghua/ModelBest). 이미지+텍스트 VLM.
+      문서 이해, 이미지 Q&A에 적합.
+
+  - id: moondream:1.8b
+    label: "moondream:1.8b"
+    params_b: 1.8
+    type: dense
+    modality: vision-language
+    min_memory_gb: 4
+    quality: light
+    tool_calling: false
+    ollama_id: "moondream:1.8b"
+    speed_note: "~4 GB VRAM. CPU 동작 가능. Ollama 지원."
+    note: >
+      초소형 VLM (1.8B). 이미지 캡셔닝·간단한 VQA 전용.
+      엣지/저사양 환경의 기준 선택지.
