@@ -77,7 +77,7 @@ frameworks:
     multiagent: true
     mcp_support: true
     install: "https://github.com/NousResearch/hermes-agent"
-    best_for: [personal_assistant, web_automation, file_automation, schedule_task, home_dashboard_agent]
+    best_for: [personal_assistant, web_automation, file_automation, schedule_task, home_dashboard_agent, email_assistant, browser_operator]
     note: >
       Self-improving terminal agent. Persistent memory + skills learned from past sessions.
       40+ tools, MCP integration, cron scheduling, messaging across Telegram/Discord/Slack/WhatsApp/Signal.

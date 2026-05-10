@@ -467,6 +467,21 @@ instances:
     use_case: schedule_task
     reason: Hermes' cron support runs natively on the always-on Mac Mini without an
       extra scheduler layer.
+  - profile: setup-mac-mini-hermes-agent
+    fit: strong
+    use_case: file_automation
+    reason: 40+ built-in tools (shell, file ops) run across local/Docker/SSH backends
+      on the always-on Mac Mini — no separate RPA layer needed.
+  - profile: setup-mac-mini-hermes-agent
+    fit: strong
+    use_case: home_dashboard_agent
+    reason: Cron + messaging integrations (Telegram/Slack) let Hermes push recurring
+      dashboard summaries without extra scheduling hardware.
+  - profile: setup-mac-mini-hermes-agent
+    fit: strong
+    use_case: email_assistant
+    reason: First-class email integration alongside messenger channels; Qwen MoE keeps
+      latency acceptable for triage and draft workflows.
   - profile: setup-cpu-host-hermes-agent-hosted-model
     fit: strong
     use_case: personal_assistant
@@ -477,6 +492,21 @@ instances:
     use_case: schedule_task
     reason: Hermes serverless backends (Modal/Daytona/Vercel) make scheduled jobs viable
       even without a permanent always-on box.
+  - profile: setup-cpu-host-hermes-agent-hosted-model
+    fit: strong
+    use_case: email_assistant
+    reason: Claude Sonnet handles nuanced email drafts and triage; the CPU host runs
+      only the agent loop so the hardware bar is minimal.
+  - profile: setup-cpu-host-hermes-agent-hosted-model
+    fit: strong
+    use_case: calendar_assistant
+    reason: Hermes' scheduling tools + hosted frontier model cover calendar queries
+      and event management without requiring local GPU.
+  - profile: setup-cpu-host-hermes-agent-hosted-model
+    fit: strong
+    use_case: home_dashboard_agent
+    reason: Low-spec host is sufficient for cron-triggered dashboard checks;
+      inference offloaded to hosted API keeps response quality high.
   use_case_adjacency:
   - from: web_automation
     to: browser_operator
