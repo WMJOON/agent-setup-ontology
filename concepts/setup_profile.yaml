@@ -32,3 +32,14 @@ setup_profile:
     setup_steps: >
       Ordered list of exact commands to go from zero to running.
       Referenced by the copilot when explaining setup to users.
+
+    baseline: >
+      Marks a setup_profile as the consultation baseline. Pairs with
+      device.baseline — the baseline device defines the hardware anchor,
+      this baseline setup_profile defines the canonical zero-friction
+      starting stack (model + framework + use cases) on that hardware.
+      The copilot opens consultations from this profile when the user has
+      not yet specified intent, and routes "what if I want to also do X?"
+      questions as deltas from here. Exactly one setup_profile should carry
+      baseline: true at any time.
+      Currently: setup-mac-mini-chat (Mac Mini 16GB + Open WebUI + qwen3.5:9b).
