@@ -507,6 +507,141 @@ instances:
     use_case: home_dashboard_agent
     reason: Low-spec host is sufficient for cron-triggered dashboard checks;
       inference offloaded to hosted API keeps response quality high.
+  - profile: setup-mac-mini-openclaw
+    fit: strong
+    use_case: web_automation
+    reason: OpenClaw's autonomous browser engine runs persistently on the always-on Mac Mini
+      — silent 20W server handles browser tasks without user intervention.
+  - profile: setup-mac-mini-openclaw
+    fit: strong
+    use_case: file_automation
+    reason: OpenClaw shell and file tools, backed by 35b-a3b MoE, cover local file
+      read/write/transform tasks across the Mac Mini's storage.
+  - profile: setup-mac-mini-openclaw
+    fit: strong
+    use_case: schedule_task
+    reason: OpenClaw's Telegram/Slack trigger channels let it receive and execute
+      scheduled commands from a remote device without a separate scheduler.
+  - profile: setup-mac-mini-chat
+    fit: strong
+    use_case: general_qa
+    reason: Open WebUI provides a zero-code ChatGPT-like interface for general Q&A
+      on the always-on Mac Mini 16GB.
+  - profile: setup-mac-mini-chat
+    fit: strong
+    use_case: writing_assistant
+    reason: qwen3.5:9b has sufficient quality for drafting and editing tasks via
+      Open WebUI's chat interface.
+  - profile: setup-mac-mini-chat
+    fit: strong
+    use_case: document_rag
+    reason: Open WebUI's built-in document upload and RAG pipeline covers lightweight
+      document Q&A without extra tooling.
+  - profile: setup-mac-mini-personal-assistant
+    fit: strong
+    use_case: schedule_task
+    reason: OpenClaw's remote trigger channels (Telegram/Slack) handle ad-hoc and
+      recurring scheduled commands on the always-on Mac Mini.
+  - profile: setup-mac-mini-personal-assistant
+    fit: strong
+    use_case: file_automation
+    reason: OpenClaw's file and shell toolset on the always-on Mac Mini covers
+      local file management and transformation tasks.
+  - profile: setup-mac-mini-rag-server
+    fit: strong
+    use_case: general_qa
+    reason: Open WebUI chat interface on top of qwen3.5:14b handles general Q&A
+      alongside the RAG workload on the 24GB Mac Mini.
+  - profile: setup-mac-mini-rag-server
+    fit: strong
+    use_case: writing_assistant
+    reason: qwen3.5:14b provides solid writing assistance quality; users can
+      access via the same Open WebUI interface as the RAG server.
+  - profile: setup-n8n-scheduler
+    fit: strong
+    use_case: file_automation
+    reason: n8n's file-system and webhook nodes handle trigger-based file operations
+      with LLM assistance from local qwen3.5:9b.
+  - profile: setup-n8n-scheduler
+    fit: strong
+    use_case: personal_assistant
+    reason: n8n's broad integration library (email, Slack, calendar) makes it a
+      capable personal operations hub for routine assistant tasks.
+  - profile: setup-macbook-portable-openclaw
+    fit: strong
+    use_case: web_automation
+    reason: OpenClaw's browser engine on the MacBook Pro 32GB provides strong
+      web automation in a portable form factor.
+  - profile: setup-macbook-portable-openclaw
+    fit: strong
+    use_case: personal_assistant
+    reason: OpenClaw's messaging integrations and 35b-a3b MoE quality make it
+      a capable on-the-go personal assistant when away from a stationary server.
+  - profile: setup-pc-browser-operator
+    fit: strong
+    use_case: web_automation
+    reason: OpenClaw's autonomous browser engine on qwen3.5:14b provides thorough
+      web automation with GPU-accelerated inference for responsive control.
+  - profile: setup-pc-browser-operator
+    fit: strong
+    use_case: file_automation
+    reason: OpenClaw's shell and file tools, backed by the RTX 4060 Ti inference
+      speed, handle file transformation and management tasks efficiently.
+  - profile: setup-private-support-bot
+    fit: strong
+    use_case: local_rag_server
+    reason: Dify's self-hosted RAG pipeline on Mac Mini 24GB provides a private
+      document-grounded knowledge base for the support bot.
+  - profile: setup-private-support-bot
+    fit: strong
+    use_case: general_qa
+    reason: Dify's no-code chatbot interface on qwen3.5:14b handles general Q&A
+      alongside the support bot's domain-specific RAG queries.
+  - profile: setup-obsidian-rag-desk
+    fit: strong
+    use_case: obsidian_assistant
+    reason: Qwen-Agent's retrieval tools are wired directly to the Obsidian vault,
+      enabling note-aware agentic queries on the always-on Mac Mini.
+  - profile: setup-obsidian-rag-desk
+    fit: strong
+    use_case: document_rag
+    reason: Qwen-Agent's document retrieval pipeline on 35b-a3b covers general
+      document Q&A in addition to the Obsidian-specific workflow.
+  - profile: setup-research-pipeline-pro
+    fit: strong
+    use_case: deep_research
+    reason: Agno's multi-source tool suite on qwen3.5:72b (Mac Studio 64GB) handles
+      extended reasoning chains and synthesis for deep research reports.
+  - profile: setup-research-pipeline-pro
+    fit: strong
+    use_case: web_research
+    reason: Agno's DuckDuckGo and web reader tools provide multi-source web
+      retrieval to feed the 72B model's synthesis pipeline.
+  - profile: setup-email-calendar-hub
+    fit: strong
+    use_case: schedule_task
+    reason: n8n's cron and trigger nodes handle the scheduling backbone for
+      inbox triage and calendar-based automation workflows.
+  - profile: setup-home-dashboard-mini
+    fit: strong
+    use_case: personal_assistant
+    reason: OpenClaw's messaging integrations on the always-on Mac Mini 16GB
+      serve as a lightweight always-available personal assistant channel.
+  - profile: setup-home-dashboard-mini
+    fit: strong
+    use_case: schedule_task
+    reason: OpenClaw's remote trigger channels and cron-style activation handle
+      periodic dashboard checks and alerts without extra scheduling software.
+  - profile: setup-document-ingestion-lab
+    fit: strong
+    use_case: document_rag
+    reason: LlamaIndex's chunking, embedding, and retrieval pipeline on the
+      RTX 4060 Ti powers GPU-accelerated document Q&A after ingestion.
+  - profile: setup-document-ingestion-lab
+    fit: strong
+    use_case: local_rag_server
+    reason: The ingestion lab doubles as a local RAG server once documents are
+      indexed — GPU inference on qwen3.5:14b handles retrieval queries.
   use_case_adjacency:
   - from: web_automation
     to: browser_operator
