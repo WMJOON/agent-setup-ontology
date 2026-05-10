@@ -68,6 +68,23 @@ frameworks:
     best_for: [web_automation]
     note: "Autonomous browser, file, and code execution. LLM wrapper for desktop automation."
 
+  - id: hermes-agent
+    label: "Hermes Agent (Nous Research)"
+    kind: automation
+    complexity: medium
+    local_capable: true
+    runtime_support: [openai, anthropic, openrouter, any]
+    multiagent: true
+    mcp_support: true
+    install: "https://github.com/NousResearch/hermes-agent"
+    best_for: [personal_assistant, web_automation, file_automation, schedule_task, home_dashboard_agent]
+    note: >
+      Self-improving terminal agent. Persistent memory + skills learned from past sessions.
+      40+ tools, MCP integration, cron scheduling, messaging across Telegram/Discord/Slack/WhatsApp/Signal.
+      Seven execution backends (local, Docker, SSH, Singularity, Modal, Daytona, Vercel) — runs on $5 VPS to GPU clusters.
+      Provider-agnostic: Nous Portal, OpenRouter, NIM, OpenAI, Anthropic, HuggingFace, or custom OpenAI-compatible endpoint (Ollama via custom endpoint).
+      Spawns isolated subagents for parallel workstreams.
+
   # ── UI Front-ends ──────────────────────────────────────
 
   - id: open-webui

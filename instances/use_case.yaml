@@ -7,12 +7,12 @@ use_cases:
   - id: web_automation
     label: "웹 자동화"
     description: "브라우저 조작, 스크래핑, 폼 자동화"
-    keywords: [OpenClaw, 브라우저, 크롤링, 자동화, 웹, 스크래핑,
+    keywords: [OpenClaw, Hermes, Hermes Agent, 브라우저, 크롤링, 자동화, 웹, 스크래핑,
                browser, crawling, scraping, automation, web, form]
     min_memory_gb: 16
     needs_always_on: false
     recommended_models: [qwen3.5:9b, qwen3.5:35b-a3b, llama3.1:8b, mistral:7b]
-    recommended_frameworks: [openclaw, smolagents]
+    recommended_frameworks: [openclaw, hermes-agent, smolagents]
 
   - id: file_automation
     label: "파일·시스템 자동화"
@@ -22,7 +22,7 @@ use_cases:
     min_memory_gb: 8
     needs_always_on: false
     recommended_models: [qwen3.5:4b, qwen3.5:9b, llama3.2:3b, llama3.1:8b]
-    recommended_frameworks: [smolagents, qwen-agent]
+    recommended_frameworks: [smolagents, qwen-agent, hermes-agent]
 
   - id: code_generation
     label: "코드 생성·보조"
@@ -148,23 +148,26 @@ use_cases:
     min_memory_gb: 8
     needs_always_on: true
     recommended_models: [qwen3.5:4b, qwen3.5:9b, llama3.2:3b]
-    recommended_frameworks: [smolagents, openclaw]
+    recommended_frameworks: [smolagents, openclaw, hermes-agent]
     note: >
       Requires the device to be always-on (mac-mini, stationary PC preferred).
       Light models are sufficient for most scheduled tasks — speed matters less than availability.
+      Hermes Agent ships built-in cron scheduling and can also run on serverless backends
+      (Modal/Daytona/Vercel) when an always-on local box is not available.
 
   - id: personal_assistant
     label: "개인 비서·메시징 에이전트"
     description: "텔레그램/슬랙/시그널 같은 채널에서 대화하고 개인 작업을 수행하는 에이전트"
-    keywords: [개인비서, 비서, 텔레그램, 슬랙, 시그널, 메시지, 메신저,
-               personal assistant, messaging agent, telegram, slack, signal, whatsapp, chat ops]
+    keywords: [개인비서, 비서, 텔레그램, 슬랙, 시그널, 메시지, 메신저, Hermes,
+               personal assistant, messaging agent, telegram, slack, signal, whatsapp, discord, chat ops]
     min_memory_gb: 16
     needs_always_on: true
     recommended_models: [qwen3.5:9b, qwen3.5:35b-a3b, granite3.1-dense:8b, llama3.1:8b]
-    recommended_frameworks: [openclaw, smolagents]
+    recommended_frameworks: [openclaw, hermes-agent, smolagents]
     note: >
       Best served by an always-on device with messaging integrations and safe tool execution.
-      OpenClaw-style assistants are the canonical fit.
+      OpenClaw and Hermes Agent are the canonical fits — Hermes additionally adds Discord,
+      learned skills with persistent memory, and serverless deployment options.
 
   - id: obsidian_assistant
     label: "Obsidian 지식 베이스 보조"
@@ -199,7 +202,7 @@ use_cases:
     min_memory_gb: 16
     needs_always_on: false
     recommended_models: [qwen3.5:9b, qwen3.5:35b-a3b, mistral:7b]
-    recommended_frameworks: [openclaw, openhands, smolagents]
+    recommended_frameworks: [openclaw, hermes-agent, openhands, smolagents]
     note: >
       Similar to web_automation but centered on interactive browser control rather than scraping alone.
 
@@ -271,7 +274,7 @@ use_cases:
     min_memory_gb: 16
     needs_always_on: true
     recommended_models: [granite3.1-dense:8b, qwen3.5:9b, qwen3.5:14b, phi4:14b]
-    recommended_frameworks: [openclaw, n8n, open-webui]
+    recommended_frameworks: [openclaw, hermes-agent, n8n, open-webui]
     note: >
       Best for inbox triage, summary, and draft generation. Event-driven automation is often enough.
 
@@ -283,7 +286,7 @@ use_cases:
     min_memory_gb: 8
     needs_always_on: true
     recommended_models: [qwen3.5:4b, qwen3.5:9b, llama3.2:3b]
-    recommended_frameworks: [openclaw, n8n]
+    recommended_frameworks: [openclaw, hermes-agent, n8n]
     note: >
       Usually lightweight but benefits from always-on deployment and messaging integration.
 
@@ -295,9 +298,10 @@ use_cases:
     min_memory_gb: 8
     needs_always_on: true
     recommended_models: [qwen3.5:4b, qwen3.5:9b, llama3.2:3b]
-    recommended_frameworks: [openclaw, n8n, smolagents]
+    recommended_frameworks: [openclaw, hermes-agent, n8n, smolagents]
     note: >
       Favors always-on low-power setups and lightweight models over high-end reasoning.
+      Hermes Agent's serverless backends (Modal/Daytona/Vercel) are useful when keeping a local box always-on is impractical.
 
   - id: document_ingestion_pipeline
     label: "문서 적재 파이프라인"

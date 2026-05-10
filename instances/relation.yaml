@@ -157,6 +157,31 @@ instances:
       - use_case: local_rag_server
         reason: Can orchestrate around RAG but is not the best primary serving layer
           for document chat.
+    hermes-agent:
+      strong_fit:
+      - use_case: personal_assistant
+        reason: Persistent memory + learned skills + Telegram/Discord/Slack/WhatsApp/Signal
+          messaging make it a strong always-on personal assistant.
+      - use_case: schedule_task
+        reason: Built-in cron scheduling plus serverless backends (Modal/Daytona/Vercel)
+          remove the always-on hardware requirement.
+      - use_case: file_automation
+        reason: 40+ tools including shell and file ops, executable across local/Docker/SSH backends.
+      - use_case: web_automation
+        reason: Browser tool plus general shell execution covers scraping and form workflows.
+      - use_case: home_dashboard_agent
+        reason: Cron + messaging + low resource footprint matches recurring dashboard checks.
+      - use_case: email_assistant
+        reason: First-class email integration alongside messenger channels for triage and drafts.
+      - use_case: browser_operator
+        reason: Browser tool + persistent skills capture repeatable interactive flows.
+      weak_fit:
+      - use_case: document_rag
+        reason: Not a RAG framework. Use llamaindex or anythingllm for document chat.
+      - use_case: local_copilot
+        reason: Terminal agent, not an IDE plugin. Use continue or a coding-CLI surface.
+      - use_case: local_rag_server
+        reason: Can orchestrate around retrieval but is not a serving layer for document chat.
     continue:
       strong_fit:
       - use_case: local_copilot
@@ -432,6 +457,26 @@ instances:
     use_case: document_ingestion_pipeline
     reason: GPU-backed workstation helps with repeated parsing, indexing, and retrieval
       iteration.
+  - profile: setup-mac-mini-hermes-agent
+    fit: strong
+    use_case: personal_assistant
+    reason: Always-on Mac Mini + Hermes Agent gives a private personal assistant with
+      learned skills, persistent memory, and built-in cron scheduling.
+  - profile: setup-mac-mini-hermes-agent
+    fit: strong
+    use_case: schedule_task
+    reason: Hermes' cron support runs natively on the always-on Mac Mini without an
+      extra scheduler layer.
+  - profile: setup-cpu-host-hermes-agent-hosted-model
+    fit: strong
+    use_case: personal_assistant
+    reason: Cheapest always-on path to a Hermes personal assistant when no local GPU
+      is available — frontier model is hosted, host only runs the agent loop.
+  - profile: setup-cpu-host-hermes-agent-hosted-model
+    fit: strong
+    use_case: schedule_task
+    reason: Hermes serverless backends (Modal/Daytona/Vercel) make scheduled jobs viable
+      even without a permanent always-on box.
   use_case_adjacency:
   - from: web_automation
     to: browser_operator
