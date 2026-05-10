@@ -28,7 +28,9 @@ python3 skills/ontology-harness/scripts/add_entry.py --type device --dry-run
 python3 skills/ontology-harness/scripts/add_entry.py --validate-only
 ```
 
-CI runs consumer `validate.py` (fetched from GitHub) on every push/PR touching `ontology.yaml`. The `instances/` directory is validated only by the local harness unless the consumer repo is available.
+CI (`.github/workflows/validate.yml`) runs consumer `validate.py` only on changes to `ontology.yaml` — it does **not** watch `instances/`. PRs that only touch `instances/` skip CI; run `local_validate.py` manually before opening such PRs.
+
+`add_entry.py` supports only four types: `device`, `model`, `framework`, `use_case`. For `repo`, `setup_profile`, `api_service`, and `component`, edit the relevant YAML directly and run `local_validate.py` afterward.
 
 ## Architecture
 
@@ -52,6 +54,8 @@ instances/    ← Actual data — devices, models, frameworks, profiles, relatio
 | `repo.yaml` | GitHub repos for frameworks | `frameworks` (via `framework_ref`) |
 | `setup_profile.yaml` | Concrete hardware+model+framework combos | `devices`, `models`, `frameworks`, `repos`, `use_cases` |
 | `relation.yaml` | Upgrade paths, API→local transitions, per-framework fit ratings, per-profile fit ratings | all of the above |
+| `semantic_labels.yaml` | Machine-read derivation rules for device labels used by `deo_resolver.py` | `devices` |
+| `cost_estimation.yaml` | Token usage profiles and break-even thresholds | — (not validated by harness) |
 
 ### Three consistency contracts to maintain
 
@@ -63,12 +67,16 @@ When adding or editing a `framework` entry, keep these three in sync:
 
 `best_for` and `framework_use_case_fits` must agree. `profile_fit` must cover every `use_case` declared in the profile's `use_cases` list.
 
+### `semantic_labels.yaml`
+
+Each entry has a `derivation.from_fact` block specifying which device fact fields trigger the label. The consumer's `deo_resolver.py` reads these rules at runtime to tag device nodes dynamically — it is not static documentation. When a new fact field is added to `device.yaml`, check whether existing semantic label derivations need updating.
+
 ### `relation.yaml` structure
 
 The file has several top-level blocks under `instances:`:
 - `upgrade_paths` — device upgrade chains (macbook / mac_mini / pc)
 - `api_to_local_paths` — cloud API → local model migration paths
-- `framework_use_case_fits` — keyed by `framework.id`, contains `strong_fit` / `weak_fit` lists
+- `framework_use_case_fits` — **YAML map** keyed by `framework.id` (not a list), contains `strong_fit` / `weak_fit` lists
 - `profile_fit` — flat list of `{profile, fit, use_case, reason}` entries
 - `use_case_adjacency` — semantic relations between use cases
 
