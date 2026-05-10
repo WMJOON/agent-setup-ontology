@@ -62,10 +62,10 @@ instances/    ← Actual data — devices, models, frameworks, profiles, relatio
 When adding or editing a `framework` entry, keep these three in sync:
 
 1. **`framework.yaml` → `best_for`**: list of `use_case.id`s this framework is suited for
-2. **`relation.yaml` → `framework_use_case_fits.<id>.strong_fit`**: per-framework fit ratings with reasons
-3. **`relation.yaml` → `profile_fit`**: per-profile + per-use_case fit entries for every `setup_profile.yaml` entry that uses this framework
+2. **`relation.yaml` → `framework_use_cases.<id>.strong_fit`**: per-framework fit ratings with reasons
+3. **`relation.yaml` → `setup_profile_notes`**: per-profile + per-use_case fit entries for every `setup_profile.yaml` entry that uses this framework
 
-`best_for` and `framework_use_case_fits` must agree. `profile_fit` must cover every `use_case` declared in the profile's `use_cases` list.
+`best_for` and `framework_use_cases` must agree. `setup_profile_notes` must cover every `use_case` declared in the profile's `use_cases` list.
 
 ### `semantic_labels.yaml`
 
@@ -76,8 +76,8 @@ Each entry has a `derivation.from_fact` block specifying which device fact field
 The file has several top-level blocks under `instances:`:
 - `upgrade_paths` — device upgrade chains (macbook / mac_mini / pc)
 - `api_to_local_paths` — cloud API → local model migration paths
-- `framework_use_case_fits` — **YAML map** keyed by `framework.id` (not a list), contains `strong_fit` / `weak_fit` lists
-- `profile_fit` — flat list of `{profile, fit, use_case, reason}` entries
+- `framework_use_cases` — **YAML map** keyed by `framework.id` (not a list), contains `strong_fit` / `weak_fit` lists
+- `setup_profile_notes` — flat list of `{profile, fit, use_case, reason}` entries
 - `use_case_adjacency` — semantic relations between use cases
 
 ### ID naming rules
