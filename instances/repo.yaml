@@ -27,6 +27,33 @@ repos:
       Connects via WhatsApp / Telegram / Slack / Signal.
       Reliable threshold: 32B+ models (24GB VRAM or Apple Silicon 32GB+).
 
+  - id: repo-hermes-agent
+    label: "Hermes Agent (Nous Research)"
+    github: "NousResearch/hermes-agent"
+    framework_ref: hermes-agent
+    category: automation
+    stars_approx: "140K+"
+    min_model_quality: standard
+    min_memory_gb: 8
+    ollama_compatible: true
+    install: |
+      curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash
+      source ~/.bashrc
+      hermes
+      # Switch provider/model anytime: `hermes model`
+      # Local Ollama: configure as a custom OpenAI-compatible endpoint
+      #   (base_url=http://localhost:11434/v1)
+    setup_guide: "https://hermes-agent.nousresearch.com/docs/"
+    note: >
+      Self-improving terminal agent with persistent memory and learned skills.
+      40+ tools, MCP integration, cron scheduling. Messaging across
+      Telegram / Discord / Slack / WhatsApp / Signal / Email.
+      Seven execution backends — local, Docker, SSH, Singularity, Modal, Daytona, Vercel —
+      so it scales from a $5 VPS to GPU clusters. Provider-agnostic across Nous Portal,
+      OpenRouter (200+ models), NVIDIA NIM, OpenAI, Anthropic, HuggingFace, or custom endpoints.
+      Spawns isolated subagents for parallel workstreams.
+      Recommended threshold for reliable tool use: standard tier (9B+) or hosted frontier model.
+
   # ── UI ─────────────────────────────────────────────────
 
   - id: repo-open-webui

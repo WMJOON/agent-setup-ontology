@@ -132,6 +132,50 @@ setup_profiles:
       - "cp .env.example .env && set OLLAMA_HOST=http://localhost:11434"
       - "npm install && npm start"
 
+  - id: setup-mac-mini-hermes-agent
+    label: "Self-Improving Assistant: Mac Mini M4 32GB + Hermes Agent"
+    devices: [mac_mini_m4_32gb]
+    model: "qwen3.5:35b-a3b"
+    framework: hermes-agent
+    repo: repo-hermes-agent
+    use_cases: [personal_assistant, schedule_task, file_automation, home_dashboard_agent, email_assistant]
+    complexity: medium
+    always_on: true
+    monthly_cost: "$0 (local only)"
+    note: >
+      Always-on private assistant with Hermes' learned-skills + persistent memory loop.
+      Built-in cron, MCP, and messaging across Telegram/Discord/Slack/WhatsApp/Signal.
+      Runs the local Qwen MoE via an OpenAI-compatible custom endpoint pointed at Ollama.
+      Switch to a hosted provider (`hermes model`) when you need frontier quality.
+    setup_steps:
+      - "ollama pull qwen3.5:35b-a3b"
+      - "curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash"
+      - "source ~/.bashrc"
+      - "hermes  # configure custom endpoint: base_url=http://localhost:11434/v1, model=qwen3.5:35b-a3b"
+
+  - id: setup-cpu-host-hermes-agent-hosted-model
+    label: "Low-Spec Always-On Host + Hermes Agent + Hosted Frontier Model"
+    devices: [pc_no_gpu]
+    model: "claude-sonnet-4-6"
+    framework: hermes-agent
+    repo: repo-hermes-agent
+    use_cases: [personal_assistant, schedule_task, email_assistant, calendar_assistant, home_dashboard_agent]
+    complexity: medium
+    always_on: true
+    monthly_cost: "$5–30 (electricity or VPS + per-token API usage)"
+    note: >
+      Lightweight Hermes deployment for users without local GPU. The host (CPU-only PC,
+      mini-PC, or $5 VPS) only runs the Hermes agent loop and tools — inference happens at
+      the hosted model provider (Claude/OpenAI/OpenRouter/NIM). Hermes' Modal/Daytona/Vercel
+      backends can replace the always-on host for near-zero idle cost.
+      Trade-off: data leaves the local box for the model provider.
+    setup_steps:
+      - "On the host (Linux x86_64): ensure outbound HTTPS to the model provider."
+      - "curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash"
+      - "source ~/.bashrc && hermes"
+      - "hermes model  # pick anthropic/claude-sonnet-4-6 (or openrouter/openai/etc.)"
+      - "Wire Telegram/Discord/Slack creds + cron schedules from the Hermes TUI."
+
   - id: setup-mac-mini-rag-server
     label: "Local Knowledge Server: Mac Mini M4 24GB + Open WebUI"
     devices: [mac_mini_m4_24gb]
