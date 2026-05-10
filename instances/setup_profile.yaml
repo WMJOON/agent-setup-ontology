@@ -35,8 +35,12 @@ setup_profiles:
     use_cases: [general_qa, writing_assistant, document_rag]
     complexity: low
     always_on: true
+    baseline: true
     monthly_cost: "$0"
-    note: "Simplest personal AI server. No coding required after setup."
+    note: >
+      Simplest personal AI server. No coding required after setup.
+      Copilot 상담의 기본 셋업(baseline) — 사용자 의도가 명시되지 않을 때
+      이 셋업을 출발점으로 잡고, 부족한 use case는 업그레이드 경로로 연결한다.
     setup_steps:
       - "ollama pull qwen3.5:9b"
       - "docker run -d -p 3000:8080 -e OLLAMA_BASE_URL=http://host.docker.internal:11434 ghcr.io/open-webui/open-webui:main"

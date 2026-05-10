@@ -64,6 +64,14 @@ device:
       (≥10 t/s for interactive use, ≥5 t/s for batch) on this device,
       using Q4_K_M quantization. Must reference a valid models[*].id.
 
+    baseline: >
+      Marks a device as the consultation baseline anchor. The copilot uses this
+      device as the default starting point when the user has not specified hardware,
+      and explains every other recommendation as a delta from this baseline
+      (e.g. "this use case is feasible on the baseline" / "this needs an upgrade to X").
+      Exactly one device should carry baseline: true at any time.
+      Currently: mac_mini_16gb (Mac Mini M4 base, 16GB unified memory).
+
     memory_components: >
       List of memory component IDs equipped on this device.
       References instances in component.yaml.
