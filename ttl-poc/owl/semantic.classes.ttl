@@ -1,0 +1,74 @@
+# semantic.classes.ttl — POC Semantic Layer (HITL 저작)
+#
+# instances/semantic_labels.yaml 의 derivation.from_fact 규칙을
+# OWL defined class(equivalentClass restriction)로 직역한다.
+# device individual(device.abox.ttl)이 fact만으로 이 클래스에 자동 분류되는지를
+# reason(HermiT)으로 검증하는 것이 POC의 목표.
+#
+# 각 클래스는 서로 다른 OWL 표현 패턴을 의도적으로 사용:
+#   Always_On_Friendly   — hasValue (bool + string)
+#   Maintenance_Free      — unionOf hasValue (type ∈ 집합)
+#   Team_Scale_Bottleneck — datatype facet (memory_gb < 32) + hasValue
+#   GPU_Native            — someValuesFrom (property 존재성)
+
+@prefix :     <https://agent-setup.local/ontology/asetup#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+<https://agent-setup.local/ontology/asetup> a owl:Ontology ;
+  rdfs:comment "agent-setup-ontology fact/semantic layering POC (device slice)." .
+
+# ── Fact layer vocabulary ────────────────────────────────────────────────────
+:Device a owl:Class .
+
+:type        a owl:DatatypeProperty ; rdfs:domain :Device ; rdfs:range xsd:string .
+:portability a owl:DatatypeProperty ; rdfs:domain :Device ; rdfs:range xsd:string .
+:tier        a owl:DatatypeProperty ; rdfs:domain :Device ; rdfs:range xsd:string .
+:gpu_component a owl:DatatypeProperty ; rdfs:domain :Device ; rdfs:range xsd:string .
+:memory_gb   a owl:DatatypeProperty ; rdfs:domain :Device ; rdfs:range xsd:integer .
+:gpu_vram_gb a owl:DatatypeProperty ; rdfs:domain :Device ; rdfs:range xsd:integer .
+:always_on   a owl:DatatypeProperty ; rdfs:domain :Device ; rdfs:range xsd:boolean .
+
+# ── Semantic layer (defined classes) ─────────────────────────────────────────
+
+# Always_On_Friendly ≡ Device ⊓ always_on=true ⊓ portability="stationary"
+:Always_On_Friendly a owl:Class ;
+  rdfs:comment "상시 가동 가능. derivation: always_on=true, portability=stationary."@ko ;
+  owl:equivalentClass [ a owl:Class ; owl:intersectionOf (
+      :Device
+      [ a owl:Restriction ; owl:onProperty :always_on   ; owl:hasValue true ]
+      [ a owl:Restriction ; owl:onProperty :portability ; owl:hasValue "stationary" ]
+  ) ] .
+
+# Maintenance_Free ≡ Device ⊓ type ∈ {macbook, mac-mini, mac-studio}
+:Maintenance_Free a owl:Class ;
+  rdfs:comment "관리 부담 낮음(managed macOS). derivation: type ∈ {macbook,mac-mini,mac-studio}."@ko ;
+  owl:equivalentClass [ a owl:Class ; owl:intersectionOf (
+      :Device
+      [ a owl:Class ; owl:unionOf (
+          [ a owl:Restriction ; owl:onProperty :type ; owl:hasValue "macbook" ]
+          [ a owl:Restriction ; owl:onProperty :type ; owl:hasValue "mac-mini" ]
+          [ a owl:Restriction ; owl:onProperty :type ; owl:hasValue "mac-studio" ]
+      ) ]
+  ) ] .
+
+# Team_Scale_Bottleneck ≡ Device ⊓ memory_gb < 32 ⊓ always_on=false
+:Team_Scale_Bottleneck a owl:Class ;
+  rdfs:comment "팀 규모 한계(negative). derivation: memory_gb<32, always_on=false."@ko ;
+  owl:equivalentClass [ a owl:Class ; owl:intersectionOf (
+      :Device
+      [ a owl:Restriction ; owl:onProperty :memory_gb ;
+        owl:someValuesFrom [ a rdfs:Datatype ; owl:onDatatype xsd:integer ;
+          owl:withRestrictions ( [ xsd:maxExclusive 32 ] ) ] ]
+      [ a owl:Restriction ; owl:onProperty :always_on ; owl:hasValue false ]
+  ) ] .
+
+# GPU_Native ≡ Device ⊓ ∃ gpu_component
+:GPU_Native a owl:Class ;
+  rdfs:comment "discrete GPU 보유. derivation: gpu_component not null (또는 gpu_vram_gb>0)."@ko ;
+  owl:equivalentClass [ a owl:Class ; owl:intersectionOf (
+      :Device
+      [ a owl:Restriction ; owl:onProperty :gpu_component ; owl:someValuesFrom rdfs:Literal ]
+  ) ] .

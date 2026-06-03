@@ -1,0 +1,25 @@
+@prefix : <https://agent-setup.local/ontology/asetup#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+:macbook_pro_m5_max_128gb a :Device, :Maintenance_Free .
+:macbook_pro_m4_max_48gb a :Device, :Maintenance_Free .
+:macbook_16gb a :Device, :Maintenance_Free, :Team_Scale_Bottleneck .
+:mac_mini_16gb a :Always_On_Friendly, :Device, :Maintenance_Free .
+:pc_rtx4090 a :Always_On_Friendly, :Device, :GPU_Native .
+:pc_no_gpu a :Always_On_Friendly, :Device .
+:mac_mini_m4_24gb a :Always_On_Friendly, :Device, :Maintenance_Free .
+:mac_mini_pro_48gb a :Always_On_Friendly, :Device, :Maintenance_Free .
+:pc_rtx4060ti_16gb a :Always_On_Friendly, :Device, :GPU_Native .
+:mac_studio_m4_max_128gb a :Always_On_Friendly, :Device, :Maintenance_Free .
+:minipc_oculink_rtx3090_24gb a :Always_On_Friendly, :Device, :GPU_Native .
+:pc_amd_rx7900xtx a :Always_On_Friendly, :Device, :GPU_Native .
+:minipc_oculink_rtx4090_24gb a :Always_On_Friendly, :Device, :GPU_Native .
+:macbook_pro_32gb a :Device, :Maintenance_Free .
+:pc_rtx4060 a :Always_On_Friendly, :Device, :GPU_Native .
+:nvidia_dgx_spark a :Always_On_Friendly, :Device .
+:mac_studio_m4_max_64gb a :Always_On_Friendly, :Device, :Maintenance_Free .
+:pc_rtx5090_32gb a :Always_On_Friendly, :Device, :GPU_Native .
+:macbook_pro_m5_pro_48gb a :Device, :Maintenance_Free .
+:pc_rtx4070ti_super_16gb a :Always_On_Friendly, :Device, :GPU_Native .
+:mac_mini_m4_32gb a :Always_On_Friendly, :Device, :Maintenance_Free .
+:macbook_air_8gb a :Device, :Maintenance_Free, :Team_Scale_Bottleneck .
