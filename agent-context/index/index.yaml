@@ -1,0 +1,12 @@
+project:
+  name: "agent-setup-ontology"
+  id: "agent-setup-ontology"
+  description: "TODO: 프로젝트 한 문장 요약"
+  owner: "TODO@example.com"
+  updated: "2026-07-21"
+  version: "0.1.0"
+  root_offset: "../.."
+
+modules: []
+
+root_files: []

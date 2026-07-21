@@ -1,0 +1,6 @@
+
+# MSO work-memory zvec index (regenerable)
+agent-context/work-memory/.zvec/
+
+# MSO hook runtime state (local)
+.claude/state/

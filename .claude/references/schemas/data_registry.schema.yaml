@@ -1,0 +1,49 @@
+type: data_registry
+description: "`data_registry[]` 항목 — workflow/observability가 참조하는 Artifact source를 규정."
+
+fields:
+  id:
+    required: true
+    type: string
+    immutable: true
+    description: "Data source 고유 식별자. Mermaid graph에는 `location: index:<id>`로 표시된다."
+
+  data_type:
+    required: true
+    type: enum
+    values: [local_file, api, mcp, database, object_store, external_url]
+    description: "저장/접근 매체. local_file 외 API/MCP/database 등을 같은 registry에서 관리한다."
+
+  artifact_type:
+    required: false
+    type: enum
+    values: [knowledge_store, event_store, local_database, document, media]
+    description: "Artifact 소비·운영 의미. knowledge_store/event_store/local_database는 machine-native, document는 Human+Agent hybrid, media는 Human-native deliverable이다. 미기재 시 graph observability가 보수적으로 추론한다."
+
+  resource_kind:
+    required: false
+    type: enum
+    values: [file, data]
+    description: "v0.4.0 호환 alias. 신규 작성은 artifact_type을 사용한다."
+
+  locator:
+    required: true
+    type: string
+    description: "실제 위치 또는 접근자. local_file은 repo-root 기준 path, api는 endpoint, mcp는 resource URI 등."
+
+  description:
+    required: false
+    type: string
+    description: "Data source 설명."
+
+  owner:
+    required: false
+    type: string
+    description: "관리 주체 또는 책임 모듈."
+
+structural_invariants:
+  - "id 는 data_registry[] 내 unique"
+  - "data_type=local_file 인 경우 locator 는 repo-root 기준 path 로 해석"
+  - "artifact_type 은 knowledge_store|event_store|local_database|document|media 중 하나이며, 미기재 시 observability layer 에서 추론"
+  - "resource_kind 는 deprecated compatibility alias"
+  - "workflow graph 에서는 raw locator 대신 index:<id> 를 location 으로 표시"
