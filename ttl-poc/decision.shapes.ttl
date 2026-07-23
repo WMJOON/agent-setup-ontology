@@ -1,0 +1,38 @@
+# decision.shapes.ttl — POC Decision Layer (SHACL: required 검증)
+#
+# semantic_labels.yaml 의 use_case_label_requirements 를 SHACL NodeShape로 형식화.
+# 설계 제약(design-constraints.md, UD-0006):
+#   - required label → SHACL sh:hasValue 검증 (긍정: 충족하면 conform = prefer 후보)
+#   - avoid label    → SHACL이 아닌 trade-off 경고로 별도 출력 (hard exclusion 금지, non-substitution)
+#
+# 입력 데이터: device.inferred.ttl (reason 산출 — 각 device가 추론된 semantic class를 rdf:type 보유)
+# POC context는 추론 가능한 라벨로만 구성 (High_Security_Compliance 등은 IN-0001로 추론 불가 → 제외)
+
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix :     <https://agent-setup.local/ontology/asetup#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# ── Context: always_on_server ────────────────────────────────────────────────
+# required: Always_On_Friendly   (avoid: Team_Scale_Bottleneck — 스크립트가 trade-off로 처리)
+:AlwaysOnServerFitShape
+  a sh:NodeShape ;
+  sh:targetClass :Device ;
+  rdfs:label "always_on_server" ;
+  sh:property [
+    sh:path rdf:type ;
+    sh:hasValue :Always_On_Friendly ;
+    sh:message "always_on_server: Always_On_Friendly 미충족 (상시 가동 부적합)."@ko ;
+  ] .
+
+# ── Context: fine_tuning ─────────────────────────────────────────────────────
+# required: GPU_Native           (avoid: Maintenance_Free — macOS 파인튜닝 제약, trade-off)
+:FineTuningFitShape
+  a sh:NodeShape ;
+  sh:targetClass :Device ;
+  rdfs:label "fine_tuning" ;
+  sh:property [
+    sh:path rdf:type ;
+    sh:hasValue :GPU_Native ;
+    sh:message "fine_tuning: GPU_Native 미충족 (discrete GPU 필요)."@ko ;
+  ] .
